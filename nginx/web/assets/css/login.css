@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+.gradient-custom-2 {
+    /* fallback for old browsers */
+    background-color: #0093E9;
+    background-image: linear-gradient(265deg, #0093E9 0%, #80D0C7 100%);
+}
+
+@media (min-width: 768px) {
+    .gradient-form {
+        height: 50% !important;
+        margin-top: 50px;
+    }
+}
+
+@media (min-width: 769px) {
+    .gradient-custom-2 {
+        border-top-right-radius: .3rem;
+        border-bottom-right-radius: .3rem;
+    }
+}
