@@ -1,0 +1,19 @@
+{
+    "nome": "Masseria Cugno",
+    "descrizione": [
+        "pernottamento",
+        "ristorazione"
+    ],
+    "tipo": "agriturismo",
+    "location": {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+            "coordinates": [
+                15.042204,
+                40.746981
+            ],
+            "type": "Point"
+        }
+    }
+}
