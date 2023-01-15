@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 
 <head>
 
@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
 
-  <title>WoOx Travel Reservation Page</title>
+  <title>TravelLover login</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -31,15 +31,49 @@ https://templatemo.com/tm-580-woox-travel
 </head>
 
 <script>
-  // Check browser support
-  if (typeof (Storage) !== "undefined") {
-    // Store
-    localStorage.setItem("lastname", "Smith");
-    // Retrieve
-    document.getElementById("result").innerHTML = localStorage.getItem("lastname");
-  } else {
-    document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+  function login(email, password) {
+
+    const form = new FormData();
+    form.append("username", document.getElementById("username_login").value);
+    form.append("password", document.getElementById("password_login").value);
+
+    const options = {
+      method: 'POST',
+      headers: {}
+    };
+
+    options.body = form;
+
+    fetch('http://127.0.0.1:5000/login', options)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data['status'] == "success") {
+          console.log("login success");
+          if (typeof (Storage) !== "undefined") {
+            // Store
+            console.log(data['user']['email'])
+            console.log(data['user']['username'])
+            localStorage.setItem("email", data['user']['email']);
+            localStorage.setItem("username", data['user']['username']);
+
+          } else {
+            console.log("Sorry, your browser does not support Web Storage...");
+          }
+          window.location.href = "adminpages/index.html";
+        } else {
+          alert("Login failed");
+          console.log("login failed");
+        }
+
+      }
+      )
+
+      .catch(err => console.error(err));
   }
+
+  // Check browser support
+
 </script>
 
 <body>
@@ -115,7 +149,8 @@ https://templatemo.com/tm-580-woox-travel
                     </div>
 
                     <div class="text-center pt-1 mb-5 pb-1">
-                      <a href="adminpages/index.html"><button class="btn btn-outline-primary" type="button">Log in</button></a>
+                      <a href="#"><button class="btn btn-outline-primary" type="button" onclick="return login()">Log
+                          in</button></a>
                       <a class="text-muted" href="#!">Forgot password?</a>
                     </div>
 

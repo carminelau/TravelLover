@@ -15,8 +15,12 @@ import json
 import geojson
 import pandas as pd
 import re
+import hashlib
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
 def hello():
@@ -32,50 +36,30 @@ def insertAllTrains():
 #login
 @app.route("/login", methods=['POST'])
 def login():
-    username = request.form["username"]
-    password = request.form["password"]
-    user = users.find_one({"username": username, "password": password})
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    user = users.find_one({"email": username, "password": hashlib.sha256(password.encode('utf-8')).hexdigest()}, {"_id": 0})
+
     if user is not None:
-        user = users.find_one({"email": username, "password": password})
-        if user is not None:
-            return jsonify({"status": "ok", "user": user})
-        else:
-            return jsonify({"status": "nessun account trovato"})
+        return jsonify({"status": "success", "user": user})
     else:
-        return jsonify({"status": "nessun account trovato"})
+        return jsonify({"status": "failed"})
+
+
+
 
 #registrazione con username, password, email, nome, cognome, data di nascita
 @app.route("/register", methods=['POST'])
 def register():
-    username = request.form["username"]
-    password = request.form["password"]
-    email = request.form["email"]
-    name = request.form["name"]
-    surname = request.form["surname"]
-    birthdate = request.form["birthdate"]
-    risposta = {}
-    if re.match(r"[^@]+@[^@]+\.[^@]+", email):
-        if re.match(r"^[a-zA-Z0-9]*$", username):
-            if re.match(r"^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$", password):
-                if re.match(r"^[a-zA-Z]*$", name):
-                    if re.match(r"^[a-zA-Z]*$", surname):
-                        if re.match(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$", birthdate):
-                            user = users.insert_one({"username": username, "password": password, "email": email, "name": name, "surname": surname, "birthdate": birthdate})
-                            risposta["status"] = "ok"
-                            risposta["user"] = user
-                        else:
-                            risposta["status"] = "errore data di nascita"
-                    else:
-                        risposta["status"] = "errore cognome"
-                else:  
-                    risposta["status"] = "errore nome"
-            else:
-                risposta["status"] = "errore password"
-        else:   
-            risposta["status"] = "errore username"
+    username = request.form.get("username")
+    password = request.form.get("password")
+    email = request.form.get("email")
+    if users.find_one({"email": email}) is not None:
+        return jsonify({"status": "failed", "message": "email already exists"})
     else:
-        risposta["status"] = "errore email"
-    return jsonify(risposta)
+        users.insert_one({"email": email, "password": hashlib.sha256(password.encode('utf-8')).hexdigest(), "username": username})
+        return jsonify({"status": "success"})
 
 
 if __name__ == "__main__":
