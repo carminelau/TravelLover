@@ -21,7 +21,6 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="js/function.js"></script>
-
 </head>
 
 <script>
@@ -127,8 +126,8 @@
                     </div>
                 </div>
             </li>
-            
-            
+
+
             <!-- Divider -->
             <hr class="sidebar-divider">
         </ul>
@@ -338,336 +337,222 @@
                     </ul>
 
                 </nav>
-                <!-- End of Topbar -->
+
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                    </div>
+                    <h1 class="h3 mb-1 text-gray-800">VISUALIZZA LUOGHI D'INTERESSE</h1>
+                    <p class="mb-4">Visualizza i luoghi d'interesse. Consulta tutti i punti di interesse di rilievo nella provincia di Salerno
+                    filtrati per tipo, comune e relazioni d prossimità</p>
 
                     <!-- Content Row -->
                     <div class="row">
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
+                        <!-- Border Left Utilities -->
+                        <div class="col-lg-6">
+                            <div class="card mb-4 py-3 border-left-primary">
                                 <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
+                                    <h3>Seleziona una o più tipologie</h3>
+                                    <input type="checkbox" name="alberi" id="alberi" onclick="visualizzaTipoCheck('alberi', document.getElementById('alberi').value)"> Alberi monumentali <br>
+                                    <input type="checkbox" name="vini" id="vini" onclick="visualizzaTipoCheck('vino', document.getElementById('alberi').value)"> Vini <br>
+                                    <input type="checkbox" name="agriturismi" id="agriturismi" onclick="visualizzaTipoCheck('agriturismi', document.getElementById('alberi').value)"> Agriturismi <br>
+                                    <input type="checkbox" name="generici" id="generici" onclick="visualizzaTipoCheck('generici', document.getElementById('alberi').value)"> Altro <br>
+                                    <input type="checkbox" name="bandiere" id="bandiere" onclick="visualizzaTipoCheck('bandiere', document.getElementById('alberi').value)"> Bandiere blu <br>
+                                    <input type="checkbox" name="biblioteche" id="biblioteche" onclick="visualizzaTipoCheck('biblioteche', document.getElementById('alberi').value)"> Biblioteche <br>
+                                    <input type="checkbox" name="caseifici" id="caseifici" onclick="visualizzaTipoCheck('caseifici', document.getElementById('alberi').value)"> Caseifici <br>
+                                    <input type="checkbox" name="fattorie" id="fattorie" onclick="visualizzaTipoCheck('fattorie', document.getElementById('alberi').value)"> Fattorie <br>
+                                    <input type="checkbox" name="culto" id="culto" onclick="visualizzaTipoCheck('luoghi-di-culto', document.getElementById('alberi').value)"> Luoghi di culto <br>
+                                    <input type="checkbox" name="musei" id="musei" onclick="visualizzaTipoCheck('musei', document.getElementById('alberi').value)"> Musei <br>
+                                    <input type="checkbox" name="teatri" id="teatri" onclick="visualizzaTipoCheck('teatri', document.getElementById('alberi').value)"> Teatri <br>
+                                    <input type="checkbox" name="torri" id="torri" onclick="visualizzaTipoCheck('torri', document.getElementById('alberi').value)"> Torri e castelli <br>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card mb-4 py-3 border-left-primary">
                                 <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Content Row -->
-
-                    <div class="row">
-
-                        <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <!-- Content Column -->
-                        <div class="col-lg-6 mb-4">
-
-                            <!-- Project Card Example -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
-                                </div>
-                                <div class="card-body">
-                                    <h4 class="small font-weight-bold">Server Migration <span
-                                            class="float-right">20%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
-                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Sales Tracking <span
-                                            class="float-right">40%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
-                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Customer Database <span
-                                            class="float-right">60%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar" role="progressbar" style="width: 60%"
-                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Payout Details <span
-                                            class="float-right">80%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Account Setup <span
-                                            class="float-right">Complete!</span></h4>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
-                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+                                    <h3>Seleziona un comune di riferimento</h3>
+                                    <select name="pernottamento" id="pernottamento">
+                                        <option value="Acerno">Acerno</option>
+                                        <option value="Agropoli">Agropoli</option>
+                                        <option value="Albanella">Albanella</option>
+                                        <option value="Alfano">Alfano</option>
+                                        <option value="Altavilla Silentina">Altavilla Silentina</option>
+                                        <option value="Amalfi">Amalfi</option>
+                                        <option value="Angri">Angri</option>
+                                        <option value="Aquara">Aquara</option>
+                                        <option value="Ascea">Ascea</option>
+                                        <option value="Atena Lucana">Atena Lucana</option>
+                                        <option value="Atrani">Atrani</option>
+                                        <option value="Auletta">Auletta</option>
+                                        <option value="Baronissi">Baronissi</option>
+                                        <option value="Battipaglia">Battipaglia</option>
+                                        <option value="Bellizzi">Bellizzi</option>
+                                        <option value="Bellosguardo">Bellosguardo</option>
+                                        <option value="Bracigliano">Bracigliano</option>
+                                        <option value="Buccino">Buccino</option>
+                                        <option value="Buonabitacolo">Buonabitacolo</option>
+                                        <option value="Caggiano">Caggiano</option>
+                                        <option value="Calvanico">Calvanico</option>
+                                        <option value="Camerota">Camerota</option>
+                                        <option value="Campagna">Campagna</option>
+                                        <option value="Campora">Campora</option>
+                                        <option value="Cannalonga">Cannalonga</option>
+                                        <option value="Capaccio Paestum">Capaccio Paestum</option>
+                                        <option value="Casal Velino">Casal Velino</option>
+                                        <option value="Casalbuono">Casalbuono</option>
+                                        <option value="Casaletto Spartano">Casaletto Spartano</option>
+                                        <option value="Caselle in Pittari">Caselle in Pittari</option>
+                                        <option value="Castel San Giorgio">Castel San Giorgio</option>
+                                        <option value="Castel San Lorenzo">Castel San Lorenzo</option>
+                                        <option value="Castelcivita">Castelcivita</option>
+                                        <option value="Castellabate">Castellabate</option>
+                                        <option value="Castelnuovo Cilento">Castelnuovo Cilento</option>
+                                        <option value="Castelnuovo di Conza">Castelnuovo di Conza</option>
+                                        <option value="Castiglione del Genovesi">Castiglione del Genovesi</option>
+                                        <option value="Cava de' Tirreni">Cava de' Tirreni</option>
+                                        <option value="Celle di Bulgheria">Celle di Bulgheria</option>
+                                        <option value="Centola">Centola</option>
+                                        <option value="Ceraso">Ceraso</option>
+                                        <option value="Cetara">Cetara</option>
+                                        <option value="Cicerale">Cicerale</option>
+                                        <option value="Colliano">Colliano</option>
+                                        <option value="Conca dei Marini">Conca dei Marini</option>
+                                        <option value="Controne">Controne</option>
+                                        <option value="Contursi Terme">Contursi Terme</option>
+                                        <option value="Corbara">Corbara</option>
+                                        <option value="Corleto Monforte">Corleto Monforte</option>
+                                        <option value="Cuccaro Vetere">Cuccaro Vetere</option>
+                                        <option value="Eboli">Eboli</option>
+                                        <option value="Felitto">Felitto</option>
+                                        <option value="Fisciano">Fisciano</option>
+                                        <option value="Furore">Furore</option>
+                                        <option value="Futani">Futani</option>
+                                        <option value="Giffoni Sei Casali">Giffoni Sei Casali</option>
+                                        <option value="Giffoni Valle Piana">Giffoni Valle Piana</option>
+                                        <option value="Gioi">Gioi</option>
+                                        <option value="Giungano">Giungano</option>
+                                        <option value="Ispani">Ispani</option>
+                                        <option value="Laureana Cilento">Laureana Cilento</option>
+                                        <option value="Laurino">Laurino</option>
+                                        <option value="Laurito">Laurito</option>
+                                        <option value="Laviano">Laviano</option>
+                                        <option value="Lustra">Lustra</option>
+                                        <option value="Magliano Vetere">Magliano Vetere</option>
+                                        <option value="Maiori">Maiori</option>
+                                        <option value="Mercato San Severino">Mercato San Severino</option>
+                                        <option value="Minori">Minori</option>
+                                        <option value="Moio della Civitella">Moio della Civitella</option>
+                                        <option value="Montano Antilia">Montano Antilia</option>
+                                        <option value="Monte San Giacomo">Monte San Giacomo</option>
+                                        <option value="Montecorice">Montecorice</option>
+                                        <option value="Montecorvino Pugliano">Montecorvino Pugliano</option>
+                                        <option value="Montecorvino Rovella">Montecorvino Rovella</option>
+                                        <option value="Monteforte Cilento">Monteforte Cilento</option>
+                                        <option value="Montesano sulla Marcellana">Montesano sulla Marcellana</option>
+                                        <option value="Morigerati">Morigerati</option>
+                                        <option value="Nocera Inferiore">Nocera Inferiore</option>
+                                        <option value="Nocera Superiore">Nocera Superiore</option>
+                                        <option value="Novi Velia">Novi Velia</option>
+                                        <option value="Ogliastro Cilento">Ogliastro Cilento</option>
+                                        <option value="Olevano sul Tusciano">Olevano sul Tusciano</option>
+                                        <option value="Oliveto Citra">Oliveto Citra</option>
+                                        <option value="Omignano">Omignano</option>
+                                        <option value="Orria">Orria</option>
+                                        <option value="Ottati">Ottati</option>
+                                        <option value="Padula">Padula</option>
+                                        <option value="Pagani">Pagani</option>
+                                        <option value="Palomonte">Palomonte</option>
+                                        <option value="Pellezzano">Pellezzano</option>
+                                        <option value="Perdifumo">Perdifumo</option>
+                                        <option value="Perito">Perito</option>
+                                        <option value="Pertosa">Pertosa</option>
+                                        <option value="Petina">Petina</option>
+                                        <option value="Piaggine">Piaggine</option>
+                                        <option value="Pisciotta">Pisciotta</option>
+                                        <option value="Polla">Polla</option>
+                                        <option value="Pollica">Pollica</option>
+                                        <option value="Pontecagnano Faiano">Pontecagnano Faiano</option>
+                                        <option value="Positano">Positano</option>
+                                        <option value="Postiglione">Postiglione</option>
+                                        <option value="Praiano">Praiano</option>
+                                        <option value="Prignano Cilento">Prignano Cilento</option>
+                                        <option value="Ravello">Ravello</option>
+                                        <option value="Ricigliano">Ricigliano</option>
+                                        <option value="Roccadaspide">Roccadaspide</option>
+                                        <option value="Roccagloriosa">Roccagloriosa</option>
+                                        <option value="Roccapiemonte">Roccapiemonte</option>
+                                        <option value="Rofrano">Rofrano</option>
+                                        <option value="Romagnano al Monte">Romagnano al Monte</option>
+                                        <option value="Roscigno">Roscigno</option>
+                                        <option value="Rutino">Rutino</option>
+                                        <option value="Sacco">Sacco</option>
+                                        <option value="Sala Consilina">Sala Consilina</option>
+                                        <option value="Salento">Salento</option>
+                                        <option value="Salerno">Salerno</option>
+                                        <option value="Salvitelle">Salvitelle</option>
+                                        <option value="San Cipriano Picentino">San Cipriano Picentino</option>
+                                        <option value="San Giovanni a Piro">San Giovanni a Piro</option>
+                                        <option value="San Gregorio Magno">San Gregorio Magno</option>
+                                        <option value="San Mango Piemonte">San Mango Piemonte</option>
+                                        <option value="San Marzano sul Sarno">San Marzano sul Sarno</option>
+                                        <option value="San Mauro Cilento">San Mauro Cilento</option>
+                                        <option value="San Mauro La Bruca">San Mauro La Bruca</option>
+                                        <option value="San Pietro al Tanagro">San Pietro al Tanagro</option>
+                                        <option value="San Rufo">San Rufo</option>
+                                        <option value="San Valentino Torio">San Valentino Torio</option>
+                                        <option value="Sant'Angelo a Fasanella">Sant'Angelo a Fasanella</option>
+                                        <option value="Sant'Arsenio">Sant'Arsenio</option>
+                                        <option value="Sant'Egidio del Monte Albino">Sant'Egidio del Monte Albino</option>
+                                        <option value="Santa Marina">Santa Marina</option>
+                                        <option value="Santomenna">Santomenna</option>
+                                        <option value="Sanza">Sanza</option>
+                                        <option value="Sapri">Sapri</option>
+                                        <option value="Sarno">Sarno</option>
+                                        <option value="Sassano">Sassano</option>
+                                        <option value="Scafati">Scafati</option>
+                                        <option value="Scala">Scala</option>
+                                        <option value="Serramezzana">Serramezzana</option>
+                                        <option value="Serre">Serre</option>
+                                        <option value="Sessa Cilento">Sessa Cilento</option>
+                                        <option value="Siano">Siano</option>
+                                        <option value="Sicignano degli Alburni">Sicignano degli Alburni</option>
+                                        <option value="Stella Cilento">Stella Cilento</option>
+                                        <option value="Stio">Stio</option>
+                                        <option value="Teggiano">Teggiano</option>
+                                        <option value="Torchiara">Torchiara</option>
+                                        <option value="Torraca">Torraca</option>
+                                        <option value="Torre Orsaia">Torre Orsaia</option>
+                                        <option value="Tortorella">Tortorella</option>
+                                        <option value="Tramonti">Tramonti</option>
+                                        <option value="Trentinara">Trentinara</option>
+                                        <option value="Valle dell'Angelo">Valle dell'Angelo</option>
+                                        <option value="Vallo della Lucania">Vallo della Lucania</option>
+                                        <option value="Valva">Valva</option>
+                                        <option value="Vibonati">Vibonati</option>
+                                        <option value="Vietri sul Mare">Vietri sul Mare</option>
+                                    </select>
+                                    <button type="button" onclick="visualizzaLuogo('byLuogo',document.getElementById('pernottamento').value);">cerca</button>
                                 </div>
                             </div>
 
-                            <!-- Color System -->
-                            <div class="row">
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-primary text-white shadow">
-                                        <div class="card-body">
-                                            Primary
-                                            <div class="text-white-50 small">#4e73df</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-success text-white shadow">
-                                        <div class="card-body">
-                                            Success
-                                            <div class="text-white-50 small">#1cc88a</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-info text-white shadow">
-                                        <div class="card-body">
-                                            Info
-                                            <div class="text-white-50 small">#36b9cc</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-warning text-white shadow">
-                                        <div class="card-body">
-                                            Warning
-                                            <div class="text-white-50 small">#f6c23e</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-danger text-white shadow">
-                                        <div class="card-body">
-                                            Danger
-                                            <div class="text-white-50 small">#e74a3b</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-secondary text-white shadow">
-                                        <div class="card-body">
-                                            Secondary
-                                            <div class="text-white-50 small">#858796</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-light text-black shadow">
-                                        <div class="card-body">
-                                            Light
-                                            <div class="text-black-50 small">#f8f9fc</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-dark text-white shadow">
-                                        <div class="card-body">
-                                            Dark
-                                            <div class="text-white-50 small">#5a5c69</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+
 
                         </div>
 
-                        <div class="col-lg-6 mb-4">
-
-                            <!-- Illustrations -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="text-center">
-                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                            src="img/undraw_posting_photo.svg" alt="...">
-                                    </div>
-                                    <p>Add some quality, svg illustrations to your project courtesy of <a
-                                            target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                        constantly updated collection of beautiful svg images that you can use
-                                        completely free and without attribution!</p>
-                                    <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
-                                        unDraw &rarr;</a>
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-4 py-3">
+                                <h1>RISULTATO QUA</h1>
+                                <div class="card-body risultato"></div>
                             </div>
-
-                            <!-- Approach -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
-                                        CSS bloat and poor page performance. Custom CSS classes are used to create
-                                        custom components and custom utility classes.</p>
-                                    <p class="mb-0">Before working with this theme, you should become familiar with the
-                                        Bootstrap framework, especially the utility classes.</p>
-                                </div>
-                            </div>
-
                         </div>
+
                     </div>
 
                 </div>
-                <!-- /.container-fluid -->
+
+
 
             </div>
             <!-- End of Main Content -->
@@ -729,7 +614,7 @@
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
-
+    <script src="js/function.js"></script>
 </body>
 
 </html>

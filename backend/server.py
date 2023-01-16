@@ -17,6 +17,7 @@ import pandas as pd
 import re
 import hashlib
 from flask_cors import CORS
+from flask import Flask, redirect, url_for, render_template, request, jsonify
 
 
 app = Flask(__name__)
@@ -24,7 +25,7 @@ CORS(app)
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return "Hello World"
 
 #inserire tutte corse dei treni
 @app.route("/insertAllTrains", methods=['POST'])
@@ -46,20 +47,29 @@ def login():
     else:
         return jsonify({"status": "failed"})
 
+# #registrazione con username, password, email, nome, cognome, data di nascita
+# @app.route("/register", methods=['POST'])
+# def register():
+#     username = request.form.get("username")
+#     password = request.form.get("password")
+#     email = request.form.get("email")
+#     if users.find_one({"email": email}) is not None:
+#         return jsonify({"status": "failed", "message": "email already exists"})
+#     else:
+#         users.insert_one({"email": email, "password": hashlib.sha256(password.encode('utf-8')).hexdigest(), "username": username})
+#         return jsonify({"status": "success"})
 
+#estrai luoghi di interesse di un determinato tipo
+@app.route("/visualizzaTipo", methods=['POST','GET'])
+def byTipo():
+	tipo = request.args.get("criterio")
+	return estrai_lista_luoghi(tipo)
 
-
-#registrazione con username, password, email, nome, cognome, data di nascita
-@app.route("/register", methods=['POST'])
-def register():
-    username = request.form.get("username")
-    password = request.form.get("password")
-    email = request.form.get("email")
-    if users.find_one({"email": email}) is not None:
-        return jsonify({"status": "failed", "message": "email already exists"})
-    else:
-        users.insert_one({"email": email, "password": hashlib.sha256(password.encode('utf-8')).hexdigest(), "username": username})
-        return jsonify({"status": "success"})
+#estrai luoghi di interesse di un determinato tipo
+@app.route("/visualizzaByComune", methods=['POST','GET'])
+def byComune():
+    #estrai_lista_luoghi_comune(comune)
+	pass
 
 
 if __name__ == "__main__":
