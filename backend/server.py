@@ -47,29 +47,42 @@ def login():
     else:
         return jsonify({"status": "failed"})
 
-# #registrazione con username, password, email, nome, cognome, data di nascita
-# @app.route("/register", methods=['POST'])
-# def register():
-#     username = request.form.get("username")
-#     password = request.form.get("password")
-#     email = request.form.get("email")
-#     if users.find_one({"email": email}) is not None:
-#         return jsonify({"status": "failed", "message": "email already exists"})
-#     else:
-#         users.insert_one({"email": email, "password": hashlib.sha256(password.encode('utf-8')).hexdigest(), "username": username})
-#         return jsonify({"status": "success"})
+#registrazione con username, password, email, nome, cognome, data di nascita
+@app.route("/register", methods=['POST'])
+def register():
+    username = request.form.get("username")
+    password = request.form.get("password")
+    email = request.form.get("email")
+    if users.find_one({"email": email}) is not None:
+        return jsonify({"status": "failed", "message": "email already exists"})
+    else:
+        users.insert_one({"email": email, "password": hashlib.sha256(password.encode('utf-8')).hexdigest(), "username": username})
+        return jsonify({"status": "success"})
 
 #estrai luoghi di interesse di un determinato tipo
 @app.route("/visualizzaTipo", methods=['POST','GET'])
 def byTipo():
-	tipo = request.args.get("criterio")
-	return estrai_lista_luoghi(tipo)
+    tipo = request.form.get("criterio")
+
+    luoghi= poi_places.find({"Tipo": tipo}, {"_id": 0})
+    
+    risposta = {"status": "success", "luoghi": list(luoghi), "tipo": tipo}
+    return jsonify(risposta)
 
 #estrai luoghi di interesse di un determinato tipo
 @app.route("/visualizzaByComune", methods=['POST','GET'])
 def byComune():
-    #estrai_lista_luoghi_comune(comune)
-	pass
+    pass
+
+#inserire geojson dei comuni della provincia di salerno
+@app.route("/insertComuni", methods=['POST'])
+def insertComuni():
+    with open("backend\\geojsonprovinciasalerno.geojson", "r") as f:
+        data = json.load(f)
+        for item in data['features']:
+            comuni_geojson.insert_one(item)
+
+    return jsonify({"status": "success"})
 
 
 if __name__ == "__main__":
