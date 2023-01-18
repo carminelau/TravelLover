@@ -70,9 +70,24 @@ def byTipo():
     return jsonify(risposta)
 
 #estrai luoghi di interesse di un determinato tipo
-@app.route("/visualizzaByComune", methods=['POST','GET'])
-def byComune():
-    pass
+@app.route("/visualizzaVicinoComune", methods=['POST','GET'])
+def vicinoComune():
+    #comune contiene il nome del comune del quale vogliamo cercare i luoghi di interesse vicini
+    comune = request.form.get("comune")
+
+    #prendo il parametro range per settare nella query near la distanza massima (attualmente 5000metri)
+    #range= request.form.get("range")
+
+    #prendo le coordinate del comune di riferimento per eseguire la query near (attualmente manca il geojson con i punti dei comuni)
+    #coordinate_comune=comuni_geojson.find({"properties.name": comune},{"geometry.coordinates":1})
+
+
+    #restituisce tutti i luoghi di interesse da 0 a 5 km rispetto un paio di cordinate (che dovrebbero essere quelle del comune di riferimento)
+    luoghi_vicino_comune=luoghi_di_interesse_geo.find({"features.geometry":{"$near":{"$geometry":{"type":"Point", "coordinates": [15.037362, 40.763152]},"$minDistance": 0,"$maxDistance": 5000}}},{"_id": 0})
+    risposta = {"status":"success", "luoghi":list(luoghi_vicino_comune),"comune_scelto":comune}
+
+    return jsonify(risposta)
+
 
 #inserire geojson dei comuni della provincia di salerno
 @app.route("/insertComuni", methods=['POST'])
