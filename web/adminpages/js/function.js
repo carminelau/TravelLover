@@ -25,19 +25,18 @@ function visualizzaTipoCheck(tipo,azione){
         });
 }
 
-function visualizzaByComune(tipo,azione){
+function visualizzaVicinoComune(azione, comune){
         $.ajax({
-            url: "http://127.0.0.1:5000/visualizzaByComune",
+            url: "http://127.0.0.1:5000/visualizzaVicinoComune",
             method: "GET",
             cache: false,
             data:{
-                criterio: tipo,
                 azione: azione,
+                comune: comune,
             },
             success: function (response) {
                 console.log(response)
-
-
+                console.log(comune)
             },
             error: function () {
                 alert("ERRORE CHIAMATA ASINCRONA");
