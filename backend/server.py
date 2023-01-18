@@ -84,6 +84,22 @@ def insertComuni():
 
     return jsonify({"status": "success"})
 
+#inserire fermate autobus nella collection fermate
+@app.route("/insertFermate")
+def insertFermate():
+    autob= pd.read_csv("dati\\fermate-autobus.csv", sep=";")
+    stations.insert_many(autob.to_dict('records'))
+    treni= pd.read_csv("dati\\stazioni-treni.csv", sep=",")
+    stations.insert_many(treni.to_dict('records'))
+
+    return jsonify({"status": "success"})
+
+#restituisci tutte le fermate dato il tipo
+@app.route("/getFermate", methods=['POST'])
+def getFermate():
+    tipo = request.form.get("tipo")
+    fermate = stations.find({"Tipo": tipo}, {"_id": 0})
+    return jsonify({"status": "success", "fermate": list(fermate)})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)
