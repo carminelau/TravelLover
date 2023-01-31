@@ -21,6 +21,29 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="js/function.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script src="https://kit.fontawesome.com/749cb2cc9d.js" crossorigin="anonymous"></script>
+    <style>
+        #map {
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 400px;
+        }
+
+        #listarisultato {
+            column-count: 2;
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+        }
+    </style>
 </head>
 
 <script>
@@ -338,9 +361,102 @@
 
                 </nav>
 
-
-
                 <!-- QUI VA IL MAIN CONTENT -->
+
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-1 text-gray-800">INSERISCI UN NUOVO PERCORSO</h1>
+                    <p class="mb-4">Inserisci un nuovo percorso di promozione turistica, valutando stazioni, fermate, esperienze e luoghi di interesse</p>
+
+                    <!-- Content Row -->
+                    <div class="row">
+                        <!-- Border Left Utilities LA MAPPA NON ESCE -->
+                        <div class="col-lg-6">
+                            <div class="card mb-4 py-3 border-left-primary">
+                                <div class="card-body">
+                                    <div id="map">
+                                        <script>
+                                            function resetMap() {
+                                                location.reload()
+
+                                            }
+                                            var map = L.map('map').setView([40.68154, 14.7749133], 11);
+                                            L.tileLayer('https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=m5sIKtQYgI1arDxvl4ob', {
+                                                attribution: 'Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | <a href="https://openmaptiles.org/" target="_blank">© OpenMapTiles</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap</a> contributors',
+                                                maxZoom: 20, id: 'osm-bright'
+                                            }).addTo(map);
+
+                                        </script>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-4 py-3">
+                                <div id="creaPercorso">
+                                    <h3>CREA UN NUOVO PERCORSO</h3>
+                                    <h5>Nome percorso: </h5><input type="text" name="titolo" class="titolo" placeholder="Inserisci titolo qui" required><br>
+                                    <h5>Descrizione esperienza: </h5><textarea rows="5" cols="50" name="descrizione" class="descrizione" placeholder="Inserisci descrizione qui"></textarea><br>
+                                    <h5><a href="singoliPOI.html?pacchetto=crea" class="seleziona">Scegli i luoghi di interesse</a></h5>
+                                    <button>CREA PERCORSO</button>
+                                </div>
+                                <style>
+                                    #creaPercorso{
+                                        margin: 0 auto;
+                                        text-align: left;
+                                        width: 90%;
+                                    }
+                                    input[type=text]{
+                                        width: 75%;
+                                        padding: 12px 20px;
+                                        margin: 8px 0;
+                                        box-sizing: border-box;
+                                        border-radius: 17px;
+                                        height:auto;
+                                        font-size:100%;
+                                    }
+                                    textarea{
+                                        width: 75%;
+                                        padding: 12px 20px;
+                                        margin: 8px 0;
+                                        box-sizing: border-box;
+                                        border-radius: 17px;
+                                        height:auto;
+                                        font-size:100%;
+                                    }
+                                    button {
+                                        width: 50%;
+                                        padding: 12px;
+                                        margin: 8px 0;
+                                        box-sizing: border-box;
+                                        border-radius: 20px;
+                                        height 10px;
+                                        font-size:100%;
+                                    }
+                                    a .seleziona{
+                                        text-decoration:none;
+                                        color: #4e73df;
+                                        font-size:20px;
+                                    }
+                                    a:hover .seleziona{
+                                        text-decoration:none;
+                                        color: grey;
+                                    }
+
+                                </style>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
