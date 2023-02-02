@@ -114,3 +114,35 @@ function visualzzafermatebytipo(tipo, azione) {
         }
     });
 }
+
+
+function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, posizioneUtenteLong) {
+    $.ajax({
+        url: "http://127.0.0.1:5000/creaPercorsoClient",
+        method: "POST",
+        cache: false,
+        data: {
+            azione: azione,
+            mezzi: mezzi,
+            range: range,
+            luoghi: luoghi,
+            posizioneUtenteLat: posizioneUtenteLat,
+            posizioneUtenteLong:posizioneUtenteLong,
+        },
+        success: function (response) {
+
+            console.log(mezzi)
+            console.log(range)
+            console.log(luoghi)
+            console.log(posizioneUtenteLat)
+            console.log(posizioneUtenteLong)
+
+            console.log(response)
+
+
+        },
+        error: function () {
+            alert("ERRORE CHIAMATA ASINCRONA");
+        }
+    });
+}

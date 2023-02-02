@@ -115,6 +115,42 @@ def getFermate():
     fermate = stations.find({"Tipo": tipo}, {"_id": 0})
     return jsonify({"status": "success", "fermate": list(fermate)})
 
+@app.route("/creaPercorsoClient", methods=['POST'])
+def creaPercorsoClient():
+    mezzi = request.form.getlist("mezzi[]")
+    range = request.form.getlist("range")
+    tipi = request.form.getlist("luoghi[]")
+    lat= request.form.get("posizioneUtenteLat")
+    long=request.form.get("posizioneUtenteLong")
+
+    #mezzi: auto treno bus    range: 0-5 5-10 -10-15 15-20 +20   luoghi: alberi vini eccc
+
+    #find near       {"features.geometry":{"$near":{"$geometry": {"type": "Point", "coordinates": [15.037362, 40.763152]},"$minDistance": 1000,"$maxDistance": 5000}}}
+    #find_by_tipi    {"tipo":{"$in":["alberi","vini","agriturismi"]}
+
+    min=0
+    max=0
+
+    if "0-5" in range:
+        min=0
+        max=5000
+    if "5-10" in range:
+        min=5000
+        max=10000
+    if "10-15" in range:
+        min=10000
+        max=15000
+    if "15-20" in range:
+        min=15000
+        max=20000
+    if "+5" in range:
+        min=20000
+        max=50000
+
+    luoghi_percorso=luoghi_di_interesse_geo.find({"$and":[{"features.geometry":{"$near":{"$geometry":{"type":"Point","coordinates": [float(long), float(lat)]},"$minDistance": min,"$maxDistance": max}}},{"tipo": {"$in":tipi}}]},{"_id":0})
+    #print(list(luoghi_percorso))
+    return jsonify({"luoghi_percorso":list(luoghi_percorso),"status":"success"})
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)

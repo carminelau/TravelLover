@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="adminpages/js/function.js"></script>
 <!--
 
 TemplateMo 580 Woox Travel
@@ -36,13 +38,6 @@ https://templatemo.com/tm-580-woox-travel
             margin: 0 auto;
             width: 100%;
             height: 500px;
-        }
-
-        #listarisultato {
-            column-count: 2;
-            columns: 2;
-            -webkit-columns: 2;
-            -moz-columns: 2;
         }
     </style>
   </head>
@@ -138,78 +133,114 @@ https://templatemo.com/tm-580-woox-travel
       <div class="row">
         <div class="col-lg-12">
           <div id="map">
-             <script>
-                function resetMap() {
-                    location.reload()
+               <script>
+                  function resetMap() {
+                      location.reload()
 
-                }
-                var map = L.map('map').setView([40.68154, 14.7749133], 11);
-                L.tileLayer('https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=m5sIKtQYgI1arDxvl4ob', {
-                    attribution: 'Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | <a href="https://openmaptiles.org/" target="_blank">© OpenMapTiles</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap</a> contributors',
-                    maxZoom: 20, id: 'osm-bright'
-                }).addTo(map);
-            </script>
+                  }
+                  var map = L.map('map').setView([40.68154, 14.7749133], 11);
+                  L.tileLayer('https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=m5sIKtQYgI1arDxvl4ob', {
+                      attribution: 'Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | <a href="https://openmaptiles.org/" target="_blank">© OpenMapTiles</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap</a> contributors',
+                      maxZoom: 20, id: 'osm-bright'
+                  }).addTo(map);
+
+              </script>
           </div>
-        </div>
-        <div class="col-lg-12">
-          <form id="reservation-form" name="gs" method="submit" role="search" action="#">
-            <div class="row">
-              <div class="col-lg-12">
+          <form id="reservation-form" name="gs">
+             <div class="col-lg-12">
                 <h4>Crea il tuo <em>percorso</em> attraverso questo <em>Form</em></h4>
-              </div>
-
-              <h4> qui l'utente mette i tipi, la sua posizione, il range richiesto, i mezzi, la durata ecc per genere un pacchetto ad-hoc</h4>
-
-              <!--<div class="col-lg-6">
-                  <label>A quanti chilometri da te:</label>
+             </div>
+             <div class="row">
+                <label class="form-label">Punti di interesse:</label><br>
+                <hr>
+                <div class="col-lg-6">
+                  <input type="checkbox" class="luogo" value="alberi" id="alberi">Alberi monumentali <br>
+                  <input type="checkbox" class="luogo" value="vini" id="vini">Vini <br>
+                  <input type="checkbox" class="luogo" value="agriturismi"> Agriturismi <br>
+                  <input type="checkbox" class="luogo" value="generici" id="generici"> Altro <br>
+                  <input type="checkbox" class="luogo" value="bandiere" id="bandiere"> Bandiere blu <br>
+                  <input type="checkbox" class="luogo" value="biblioteche" id="biblioteche"> Biblioteche <br>
+                </div>
+               <div class="col-lg-6">
+                  <input type="checkbox" class="luogo" value="caseifici" id="caseifici"> Caseifici <br>
+                  <input type="checkbox" class="luogo" value="fattorie" id="fattorie"> Fattorie <br>
+                  <input type="checkbox" class="luogo" value="culto" id="culto"> Luoghi di culto <br>
+                  <input type="checkbox" class="luogo" value="musei" id="musei"> Musei <br>
+                  <input type="checkbox" class="luogo" value="teatri" id="teatri"> Teatri <br>
+                  <input type="checkbox" class="luogo" value="torri" id="torri"> Torri e castelli
+               </div>
+               <hr>
+               <div class="col-lg-6">
+                  <label class="form-label">Mezzi di trasporto</label>
+                  <input type="checkbox" class="mezzo" name="mezzo" value="auto">Auto
+                  <input type="checkbox" class="mezzo" value="treno">Treno
+                  <input type="checkbox" class="mezzo" value="bus">Bus
+               </div>
+               <hr>
+               <div class="col-lg-6">
+                  <label class="form-label">A quanti chilometri da te:</label>
+                  <input type="radio" class="km" value="0-5">-5km
+                  <input type="radio" class="km" value="5-10">5-10km
+                  <input type="radio" class="km" value="10-15">10-15km
+                  <input type="radio" class="km" value="15-20">15-20km
+                  <input type="radio" class="km" value="+20">+20km
                   <script>
+                      var lat;
+                      var long
                       if ("geolocation" in navigator) {
                           navigator.geolocation.getCurrentPosition(function(position) {
                             console.log("Latitude: " + position.coords.latitude);
                             console.log("Longitude: " + position.coords.longitude);
+                            var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+                            lat=position.coords.latitude
+                            long=position.coords.longitude
                           });
                         } else {
                           console.log("Geolocation is not supported by this browser.");
                         }
                   </script>
-              </div>
-
-              <div class="tipi">
-                <input type="checkbox" name="alberi" id="alberi"> Alberi monumentali
-                <input type="checkbox" name="vini" id="vini"> Vini
-                <input type="checkbox" name="agriturismi"> Agriturismi
-                <input type="checkbox" name="generici" id="generici"> Altro
-                <input type="checkbox" name="bandiere" id="bandiere"> Bandiere blu
-                <input type="checkbox" name="biblioteche" id="biblioteche"> Biblioteche
-              </div>
-
-              <div class="tipi">
-                <input type="checkbox" name="caseifici" id="caseifici"> Caseifici
-                <input type="checkbox" name="fattorie" id="fattorie"> Fattorie
-                <input type="checkbox" name="culto" id="culto"> Luoghi di culto
-                <input type="checkbox" name="musei" id="musei"> Musei
-                <input type="checkbox" name="teatri" id="teatri"> Teatri
-                <input type="checkbox" name="torri" id="torri"> Torri e castelli
-              </div>
-
-              <div class="mezzi">
-                  <label class="form-label">Mezzi di trasporto</label>
-                  <input type="checkbox" name="auto" id="auto"> Auto
-                  <input type="checkbox" name="treno" id="treno"> Treno
-                  <input type="checkbox" name="bus" id="bus"> Bus
-              </div>-->
-
-
-              <div class="col-lg-12">                        
+               </div>
+               <hr>
+             </div>
+             <div class="col-lg-12">
                   <fieldset>
-                      <button class="main-button">Genera percorso</button>
+                      <button type="button" onclick="creaPercorsoClient('percorsoClient', getCheckedListaMezzi(), getCheckedRange(), getCheckedListaLuoghi(), lat, long)">Genera percorso</button>
+                      <script>
+                          function getCheckedRange(){
+                              var km = document.getElementsByClassName('km');
+                              var range;
+                              for (i = 0; i < km.length; i++) {
+                                if(km[i].checked == true)
+                                    range = (km[i].value)
+                              }
+                              return range;
+                          }
+                           function getCheckedListaMezzi(){
+                              var mezzi = document.getElementsByClassName('mezzo');
+                              var lista_mezzi = [];
+                              for (i = 0; i < mezzi.length; i++) {
+                                if(mezzi[i].checked == true)
+                                    lista_mezzi.push(mezzi[i].value)
+                              }
+                              return lista_mezzi;
+                          }
+                          function getCheckedListaLuoghi(){
+                              var luoghi = document.getElementsByClassName('luogo');
+                              var lista_luoghi = [];
+                              for (i = 0; i < luoghi.length; i++) {
+                                if(luoghi[i].checked == true)
+                                    lista_luoghi.push(luoghi[i].value)
+                              }
+                              return lista_luoghi;
+                          }
+                      </script>
                   </fieldset>
-              </div>
-            </div>
+             </div>
           </form>
         </div>
       </div>
-    </div>
+<!--    </div>-->
+  </div>
   </div>
 
   <footer>
@@ -243,6 +274,7 @@ https://templatemo.com/tm-580-woox-travel
     });
   </script>
 
+  <script src="adminpages/js/function.js"></script>
   </body>
 
 </html>
