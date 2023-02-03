@@ -143,13 +143,28 @@ def creaPercorsoClient():
     if "15-20" in range:
         min=15000
         max=20000
-    if "+5" in range:
+    if "+20" in range:
         min=20000
         max=50000
 
     luoghi_percorso=luoghi_di_interesse_geo.find({"$and":[{"features.geometry":{"$near":{"$geometry":{"type":"Point","coordinates": [float(long), float(lat)]},"$minDistance": min,"$maxDistance": max}}},{"tipo": {"$in":tipi}}]},{"_id":0})
     #print(list(luoghi_percorso))
     return jsonify({"luoghi_percorso":list(luoghi_percorso),"status":"success"})
+
+@app.route("/inserisciNuovoPOI", methods=['POST','GET'])
+def inserisciNuovoPOI():
+    nome=request.form.get("nome")
+    descrizione=request.form.get("descrizione")
+    tipo=request.form.get("tipo")
+    latitudine=request.form.get("latitudine")
+    longitudine=request.form.get("longitudine")
+
+    nuovo_POI={"nome":nome, "descrizione":descrizione, "tipo": tipo, "type":"FeatureCollection","features":[{"type":"Feature", "properties":{},"geometry":{"coordinates":[float(longitudine),float(latitudine)],"type":"Point"}}]}
+
+    #MANCA INSERIMENTO VERO E PROPORIO NEL DB
+    #luoghi_di_interesse_geo.insert_one(nuovo_POI)
+
+    return nuovo_POI
 
 
 if __name__ == "__main__":

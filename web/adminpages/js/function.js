@@ -131,15 +131,24 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
         },
         success: function (response) {
 
-            console.log(mezzi)
+           /* console.log(mezzi)
             console.log(range)
             console.log(luoghi)
             console.log(posizioneUtenteLat)
-            console.log(posizioneUtenteLong)
-
+            console.log(posizioneUtenteLong)*/
             console.log(response)
 
+            var totalecordinate=[]
 
+            response.luoghi_percorso.forEach(function (item) {
+                var nome=item.nome;
+                var descrizione=item.descrizione;
+                var latitudine = item.features[0].geometry.coordinates[1];
+                var longitudine = item.features[0].geometry.coordinates[0];
+                totalecordinate.push([latitudine,longitudine])
+
+                visualizzaLuoghiSuMappa(latitudine, longitudine, nome, descrizione, totalecordinate)
+            });
         },
         error: function () {
             alert("ERRORE CHIAMATA ASINCRONA");

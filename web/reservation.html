@@ -179,11 +179,11 @@ https://templatemo.com/tm-580-woox-travel
                <hr>
                <div class="col-lg-6">
                   <label class="form-label">A quanti chilometri da te:</label>
-                  <input type="radio" class="km" value="0-5">-5km
-                  <input type="radio" class="km" value="5-10">5-10km
-                  <input type="radio" class="km" value="10-15">10-15km
-                  <input type="radio" class="km" value="15-20">15-20km
-                  <input type="radio" class="km" value="+20">+20km
+                  <input type="radio" name="km" class="km" value="0-5">-5km
+                  <input type="radio" name="km" class="km" value="5-10">5-10km
+                  <input type="radio" name="km" class="km" value="10-15">10-15km
+                  <input type="radio" name="km" class="km" value="15-20">15-20km
+                  <input type="radio" name="km" class="km" value="+20">+20km
                   <script>
                       var lat;
                       var long
@@ -191,7 +191,9 @@ https://templatemo.com/tm-580-woox-travel
                           navigator.geolocation.getCurrentPosition(function(position) {
                             console.log("Latitude: " + position.coords.latitude);
                             console.log("Longitude: " + position.coords.longitude);
+
                             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+
                             lat=position.coords.latitude
                             long=position.coords.longitude
                           });
@@ -232,6 +234,19 @@ https://templatemo.com/tm-580-woox-travel
                                     lista_luoghi.push(luoghi[i].value)
                               }
                               return lista_luoghi;
+                          }
+                          function visualizzaLuoghiSuMappa(lat, lon, nome, descrizione, totali) {
+                              var marker = L.marker([lat, lon]);
+
+                              var customPopup = "<b>"+nome+"</b><br><hr><p>"+descrizione+"</p>";
+                              var customOptions =
+                              {
+                                  'maxWidth': '500',
+                                  'className' : 'custom'
+                              }
+                              marker.bindPopup(customPopup,customOptions).addTo(map);
+                              //Creare un oggetto per il percorso utilizzando le coordinate e aggiungerlo alla mappa
+                              //var path = L.polyline(totali).addTo(map);
                           }
                       </script>
                   </fieldset>
