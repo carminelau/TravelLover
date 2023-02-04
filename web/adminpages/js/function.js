@@ -113,16 +113,37 @@ function visualzzafermatebytipo(tipo, azione) {
     });
 }
 
-function getChecked() {
+function inserisciPercorso() {
     var checked = [];
     var inputs = document.getElementsByName('a');
+    var nome = document.getElementById("nome_percorso").value;
     for (var i = 0; i < inputs.length; i++) {
         if (inputs[i].checked) {
             checked.push(inputs[i].value);
         }
     }
-    
-    console.log(checked)
+    console.log(nome)
+    console.log(JSON.stringify(checked))
+
+    $.ajax({
+        url: "http://127.0.0.1:5000/insertPercorso",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        method: "POST",
+        cache: false,
+        data: {
+            nome : nome,
+            array : JSON.stringify(checked),
+        },
+        success: function (response) {
+            console.log(response)
+            alert("Percorso Inserito");
+        },
+        error: function () {
+            alert("ERRORE CHIAMATA ASINCRONA");
+        }
+    });
 
 function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, posizioneUtenteLong) {
     $.ajax({
@@ -164,7 +185,4 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
     });
 }
 
-function inserisciPercorso(){
-    var nome = document.getElementById("nome").value;
-    
 }

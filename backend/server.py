@@ -169,17 +169,42 @@ def inserisciNuovoPOI():
 @app.route("/insertPercorso", methods=['POST'])
 def insertPercorso():
     nome=request.form.get("nome")
-    descrizione=request.form.get("descrizione")
-    tipo=request.form.get("tipo")
-    arrcoo=request.form.get("arrcoo")
+    arry=[]
+    futures = []
+    arrcoo=request.form.get("array")
+    arr=literal_eval(arrcoo)
 
-    geo=geojson.LineString(literal_eval(arrcoo))
+    for i in arr:
+        tupla=(float(i.split(",")[1]),float(i.split(",")[0]))
+        print(tupla)
+        arry.append(tupla)
+        futures.append(geojson.Feature(geometry=geojson.Point(tupla)))
+    futures.append(geojson.Feature(geometry=geojson.LineString(arry)))
 
-    nuovo_percorso={"nome":nome, "descrizione":descrizione, "tipo": tipo, "type":"FeatureCollection","features":[{"type":"Feature", "properties":{},"geometry":geo}]}
+    nuovo_percorso={"nome":nome, "geojson": geojson.FeatureCollection(futures)}
     percorso.insert_one(nuovo_percorso)
 
     return jsonify({"status": "success"})
 
+#restituisci la lista di percorsi
+@app.route("/getPercorsiList", methods=['POST'])
+def getPercorsiList():
+    percorsi = percorso.find({}, {"_id": 0, "geojson": 0})
+    lista =list(percorsi)
+    if len(lista) == 0:
+        return jsonify({"status": "error"})
+    else:
+        return jsonify({"status": "success", "percorsi": lista})
+
+#restituisci il percorso dato il nome
+@app.route("/getPercorso", methods=['POST'])
+def getPercorso():
+    nome = request.form.get("nome")
+    p = percorso.find_one({"nome": nome}, {"_id": 0})
+    if p is None:
+        return jsonify({"status": "error"})
+    else:
+        return jsonify({"status": "success", "percorso": p})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)
