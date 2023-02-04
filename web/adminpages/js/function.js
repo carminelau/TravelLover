@@ -186,3 +186,24 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
 }
 
 }
+
+function visualizzaFermateLista() {
+    $.ajax({
+        url: "http://127.0.0.1:5000/getPercorsiList",
+        method: "POST",
+        cache: false,
+        data: {
+        },
+        success: function (response) {
+            console.log(response)
+            $('#listapercorsi').empty();
+            response.percorsi.forEach(function (item) {
+                    $('#listapercorsi').append("<li class='list-group-item d-flex justify-content-between align-content-center' onclick=visualizzapercorsi(" + item.nome + " )><div class='d-flex flex-row'><i class='fa-sharp fa-solid fa-map-pin'></i><div class='ml-2'><h6 class='mb-0'>" + item.nome + "</h6><div class='about'><span id='coord'></span></div></div></div></li>")
+
+            });
+        },
+        error: function () {
+            alert("ERRORE CHIAMATA ASINCRONA");
+        }
+    });
+}

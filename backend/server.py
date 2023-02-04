@@ -29,13 +29,6 @@ CORS(app)
 def hello():
     return "Hello World"
 
-#inserire tutte corse dei treni
-@app.route("/insertAllTrains", methods=['POST'])
-def insertAllTrains():
-    data = request.get_json()
-    train_line.insert_one(data)
-    return "ok"
-
 #login
 @app.route("/login", methods=['POST'])
 def login():
