@@ -89,7 +89,6 @@ def vicinoComune():
 
     return jsonify(risposta)
 
-
 #inserire geojson dei comuni della provincia di salerno
 @app.route("/insertComuni", methods=['POST'])
 def insertComuni():
@@ -118,6 +117,14 @@ def getFermate():
     fermate = stations.find({"Tipo": tipo}, {"_id": 0})
     return jsonify({"status": "success", "fermate": list(fermate)})
 
+@app.route("/insertPercorso", methods=['POST'])
+def insertPercorso():
+    coordinate= request.form.get("coordinate")
+    nome= request.form.get("nome")
+    percorso = geojson.LineString(coordinate)
+    
+    percorso.insert_one(percorso)
+    return jsonify({"status": "success"})
 
 
 if __name__ == "__main__":
