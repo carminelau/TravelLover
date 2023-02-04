@@ -19,6 +19,7 @@ import hashlib
 from flask_cors import CORS
 from flask import Flask, redirect, url_for, render_template, request, jsonify
 import numpy
+from bson.json_util import dumps
 
 
 app = Flask(__name__)
@@ -76,16 +77,12 @@ def vicinoComune():
     #comune contiene il nome del comune del quale vogliamo cercare i luoghi di interesse vicini
     comune = request.form.get("comune")
 
-    #prendo il parametro range per settare nella query near la distanza massima (attualmente 5000metri)
-    #range= request.form.get("range")
+    #prendo il comune di riferimento per eseguire la query wihin e il suo array di coordinate
+    geo_comune=comuni_geojson.find_one({"properties.name": comune})["geometry"]["coordinates"][0]
 
-    #prendo le coordinate del comune di riferimento per eseguire la query near (attualmente manca il geojson con i punti dei comuni)
-    #coordinate_comune=comuni_geojson.find({"properties.name": comune},{"geometry.coordinates":1})
-
-
-    #restituisce tutti i luoghi di interesse da 0 a 5 km rispetto un paio di cordinate (che dovrebbero essere quelle del comune di riferimento)
-    luoghi_vicino_comune=luoghi_di_interesse_geo.find({"features.geometry":{"$near":{"$geometry":{"type":"Point", "coordinates": [15.037362, 40.763152]},"$minDistance": 0,"$maxDistance": 5000}}},{"_id": 0})
-    risposta = {"status":"success", "luoghi":list(luoghi_vicino_comune),"comune_scelto":comune}
+    #restituisco i luoghi di interesse in un determinato comune
+    luoghi_dentro_comune=luoghi_di_interesse_geo.find({"features.geometry":{"$geoWithin":{"$polygon":geo_comune}}},{"_id":0})
+    risposta = {"status":"success", "luoghi":list(luoghi_dentro_comune),"comune_scelto":comune}
 
     return jsonify(risposta)
 
@@ -117,13 +114,70 @@ def getFermate():
     fermate = stations.find({"Tipo": tipo}, {"_id": 0})
     return jsonify({"status": "success", "fermate": list(fermate)})
 
+@app.route("/creaPercorsoClient", methods=['POST'])
+def creaPercorsoClient():
+    mezzi = request.form.getlist("mezzi[]")
+    range = request.form.getlist("range")
+    tipi = request.form.getlist("luoghi[]")
+    lat= request.form.get("posizioneUtenteLat")
+    long=request.form.get("posizioneUtenteLong")
+
+    #mezzi: auto treno bus    range: 0-5 5-10 -10-15 15-20 +20   luoghi: alberi vini eccc
+
+    #find near       {"features.geometry":{"$near":{"$geometry": {"type": "Point", "coordinates": [15.037362, 40.763152]},"$minDistance": 1000,"$maxDistance": 5000}}}
+    #find_by_tipi    {"tipo":{"$in":["alberi","vini","agriturismi"]}
+
+    min=0
+    max=0
+
+    if "0-5" in range:
+        min=0
+        max=5000
+    if "5-10" in range:
+        min=5000
+        max=10000
+    if "10-15" in range:
+        min=10000
+        max=15000
+    if "15-20" in range:
+        min=15000
+        max=20000
+    if "+20" in range:
+        min=20000
+        max=50000
+
+    luoghi_percorso=luoghi_di_interesse_geo.find({"$and":[{"features.geometry":{"$near":{"$geometry":{"type":"Point","coordinates": [float(long), float(lat)]},"$minDistance": min,"$maxDistance": max}}},{"tipo": {"$in":tipi}}]},{"_id":0})
+    #print(list(luoghi_percorso))
+    return jsonify({"luoghi_percorso":list(luoghi_percorso),"status":"success"})
+
+@app.route("/inserisciNuovoPOI", methods=['POST','GET'])
+def inserisciNuovoPOI():
+    nome=request.form.get("nome")
+    descrizione=request.form.get("descrizione")
+    tipo=request.form.get("tipo")
+    latitudine=request.form.get("latitudine")
+    longitudine=request.form.get("longitudine")
+
+    nuovo_POI={"nome":nome, "descrizione":descrizione, "tipo": tipo, "type":"FeatureCollection","features":[{"type":"Feature", "properties":{},"geometry":{"coordinates":[float(longitudine),float(latitudine)],"type":"Point"}}]}
+
+    #MANCA INSERIMENTO VERO E PROPORIO NEL DB
+    #luoghi_di_interesse_geo.insert_one(nuovo_POI)
+
+    return nuovo_POI
+
+#inserire percorso come geojson nella collection percorso
 @app.route("/insertPercorso", methods=['POST'])
 def insertPercorso():
-    coordinate= request.form.get("coordinate")
-    nome= request.form.get("nome")
-    percorso = geojson.LineString(coordinate)
-    
-    percorso.insert_one(percorso)
+    nome=request.form.get("nome")
+    descrizione=request.form.get("descrizione")
+    tipo=request.form.get("tipo")
+    arrcoo=request.form.get("arrcoo")
+
+    geo=geojson.LineString(literal_eval(arrcoo))
+
+    nuovo_percorso={"nome":nome, "descrizione":descrizione, "tipo": tipo, "type":"FeatureCollection","features":[{"type":"Feature", "properties":{},"geometry":geo}]}
+    percorso.insert_one(nuovo_percorso)
+
     return jsonify({"status": "success"})
 
 

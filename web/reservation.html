@@ -8,7 +8,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>WoOx Travel Reservation Page</title>
+    <title>TravelLover</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="adminpages/js/function.js"></script>
 <!--
 
 TemplateMo 580 Woox Travel
@@ -26,6 +28,18 @@ TemplateMo 580 Woox Travel
 https://templatemo.com/tm-580-woox-travel
 
 -->
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script src="https://kit.fontawesome.com/749cb2cc9d.js" crossorigin="anonymous"></script>
+    <style>
+        #map {
+            margin: 0 auto;
+            width: 100%;
+            height: 500px;
+        }
+    </style>
   </head>
 
 <body>
@@ -58,7 +72,7 @@ https://templatemo.com/tm-580-woox-travel
                     <ul class="nav">
                         <li><a href="index.html">Home</a></li>
                         <li><a href="about.html">Scopri</a></li>
-                        <li><a href="deals.html">Deals</a></li>
+                        <!--<li><a href="deals.html">Deals</a></li>-->
                         <li><a href="reservation.html" class="active">Crea</a></li>
                         <li><a href="login.html">Login/Sign Up</a></li>
                     </ul>   
@@ -107,7 +121,7 @@ https://templatemo.com/tm-580-woox-travel
           <div class="info-item">
             <i class="fa fa-map-marker"></i>
             <h4>Visita i nostri punti informazione</h4>
-            <a href="#">24th Street North Avenue London, UK</a>
+            <a href="#">Via del 30 e lode, Dipartimento di Informatica</a>
           </div>
         </div>
       </div>
@@ -119,68 +133,129 @@ https://templatemo.com/tm-580-woox-travel
       <div class="row">
         <div class="col-lg-12">
           <div id="map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12469.776493332698!2d-80.14036379941481!3d25.907788681148624!2m3!1f357.26927939317244!2f20.870722720054623!3f0!3m2!1i1024!2i768!4f35!3m3!1m2!1s0x88d9add4b4ac788f%3A0xe77469d09480fcdb!2sSunny%20Isles%20Beach!5e1!3m2!1sen!2sth!4v1642869952544!5m2!1sen!2sth" width="100%" height="450px" frameborder="0" style="border:0; border-top-left-radius: 23px; border-top-right-radius: 23px;" allowfullscreen=""></iframe>
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <form id="reservation-form" name="gs" method="submit" role="search" action="#">
-            <div class="row">
-              <div class="col-lg-12">
-                <h4>Crea il tuo <em>percorso</em> attraverso questo <em>Form</em></h4>
-              </div>
-              <div class="col-lg-6">
-                  <fieldset>
-                      <label for="Name" class="form-label">Your Name</label>
-                      <input type="text" name="Name" class="Name" placeholder="Ex. John Smithee" autocomplete="on" required>
-                  </fieldset>
-              </div>
-              <div class="col-lg-6">
-                <fieldset>
-                    <label for="Number" class="form-label">Your Phone Number</label>
-                    <input type="text" name="Number" class="Number" placeholder="Ex. +xxx xxx xxx" autocomplete="on" required>
-                </fieldset>
-              </div>
-              <div class="col-lg-6">
-                  <fieldset>
-                      <label for="chooseGuests" class="form-label">Number Of Guests</label>
-                      <select name="Guests" class="form-select" aria-label="Default select example" id="chooseGuests" onChange="this.form.click()">
-                          <option selected>ex. 3 or 4 or 5</option>
-                          <option type="checkbox" name="option1" value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4+">4+</option>
-                      </select>
-                  </fieldset>
-              </div>
-              <div class="col-lg-6">
-                <fieldset>
-                    <label for="Number" class="form-label">Check In Date</label>
-                    <input type="date" name="date" class="date" required>
-                </fieldset>
-              </div>
+               <script>
+                  function resetMap() {
+                      location.reload()
 
-              <div class="col-lg-12">
+                  }
+                  var map = L.map('map').setView([40.68154, 14.7749133], 11);
+                  L.tileLayer('https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=m5sIKtQYgI1arDxvl4ob', {
+                      attribution: 'Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | <a href="https://openmaptiles.org/" target="_blank">© OpenMapTiles</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap</a> contributors',
+                      maxZoom: 20, id: 'osm-bright'
+                  }).addTo(map);
+
+              </script>
+          </div>
+          <form id="reservation-form" name="gs">
+             <div class="col-lg-12">
+                <h4>Crea il tuo <em>percorso</em> attraverso questo <em>Form</em></h4>
+             </div>
+             <div class="row">
+                <label class="form-label">Punti di interesse:</label><br>
+                <hr>
+                <div class="col-lg-6">
+                  <input type="checkbox" class="luogo" value="alberi" id="alberi">Alberi monumentali <br>
+                  <input type="checkbox" class="luogo" value="vini" id="vini">Vini <br>
+                  <input type="checkbox" class="luogo" value="agriturismi"> Agriturismi <br>
+                  <input type="checkbox" class="luogo" value="generici" id="generici"> Altro <br>
+                  <input type="checkbox" class="luogo" value="bandiere" id="bandiere"> Bandiere blu <br>
+                  <input type="checkbox" class="luogo" value="biblioteche" id="biblioteche"> Biblioteche <br>
+                </div>
+               <div class="col-lg-6">
+                  <input type="checkbox" class="luogo" value="caseifici" id="caseifici"> Caseifici <br>
+                  <input type="checkbox" class="luogo" value="fattorie" id="fattorie"> Fattorie <br>
+                  <input type="checkbox" class="luogo" value="culto" id="culto"> Luoghi di culto <br>
+                  <input type="checkbox" class="luogo" value="musei" id="musei"> Musei <br>
+                  <input type="checkbox" class="luogo" value="teatri" id="teatri"> Teatri <br>
+                  <input type="checkbox" class="luogo" value="torri" id="torri"> Torri e castelli
+               </div>
+               <hr>
+               <div class="col-lg-6">
+                  <label class="form-label">Mezzi di trasporto</label>
+                  <input type="checkbox" class="mezzo" name="mezzo" value="auto">Auto
+                  <input type="checkbox" class="mezzo" value="treno">Treno
+                  <input type="checkbox" class="mezzo" value="bus">Bus
+               </div>
+               <hr>
+               <div class="col-lg-6">
+                  <label class="form-label">A quanti chilometri da te:</label>
+                  <input type="radio" name="km" class="km" value="0-5">-5km
+                  <input type="radio" name="km" class="km" value="5-10">5-10km
+                  <input type="radio" name="km" class="km" value="10-15">10-15km
+                  <input type="radio" name="km" class="km" value="15-20">15-20km
+                  <input type="radio" name="km" class="km" value="+20">+20km
+                  <script>
+                      var lat;
+                      var long
+                      if ("geolocation" in navigator) {
+                          navigator.geolocation.getCurrentPosition(function(position) {
+                            console.log("Latitude: " + position.coords.latitude);
+                            console.log("Longitude: " + position.coords.longitude);
+
+                            var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+
+                            lat=position.coords.latitude
+                            long=position.coords.longitude
+                          });
+                        } else {
+                          console.log("Geolocation is not supported by this browser.");
+                        }
+                  </script>
+               </div>
+               <hr>
+             </div>
+             <div class="col-lg-12">
                   <fieldset>
-                      <label for="chooseDestination" class="form-label">Choose Your Destination</label>
-                      <select name="Destination" class="form-select" aria-label="Default select example" id="chooseCategory" onChange="this.form.click()">
-                          <option selected>ex. Switzerland, Lausanne</option>
-                          <option value="Italy, Roma">Italy, Roma</option>
-                          <option value="France, Paris">France, Paris</option>
-                          <option value="Engaland, London">Engaland, London</option>
-                          <option value="Switzerland, Lausanne">Switzerland, Lausanne</option>
-                      </select>
+                      <button type="button" onclick="creaPercorsoClient('percorsoClient', getCheckedListaMezzi(), getCheckedRange(), getCheckedListaLuoghi(), lat, long)">Genera percorso</button>
+                      <script>
+                          function getCheckedRange(){
+                              var km = document.getElementsByClassName('km');
+                              var range;
+                              for (i = 0; i < km.length; i++) {
+                                if(km[i].checked == true)
+                                    range = (km[i].value)
+                              }
+                              return range;
+                          }
+                           function getCheckedListaMezzi(){
+                              var mezzi = document.getElementsByClassName('mezzo');
+                              var lista_mezzi = [];
+                              for (i = 0; i < mezzi.length; i++) {
+                                if(mezzi[i].checked == true)
+                                    lista_mezzi.push(mezzi[i].value)
+                              }
+                              return lista_mezzi;
+                          }
+                          function getCheckedListaLuoghi(){
+                              var luoghi = document.getElementsByClassName('luogo');
+                              var lista_luoghi = [];
+                              for (i = 0; i < luoghi.length; i++) {
+                                if(luoghi[i].checked == true)
+                                    lista_luoghi.push(luoghi[i].value)
+                              }
+                              return lista_luoghi;
+                          }
+                          function visualizzaLuoghiSuMappa(lat, lon, nome, descrizione, totali) {
+                              var marker = L.marker([lat, lon]);
+
+                              var customPopup = "<b>"+nome+"</b><br><hr><p>"+descrizione+"</p>";
+                              var customOptions =
+                              {
+                                  'maxWidth': '500',
+                                  'className' : 'custom'
+                              }
+                              marker.bindPopup(customPopup,customOptions).addTo(map);
+                              //Creare un oggetto per il percorso utilizzando le coordinate e aggiungerlo alla mappa
+                              //var path = L.polyline(totali).addTo(map);
+                          }
+                      </script>
                   </fieldset>
-              </div>
-              <div class="col-lg-12">                        
-                  <fieldset>
-                      <button class="main-button">Genera percorso</button>
-                  </fieldset>
-              </div>
-            </div>
+             </div>
           </form>
         </div>
       </div>
-    </div>
+<!--    </div>-->
+  </div>
   </div>
 
   <footer>
@@ -214,6 +289,7 @@ https://templatemo.com/tm-580-woox-travel
     });
   </script>
 
+  <script src="adminpages/js/function.js"></script>
   </body>
 
 </html>

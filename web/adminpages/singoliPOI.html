@@ -63,6 +63,7 @@
     };
 
 
+
 </script>
 
 <body id="page-top">
@@ -374,25 +375,26 @@
                         <div class="col-lg-6">
                             <div class="card mb-4 py-3 border-left-primary">
                                 <div class="card-body">
-                                    <h3>Seleziona una o più tipologie</h3>
+                                    <h3>Seleziona una o più tipologie di luoghi</h3>
+                                    <hr>
                                     <input type="checkbox" name="alberi" id="alberi" onclick="visualizzaTipoCheck('alberi', document.getElementById('alberi').value)"> Alberi monumentali <br>
-                                    <input type="checkbox" name="vini" id="vini" onclick="visualizzaTipoCheck('vino', document.getElementById('alberi').value)"> Vini <br>
-                                    <input type="checkbox" name="agriturismi" id="agriturismi" onclick="visualizzaTipoCheck('agriturismi', document.getElementById('alberi').value)"> Agriturismi <br>
-                                    <input type="checkbox" name="generici" id="generici" onclick="visualizzaTipoCheck('generici', document.getElementById('alberi').value)"> Altro <br>
-                                    <input type="checkbox" name="bandiere" id="bandiere" onclick="visualizzaTipoCheck('bandiere', document.getElementById('alberi').value)"> Bandiere blu <br>
-                                    <input type="checkbox" name="biblioteche" id="biblioteche" onclick="visualizzaTipoCheck('biblioteche', document.getElementById('alberi').value)"> Biblioteche <br>
-                                    <input type="checkbox" name="caseifici" id="caseifici" onclick="visualizzaTipoCheck('caseifici', document.getElementById('alberi').value)"> Caseifici <br>
-                                    <input type="checkbox" name="fattorie" id="fattorie" onclick="visualizzaTipoCheck('fattorie', document.getElementById('alberi').value)"> Fattorie <br>
-                                    <input type="checkbox" name="culto" id="culto" onclick="visualizzaTipoCheck('luoghi-di-culto', document.getElementById('alberi').value)"> Luoghi di culto <br>
-                                    <input type="checkbox" name="musei" id="musei" onclick="visualizzaTipoCheck('musei', document.getElementById('alberi').value)"> Musei <br>
-                                    <input type="checkbox" name="teatri" id="teatri" onclick="visualizzaTipoCheck('teatri', document.getElementById('alberi').value)"> Teatri <br>
-                                    <input type="checkbox" name="torri" id="torri" onclick="visualizzaTipoCheck('torri', document.getElementById('alberi').value)"> Torri e castelli <br>
+                                    <input type="checkbox" name="vini" id="vini" onclick="visualizzaTipoCheck('vino', document.getElementById('vini').value)"> Vini <br>
+                                    <input type="checkbox" name="agriturismi" id="agriturismi" onclick="visualizzaTipoCheck('agriturismi', document.getElementById('agriturismi').value)"> Agriturismi <br>
+                                    <input type="checkbox" name="generici" id="generici" onclick="visualizzaTipoCheck('generici', document.getElementById('generici').value)"> Altro <br>
+                                    <input type="checkbox" name="bandiere" id="bandiere" onclick="visualizzaTipoCheck('bandiere', document.getElementById('bandiere').value)"> Bandiere blu <br>
+                                    <input type="checkbox" name="biblioteche" id="biblioteche" onclick="visualizzaTipoCheck('biblioteche', document.getElementById('biblioteche').value)"> Biblioteche <br>
+                                    <input type="checkbox" name="caseifici" id="caseifici" onclick="visualizzaTipoCheck('caseifici', document.getElementById('caseifici').value)"> Caseifici <br>
+                                    <input type="checkbox" name="fattorie" id="fattorie" onclick="visualizzaTipoCheck('fattorie', document.getElementById('fattorie').value)"> Fattorie <br>
+                                    <input type="checkbox" name="culto" id="culto" onclick="visualizzaTipoCheck('luoghi-di-culto', document.getElementById('culto').value)"> Luoghi di culto <br>
+                                    <input type="checkbox" name="musei" id="musei" onclick="visualizzaTipoCheck('musei', document.getElementById('musei').value)"> Musei <br>
+                                    <input type="checkbox" name="teatri" id="teatri" onclick="visualizzaTipoCheck('teatri', document.getElementById('teatri').value)"> Teatri <br>
+                                    <input type="checkbox" name="torri" id="torri" onclick="visualizzaTipoCheck('torri', document.getElementById('torri').value)"> Torri e castelli <br>
                                 </div>
                             </div>
 
                             <div class="card mb-4 py-3 border-left-primary">
                                 <div class="card-body">
-                                    <h3>Seleziona un comune di riferimento e il range nel quale cercare luoghi di interesse</h3>
+                                    <h3>Seleziona un comune di riferimento</h3>
                                     <select name="comuni" id="comuni">
                                         <option value="Acerno">Acerno</option>
                                         <option value="Agropoli">Agropoli</option>
@@ -553,7 +555,22 @@
                                         <option value="Vibonati">Vibonati</option>
                                         <option value="Vietri sul Mare">Vietri sul Mare</option>
                                     </select>
-                                    <button type="button" onclick="visualizzaVicinoComune('byComune',document.getElementById('comuni').value);">cerca</button>
+                                    <br>
+                                    <hr>
+                                    <input type="checkbox" name="alberi" id="alberi2"> Alberi monumentali <br>
+                                    <input type="checkbox" name="vini" id="vini2"> Vini <br>
+                                    <input type="checkbox" name="agriturismi" id="agriturismi2"> Agriturismi <br>
+                                    <input type="checkbox" name="generici" id="generici2"> Altro <br>
+                                    <input type="checkbox" name="bandiere" id="bandiere2"> Bandiere blu <br>
+                                    <input type="checkbox" name="biblioteche" id="biblioteche2"> Biblioteche <br>
+                                    <input type="checkbox" name="caseifici" id="caseifici2"> Caseifici <br>
+                                    <input type="checkbox" name="fattorie" id="fattorie2"> Fattorie <br>
+                                    <input type="checkbox" name="culto" id="culto2"> Luoghi di culto <br>
+                                    <input type="checkbox" name="musei" id="musei2"> Musei <br>
+                                    <input type="checkbox" name="teatri" id="teatri2"> Teatri <br>
+                                    <input type="checkbox" name="torri" id="torri2"> Torri e castelli <br>
+                                    <br>
+                                    <button type="button" onclick="visualizzaVicinoComune('byComune',document.getElementById('comuni').value)">cerca</button>
                                 </div>
                             </div>
 
@@ -564,7 +581,7 @@
 
                         <div class="col-lg-6">
                             <div class="card mb-4 py-3">
-                                <h1>RISULTATO QUA</h1>
+                                <center><h3>Luoghi di interesse</h3></center>
                                 <div class="risultato"></div>
                             </div>
                         </div>

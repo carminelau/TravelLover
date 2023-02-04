@@ -338,9 +338,79 @@
 
                 </nav>
 
-
-
                 <!-- QUI VA IL MAIN CONTENT -->
+                <div class="col-lg-12">
+                    <div class="card mb-4 py-3">
+                        <div id="creaPercorso">
+                            <h3>INSERISCI UN NUOVO PUNTO DI INTERESSE</h3>
+                            <hr>
+                            <form action="http://127.0.0.1:5000/inserisciNuovoPOI" method="POST">
+                                <h5>Nome: </h5><input type="text" name="nome" id="nome" class="nome" placeholder="Inserisci nome qui" required><br>
+                                <h5>Descrizione: </h5><textarea rows="5" cols="50" name="descrizione" id="descrizione" class="descrizione" placeholder="Inserisci descrizione qui" required></textarea><br>
+                                <h5>Tipo: </h5>
+                                <select name="tipo" id="tipo" required>
+                                    <option value="vini">Vigneti</option>
+                                    <option value="alberi">Albero monumentale</option>
+                                    <option value="agriturismi">Agriturismo</option>
+                                    <option value="bandiere">Bandiera blu</option>
+                                    <option value="biblioteche">Biblioteca</option>
+                                    <option value="culto">Luogo di culto</option>
+                                    <option value="musei">Museo</option>
+                                    <option value="teatri">Teatro</option>
+                                    <option value="torri">Torri e castelli</option>
+                                </select>
+                                <h5>Latitudine: </h5><input type="text" name="latitudine" id="latitudine" class="latitudine" placeholder="Inserisci latitudine qui" required><br>
+                                <h5>Longitudine: </h5><input type="text" name="longitudine" id="longitudine" class="longitudine" placeholder="Inserisci longitudine qui" required><br>
+                                <hr>
+                                <button type="submit">INSERSCI</button>
+                            </form>
+                        </div>
+                        <style>
+                            #creaPercorso{
+                                margin: 0 auto;
+                                text-align: center;
+                                width: 50%;
+                            }
+                            input[type=text]{
+                                width: 50%;
+                                padding: 12px 20px;
+                                margin: 8px 0;
+                                box-sizing: border-box;
+                                border-radius: 17px;
+                                height:auto;
+                                font-size:100%;
+                            }
+                            select{
+                                width: 40%;
+                                padding: 12px 20px;
+                                margin: 8px 0;
+                                box-sizing: border-box;
+                                border-radius: 17px;
+                                height:auto;
+                                font-size:100%;
+                            }
+                            textarea{
+                                width: 55%;
+                                padding: 12px 20px;
+                                margin: 8px 0;
+                                box-sizing: border-box;
+                                border-radius: 17px;
+                                height:auto;
+                                font-size:100%;
+                            }
+                            button {
+                                width: 25%;
+                                padding: 12px;
+                                margin: 8px 0;
+                                box-sizing: border-box;
+                                border-radius: 20px;
+                                height 10px;
+                                font-size:100%;
+                            }
+                        </style>
+                    </div>
+                </div>
+
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
