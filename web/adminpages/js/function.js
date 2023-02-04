@@ -155,3 +155,8 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
         }
     });
 }
+
+function inserisciPercorso(){
+    var nome = document.getElementById("nome").value;
+    
+}

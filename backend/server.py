@@ -166,6 +166,21 @@ def inserisciNuovoPOI():
 
     return nuovo_POI
 
+#inserire percorso come geojson nella collection percorso
+@app.route("/insertPercorso", methods=['POST'])
+def insertPercorso():
+    nome=request.form.get("nome")
+    descrizione=request.form.get("descrizione")
+    tipo=request.form.get("tipo")
+    arrcoo=request.form.get("arrcoo")
+
+    geo=geojson.LineString(literal_eval(arrcoo))
+
+    nuovo_percorso={"nome":nome, "descrizione":descrizione, "tipo": tipo, "type":"FeatureCollection","features":[{"type":"Feature", "properties":{},"geometry":geo}]}
+    percorso.insert_one(nuovo_percorso)
+
+    return jsonify({"status": "success"})
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)
