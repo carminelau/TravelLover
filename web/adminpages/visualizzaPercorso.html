@@ -389,10 +389,9 @@
                                                 maxZoom: 20, id: 'osm-bright'
                                             }).addTo(map);
 
-                                            function visualizzapercorsi() {
-                                                name = "Nocera inf. - Salerno"
+                                            function visualizzapercorsi(ID) {
                                                 const form = new FormData();
-                                                form.append("nome", name);
+                                                form.append("ID", ID);
 
                                                 const options = {
                                                     method: 'POST',
@@ -510,7 +509,6 @@
                             <div class="card mb-4 py-3">
                                 <div class="container">
                                     <ul class="list-group text-white" id="listapercorsi">
-                                        <li class='list-group-item d-flex justify-content-between align-content-center' onclick=visualizzapercorsi()><div class='d-flex flex-row'><i class='fa-sharp fa-solid fa-map-pin'></i><div class='ml-2'><h6 class='mb-0'>" + item.nome + "</h6><div class='about'><span id='coord'></span></div></div></div></li>
                                     </ul>
                                 </div>
                             </div>

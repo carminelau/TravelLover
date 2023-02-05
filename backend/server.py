@@ -20,7 +20,7 @@ from flask_cors import CORS
 from flask import Flask, redirect, url_for, render_template, request, jsonify
 import numpy
 from bson.json_util import dumps
-
+from random import randint
 
 app = Flask(__name__)
 CORS(app)
@@ -174,7 +174,12 @@ def insertPercorso():
         futures.append(geojson.Feature(geometry=geojson.Point(tupla)))
     futures.append(geojson.Feature(geometry=geojson.LineString(arry)))
 
-    nuovo_percorso={"nome":nome, "geojson": geojson.FeatureCollection(futures)}
+    ids=randint(0,1000000)
+    cercaid= percorso.find_one({"ID":ids})
+    while cercaid is not None:
+        ids = randint(0,1000000)
+
+    nuovo_percorso={"ID":ids,"nome":nome, "geojson": geojson.FeatureCollection(futures)}
     percorso.insert_one(nuovo_percorso)
 
     return jsonify({"status": "success"})
@@ -192,8 +197,8 @@ def getPercorsiList():
 #restituisci il percorso dato il nome
 @app.route("/getPercorso", methods=['POST'])
 def getPercorso():
-    nome = request.form.get("nome")
-    p = percorso.find_one({"nome": nome}, {"_id": 0})
+    ID = request.form.get("ID")
+    p = percorso.find_one({"ID": int(ID)}, {"_id": 0})
     if p is None:
         return jsonify({"status": "error"})
     else:
