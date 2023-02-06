@@ -204,6 +204,17 @@ def getPercorso():
     else:
         return jsonify({"status": "success", "percorso": p})
 
+@app.route("/creaPacchetto", methods=['POST'])
+def creaPacchetto():
+    titolo=request.form.get("titolo")
+    descrizione=request.form.get("descrizione")
+    listaPOI=json.loads(request.form.get("POIList"))
+
+    pacchetto={"titolo":titolo, "descrizione": descrizione, "listaPOI":listaPOI}
+
+    #a questo punto dovremmo inserire il nuovo pacchetto nel db, ma da definire come relazionare anche al percorso
+    return jsonify(pacchetto)
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)
 

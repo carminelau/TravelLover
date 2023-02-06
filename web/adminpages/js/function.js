@@ -1,4 +1,12 @@
-function visualizzaTipoCheck(tipo, azione) {
+var listaPOIPacchetto = JSON.parse(localStorage.getItem("POIPacchetto")) || [];
+
+function aggiungiPOIaLista(poi){
+    listaPOIPacchetto.push(poi)
+    localStorage.setItem("POIPacchetto", JSON.stringify(listaPOIPacchetto));
+    console.log(listaPOIPacchetto)
+}
+function visualizzaTipoCheck(tipo, azione, scegli) {
+
     $.ajax({
         url: "http://127.0.0.1:5000/visualizzaTipo",
         method: "POST",
@@ -10,12 +18,33 @@ function visualizzaTipoCheck(tipo, azione) {
         success: function (response) {
             console.log(response)
 
+            var lista =[]
+
             $(".risultato").css("text-align", "left");
             $(".risultato").css("margin", "0 auto");
             $(".risultato").css("position", "relative");
             $(".risultato").css("width", "100%");
+
             response.luoghi.forEach(function (item) {
-                $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px;'> <div class='card-body'> <h5 class='card-title'>" + item.Nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.Descrizione + "</p> <a href='#' class='card-link'>Modifica</a> <a href='#' class='card-link'>Elimina</a> <a href='#'+ class='card-link'>Aggiungi a percorso</a> </div> </div>");
+
+                var poi = {"Nome":item.Nome, "Descrizione":item.Descrizione, "Tipo":item.Tipo, "Latitudine":item.Latitudine, "Longitudine":item.Longitudine}
+                var poi = JSON.stringify(poi).replace(/'/g, " ")
+                $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px;'> <div class='card-body'> <h5 class='card-title'>" + item.Nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.Descrizione + "</p> <a href='#' class='card-link'>Modifica</a> <a href='#' class='card-link'>Elimina</a>   <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link' style='text-decoration: black; hover: underline;'>Aggiungi a pacchetto</a> </div> </div>");
+
+                var links = document.getElementsByClassName("card-link");
+                for (let i = 0; i < links.length; i++) {
+                  links[i].addEventListener("click", function() {
+                    if (scegli==null){window.location.replace("inserisciPacchetti.html");}
+                    else{this.style.color = "black"; this.textContent="Aggiunto a pacchetto"}
+                  });
+                  links[i].addEventListener("mouseover", function() {
+                    this.style.textDecoration = "underline";
+                  });
+                  links[i].addEventListener("mouseout", function() {
+                    this.style.textDecoration = "none";
+                  });
+                }
+
             });
         },
         error: function () {
@@ -24,7 +53,8 @@ function visualizzaTipoCheck(tipo, azione) {
     });
 }
 
-function visualizzaVicinoComune(azione, comune) {
+
+function visualizzaVicinoComune(azione, comune, scegli) {
     $.ajax({
         url: "http://127.0.0.1:5000/visualizzaVicinoComune",
         method: "POST",
@@ -34,6 +64,9 @@ function visualizzaVicinoComune(azione, comune) {
             comune: comune,
         },
         success: function (response) {
+
+            if (scegli == null){console.log("non puoi scegliere")}
+
             var selectedValues = [];
             var agriturismi = document.getElementById('agriturismi2');
             var alberi = document.getElementById('alberi2');
@@ -70,10 +103,30 @@ function visualizzaVicinoComune(azione, comune) {
             $(".risultato").css("position", "relative");
             $(".risultato").css("width", "100%");
 
+            console.log(response.luoghi)
+
             response.luoghi.forEach(function (item){
+                var poi = {"Nome":item.nome, "Descrizione":item.descrizione, "Tipo":item.tipo, "Latitudine":item.features[0].geometry.coordinates[1], "Longitudine":item.features[0].geometry.coordinates[0]}
+
+                var poi = JSON.stringify(poi).replace(/'/g, " ")
                 if(selectedValues.includes(item.tipo) || selectedValues.length==0){
-                    $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px'> <div class='card-body'> <h5 class='card-title'>" + item.nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.descrizione + "</p> <a href='#' class='card-link'>Modifica</a> <a href='#' class='card-link'>Elimina</a> <a href='#' class='card-link'>Aggiungi a percorso </div> </div>");
+                    $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px'> <div class='card-body'> <h5 class='card-title'>" + item.nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.descrizione + "</p> <a href='#' class='card-link'>Modifica</a> <a href='#' class='card-link'>Elimina</a> <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link'>Aggiungi a pacchetto </div> </div>");
                 }
+
+                var links = document.getElementsByClassName("card-link");
+                for (let i = 0; i < links.length; i++) {
+                  links[i].addEventListener("click", function() {
+                    if (scegli==null){window.location.replace("inserisciPacchetti.html");}
+                    else{this.style.color = "black";this.textContent="Aggiunto a pacchetto"}
+                  });
+                  links[i].addEventListener("mouseover", function() {
+                    this.style.textDecoration = "underline";
+                  });
+                  links[i].addEventListener("mouseout", function() {
+                    this.style.textDecoration = "none";
+                  });
+                }
+
             });
         },
         error: function () {
@@ -207,3 +260,38 @@ function visualizzaFermateLista(id) {
         }
     });
 }
+
+function creaPacchetto(titolo, descrizione, POIList) {
+    $.ajax({
+        url: "http://127.0.0.1:5000/creaPacchetto",
+        method: "POST",
+        cache: false,
+        data: {
+            titolo: titolo,
+            descrizione: descrizione,
+            POIList: JSON.stringify(POIList),
+        },
+        success: function (response) {
+
+
+            console.log(POIList)
+            console.log(response)
+
+            $("#creato").empty()
+
+            $("#creato").css("text-align", "center");
+            $("#creato").css("margin", "0 auto");
+            $("#creato").css("position", "relative");
+            $("#creato").css("width", "100%");
+
+            $("#creato").append("<hr><h3><b>PACCHETTO CREATO CON SUCCESSO<b></h3><hr>");
+
+
+        },
+        error: function () {
+            alert("ERRORE CHIAMATA ASINCRONA");
+        }
+    });
+}
+
+

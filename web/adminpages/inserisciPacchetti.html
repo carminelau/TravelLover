@@ -43,6 +43,7 @@
             -webkit-columns: 2;
             -moz-columns: 2;
         }
+
     </style>
 </head>
 
@@ -52,6 +53,11 @@
         localStorage.removeItem("username");
         window.location.href = "../login.html";
     }
+
+    var jsonPOI;
+    var stringaPOI = localStorage.getItem("POIPacchetto")
+    jsonPOI = JSON.parse(stringaPOI);
+    console.log(jsonPOI)
 
     window.onload = function () {
         if (typeof (Storage) !== "undefined") {
@@ -64,6 +70,9 @@
         }
     };
 
+    window.addEventListener("beforeunload", function(e) {
+       localStorage.removeItem("POIPacchetto");
+    });
 
 </script>
 
@@ -362,11 +371,12 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-1 text-gray-800">INSERISCI UN NUOVO PERCORSO</h1>
+                    <h1 class="h3 mb-1 text-gray-800">INSERISCI UN NUOVO PACCHETTO</h1>
                     <p class="mb-4">Inserisci un nuovo percorso di promozione turistica, valutando stazioni, fermate, esperienze e luoghi di interesse</p>
 
                     <!-- Content Row -->
                     <div class="row">
+                        <div id="creato"></div>
                         <!-- Border Left Utilities LA MAPPA NON ESCE -->
                         <div class="col-lg-6">
                             <div class="card mb-4 py-3 border-left-primary">
@@ -382,21 +392,44 @@
                                                 attribution: 'Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | <a href="https://openmaptiles.org/" target="_blank">© OpenMapTiles</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap</a> contributors',
                                                 maxZoom: 20, id: 'osm-bright'
                                             }).addTo(map);
-
                                         </script>
-
                                     </div>
+                                    <br>
+                                    <input type="radio" id="mostra-percorsi" class="mostra-percorsi" onclick='mostraPercorsiConPacchetti()'>Mostra percorsi
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="card mb-4 py-3">
                                 <div id="creaPercorso">
-                                    <h3>CREA UN NUOVO PERCORSO</h3>
-                                    <h5>Nome percorso: </h5><input type="text" name="titolo" class="titolo" placeholder="Inserisci titolo qui" required><br>
-                                    <h5>Descrizione esperienza: </h5><textarea rows="5" cols="50" name="descrizione" class="descrizione" placeholder="Inserisci descrizione qui"></textarea><br>
-                                    <h5><a href="singoliPOI.html?" class="seleziona">Scegli i luoghi di interesse</a></h5>
-                                    <button>CREA PERCORSO</button>
+                                    <h3>CREA UN NUOVO PACCHETTO</h3>
+                                    <h5>Nome pacchetto: </h5><input type="text" id="titolo" name="titolo" class="titolo" placeholder="Inserisci titolo qui" required><br>
+                                    <h5>Descrizione esperienza: </h5><textarea rows="5" cols="50" name="descrizione" id="descrizione" class="descrizione" placeholder="Inserisci descrizione qui" required></textarea><br>
+                                    <h5><a href="singoliPOI.html?scegli=si" class="seleziona">Scegli i luoghi di interesse</a></h5><hr>
+                                    <div id="luogo"></div>
+                                    <script>
+                                        function visualizzaLuoghiSuMappa(lat, lon, nome, descrizione) {
+                                              var marker = L.marker([lat, lon]);
+                                              var customPopup = "<b>"+nome+"</b><br><hr><p>"+descrizione+"</p>";
+                                              var customOptions =
+                                              {
+                                                  'maxWidth': '500',
+                                                  'className' : 'custom'
+                                              }
+                                              marker.bindPopup(customPopup,customOptions).addTo(map);
+                                        }
+
+                                        for(let i = 0; i<jsonPOI.length ; i++){
+                                            document.getElementById("luogo").innerHTML += "<h6>"+jsonPOI[i].Nome+"</h6><hr>";
+                                        }
+
+                                        for(let i = 0; i<jsonPOI.length ; i++){
+                                            console.log(jsonPOI[i].Latitudine)
+                                            visualizzaLuoghiSuMappa(jsonPOI[i].Latitudine, jsonPOI[i].Longitudine, jsonPOI[i].Nome, jsonPOI[i].Descrizione)
+                                        }
+
+                                    </script>
+                                    <button onclick="creaPacchetto(document.getElementById('titolo').value,document.getElementById('descrizione').value, jsonPOI)">CREA PACCHETTO</button>
                                 </div>
                                 <style>
                                     #creaPercorso{
@@ -428,9 +461,10 @@
                                         margin: 8px 0;
                                         box-sizing: border-box;
                                         border-radius: 20px;
-                                        height:10px;
+                                        height: 50px;
                                         font-size:100%;
                                     }
+                                    //button:focus{background-color: #4e73df; opacity: 70%;}
                                     a .seleziona{
                                         text-decoration:none;
                                         color: #4e73df;
