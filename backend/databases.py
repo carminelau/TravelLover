@@ -7,3 +7,4 @@ users = db.users
 comuni_geojson = db.geojson
 luoghi_di_interesse_geo = db.luoghi_di_interesse_geojson
 percorso = db.percorso
+stazioni_fermate_geo = db.stazioni_fermate_geojson

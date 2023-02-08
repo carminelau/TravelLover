@@ -261,7 +261,7 @@ function visualizzaFermateLista(id) {
     });
 }
 
-function creaPacchetto(titolo, descrizione, POIList) {
+function creaPacchetto(titolo, descrizione, POIList, percorso) {
     $.ajax({
         url: "http://127.0.0.1:5000/creaPacchetto",
         method: "POST",
@@ -270,6 +270,7 @@ function creaPacchetto(titolo, descrizione, POIList) {
             titolo: titolo,
             descrizione: descrizione,
             POIList: JSON.stringify(POIList),
+            percorso: JSON.stringify(percorso),
         },
         success: function (response) {
 
@@ -287,6 +288,64 @@ function creaPacchetto(titolo, descrizione, POIList) {
             $("#creato").append("<hr><h3><b>PACCHETTO CREATO CON SUCCESSO<b></h3><hr>");
 
 
+        },
+        error: function () {
+            alert("ERRORE CHIAMATA ASINCRONA");
+        }
+    });
+}
+
+function mostraFermateConPacchetto(POIList) {
+    $.ajax({
+        url: "http://127.0.0.1:5000/mostraFermateConPacchetto",
+        method: "POST",
+        cache: false,
+        data: {
+            POIList: JSON.stringify(POIList),
+        },
+        success: function (response) {
+
+            console.log(response)
+
+        },
+        error: function () {
+            alert("ERRORE CHIAMATA ASINCRONA");
+        }
+    });
+}
+
+function mostraStazioniConPacchetto(POIList) {
+    $.ajax({
+        url: "http://127.0.0.1:5000/mostraStazioniConPacchetto",
+        method: "POST",
+        cache: false,
+        data: {
+            POIList: JSON.stringify(POIList),
+        },
+        success: function (response) {
+            $("#percorso-suggeriti").empty();
+
+            var lista_stazioni_suggerite=[]
+
+            response.lista_stazioni.forEach(function (item) {
+                    var i = 0;
+                    item.forEach(function (item2) {
+                        //$('#percorsi-suggeriti').append("<li class='list-group-item d-flex justify-content-between align-content-center'><div class='d-flex flex-row'><i class='fa-sharp fa-solid fa-map-pin'></i><div class='ml-2'><h6 class='mb-0'>" +item2.Nome+ "</h6><div class='about'><span id='coord'></span></div></div></div></li>")
+                        visualizzaLuoghiSuMappa(item2.features[0].geometry.coordinates[1], item2.features[0].geometry.coordinates[0], item2.Nome, "Stazione", col="blue")
+                        if(i==0){
+                            lista_stazioni_suggerite.push(item2)
+                        }
+                        i++;
+                    });
+            });
+
+            localStorage.setItem("listaPercorso",JSON.stringify(lista_stazioni_suggerite))
+
+            $("#percorsi-suggeriti").append("<hr><h4>PERCORSO CONSIGLIATO:</h4>");
+            for(var j=0;j<lista_stazioni_suggerite.length;j++){
+                $("#percorsi-suggeriti").append(lista_stazioni_suggerite[j].Nome+"<br>");
+            }
+            $("#percorsi-suggeriti").append("<hr><h5><a href='inserisciPercorso.html' class='seleziona'>Valuta percorsi alternativo</a></h5><hr>");
         },
         error: function () {
             alert("ERRORE CHIAMATA ASINCRONA");

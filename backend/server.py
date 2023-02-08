@@ -153,7 +153,7 @@ def inserisciNuovoPOI():
 
     nuovo_POI={"nome":nome, "descrizione":descrizione, "tipo": tipo, "type":"FeatureCollection","features":[{"type":"Feature", "properties":{},"geometry":{"coordinates":[float(longitudine),float(latitudine)],"type":"Point"}}]}
 
-    #MANCA INSERIMENTO VERO E PROPORIO NEL DB
+    #inserire POI nel db, ma non funziona
     #luoghi_di_interesse_geo.insert_one(nuovo_POI)
 
     return nuovo_POI
@@ -209,11 +209,48 @@ def creaPacchetto():
     titolo=request.form.get("titolo")
     descrizione=request.form.get("descrizione")
     listaPOI=json.loads(request.form.get("POIList"))
+    percorso=json.loads(request.form.get("percorso"))
 
-    pacchetto={"titolo":titolo, "descrizione": descrizione, "listaPOI":listaPOI}
 
-    #a questo punto dovremmo inserire il nuovo pacchetto nel db, ma da definire come relazionare anche al percorso
-    return jsonify(pacchetto)
+    pacchetto={"titolo":titolo, "descrizione": descrizione, "listaPOI":listaPOI, "percorso": list(percorso)}
+
+    #a questo punto dovremmo inserire il nuovo pacchetto nel db, e il percorso nella sua collection, ma non mi funziona
+
+
+    return jsonify({"status":"success"})
+
+#Autobus
+@app.route("/mostraFermateConPacchetto", methods=['POST'])
+def mostraFermateConPacchetto():
+    listaPOI=json.loads(request.form.get("POIList"))
+    lista_fermate_vicino_poi=[]
+    for POI in listaPOI:
+        lista_fermate_vicino_poi_corrente=[]
+        latitudine_POI=POI["Latitudine"]
+        longitudine_POI=POI["Longitudine"]
+        #restituisce tutte gli elementi della collection ordinati dal più vicino al più lontano
+        #find in collection geojson fermate 5 near a longitudine_POI, latiduine_POI
+        lista_fermate_vicino_poi_corrente= stazioni_fermate_geo.find({"$and":[{"features.geometry":{"$near":{"$geometry":{"type": "Point","coordinates":[longitudine_POI, latitudine_POI]}}}},{"Tipo": "Autobus"}]},{"_id":0})
+        lista_fermate_vicino_poi.append(list(lista_fermate_vicino_poi_corrente))
+
+    return lista_fermate_vicino_poi
+
+#Treni
+@app.route("/mostraStazioniConPacchetto", methods=['POST'])
+def mostraStazioniConPacchetto():
+    listaPOI = json.loads(request.form.get("POIList"))
+    lista_fermate_vicino_poi = []
+
+    for POI in listaPOI:
+        lista_fermate_vicino_poi_corrente = []
+        latitudine_POI = POI["Latitudine"]
+        longitudine_POI = POI["Longitudine"]
+        # restituisce tutte gli elementi della collection ordinati dal più vicino al più lontano
+        # find in collection geojson 3 fermate near a longitudine_POI, latiduine_POI
+        lista_fermate_vicino_poi_corrente = stazioni_fermate_geo.find({"$and":[{"features.geometry":{"$near": {"$geometry": {"type": "Point", "coordinates": [float(longitudine_POI), float(latitudine_POI)]}}}},{"Tipo": "Treni"}]},{"_id":0})
+        lista_fermate_vicino_poi.append(list(lista_fermate_vicino_poi_corrente[0:3]))
+
+    return jsonify({"status":"success","lista_stazioni":lista_fermate_vicino_poi})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)
