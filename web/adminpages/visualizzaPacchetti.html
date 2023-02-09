@@ -21,58 +21,65 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <style>
-       table {
-        border-collapse: collapse;
-        width: 90%;
-        margin: 0 auto;
-      }
-      th, td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-      }
-      th {
-        background-color: #f2f2f2;
-      }
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
     <script src="js/function.js"></script>
 
     <script>
         function loadData() {
-        fetch("http://127.0.0.1:5000/api/data")
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
-            let table = document.getElementById("mytable");
-            for (let rowData of data) {
-              let row = table.insertRow();
-              var i =0;
-              for (let key in rowData) {
-                let cell = row.insertCell();
-                if (Array.isArray(rowData[key])) {
-                  var percorsi = rowData["percorso"];
-                  var luoghi = rowData["listaPOI"];
-                  var nomiLuoghi=[];
-                  var nomiPercorsi=[];
-                  luoghi.forEach(function(luogo) {
-                      nomiLuoghi.push(luogo["Nome"]);
-                  });
-                  percorsi.forEach(function(percorso) {
-                      nomiPercorsi.push(percorso["Nome"]);
-                  });
-                  if(i==1){cell.innerHTML += nomiLuoghi}
-                  if(i==2){cell.innerHTML += nomiPercorsi}
-                } else {
-                  var titolo = rowData["titolo"]
-                  var descrizione = rowData["descrizione"]
-                  if(i==0){cell.innerHTML += descrizione}
-                  if(i==3){cell.innerHTML += titolo}
-                }
-                i++;
-              }
-            }
-          })
-      }
+            fetch("http://127.0.0.1:5000/api/data")
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    $('#elenco_card_pacchetti').empty();
+                    let da="";
+                    data.forEach(function (item) {
+                        da = "<div class='card shadow mb-4'><div class='card-header py-3'><h6 class='m-0 font-weight-bold text-primary'>" + item.titolo + " - " + item.descrizione + "</h6></div><div class='card-body'><p>Punti di interesse: "
+
+                    item.listaPOI.forEach(function (items) {
+                        if (item.listaPOI.indexOf(items) == (item.listaPOI.length - 1)) {
+                            da.concat(items.Nome)
+                        }
+                        else {
+                            da =da.concat(items.Nome + ", ")
+                        }
+                    })
+                    da = da.concat("</p><p class='mb-0'>Stazioni vicine: ")
+                    arr= removeDuplicates(item.percorso)
+                    arr.forEach(function (items) {
+                        if (arr.indexOf(items) == (arr.length - 1)) {
+                            da=da.concat(items.Nome)
+                        }
+                        else {
+                            da=da.concat(items.Nome + ", ")
+                        }
+                    })
+                    da=da.concat("</p></div></div>")
+                    $('#elenco_card_pacchetti').append(da);
+                });
+                
+          });
+        }
+
+        function removeDuplicates(arr) {
+        return arr.filter((item,
+            index) => arr.indexOf(item) === index);
+    }
     </script>
 
 </head>
@@ -386,76 +393,71 @@
 
                 </nav>
                 <!-- main content -->
-                <div id="main-content-table" style="width: 90%; margin: 0 auto;">
-                    <h2 style="text-align: center;">PACCHETTI DISPONIBILI</h2><hr>
-                    <table id="mytable">
-                        <th>Descrizione</th>
-                        <th>Luoghi d'interesse</th>
-                        <th>Stazioni consigliate</th>
-                        <th>Nome</th>
-                      <!-- Your table headers here -->
-                    </table>
-                    <br>
+                <h2 style="text-align: center;">PACCHETTI DISPONIBILI</h2>
+                <hr>
+                <div class="col-lg-12 mb-4" id="elenco_card_pacchetti">
+
+
                 </div>
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright &copy; Your Website 2021</span>
+                        </div>
                     </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+                </footer>
+                <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Page Wrapper -->
 
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" onclick="return logout()">Logout</a>
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" onclick="return logout()">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+        <!-- Page level plugins -->
+        <script src="vendor/chart.js/Chart.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
-    <script src="js/function.js"></script>
+        <!-- Page level custom scripts -->
+        <script src="js/demo/chart-area-demo.js"></script>
+        <script src="js/demo/chart-pie-demo.js"></script>
+        <script src="js/function.js"></script>
 </body>
 
 </html>
