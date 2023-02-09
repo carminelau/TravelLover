@@ -27,7 +27,8 @@ CORS(app)
 
 @app.route("/")
 def hello():
-    return "Hello World"
+    pacchetti=poi_itinerary.find()
+    return "hello"
 
 #login
 @app.route("/login", methods=['POST'])
@@ -215,7 +216,7 @@ def creaPacchetto():
     pacchetto={"titolo":titolo, "descrizione": descrizione, "listaPOI":listaPOI, "percorso": list(percorso)}
 
     #a questo punto dovremmo inserire il nuovo pacchetto nel db, e il percorso nella sua collection, ma non mi funziona
-
+    poi_itinerary.insert_one(pacchetto)
 
     return jsonify({"status":"success"})
 
