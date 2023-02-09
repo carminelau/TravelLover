@@ -253,6 +253,11 @@ def mostraStazioniConPacchetto():
 
     return jsonify({"status":"success","lista_stazioni":lista_fermate_vicino_poi})
 
+@app.route("/api/data", methods=['GET'])
+def data():
+    data = list(poi_itinerary.find({},{"_id":0}))
+    return jsonify(data)
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)
 
