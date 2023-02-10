@@ -197,7 +197,7 @@ function inserisciPercorso() {
             alert("ERRORE CHIAMATA ASINCRONA");
         }
     });
-
+}
 function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, posizioneUtenteLong) {
     $.ajax({
         url: "http://127.0.0.1:5000/creaPercorsoClient",
@@ -212,25 +212,42 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
             posizioneUtenteLong:posizioneUtenteLong,
         },
         success: function (response) {
-
-           /* console.log(mezzi)
-            console.log(range)
-            console.log(luoghi)
-            console.log(posizioneUtenteLat)
-            console.log(posizioneUtenteLong)*/
             console.log(response)
+            console.log(range)
 
             var totalecordinate=[]
+            $("#percorso-client-result").empty();
 
-            response.luoghi_percorso.forEach(function (item) {
+            response.luoghi_pacchetto.forEach(function (item) {
                 var nome=item.nome;
                 var descrizione=item.descrizione;
                 var latitudine = item.features[0].geometry.coordinates[1];
                 var longitudine = item.features[0].geometry.coordinates[0];
                 totalecordinate.push([latitudine,longitudine])
-
                 visualizzaLuoghiSuMappa(latitudine, longitudine, nome, descrizione, totalecordinate)
+
+
+                $("#percorso-client-result").append("<br><h6>Nome luogo d'interesse: </h6>"+nome+"<br><h6>Descrizione: </h6>"+descrizione+"<br>");
+
             });
+
+            $("#percorso-client-result").append("<hr><h5>STAZIONI CONSIGLIATE</h5><br>");
+            response.percorso_suggerito.forEach(function (item) {
+                var nome=item.Nome;
+                var latitudine = item.features[0].geometry.coordinates[1];
+                var longitudine = item.features[0].geometry.coordinates[0];
+
+                if(range=='0-5'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 2500);}
+                if(range=='5-10'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 5000);}
+                if(range=='10-15'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 8000);}
+                if(range=='15-20'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 10000);}
+                if(range=='+20'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 30000);}
+
+                $("#percorso-client-result").append("<h6>"+nome+"</h6><br>");
+
+            });
+
+
         },
         error: function () {
             alert("ERRORE CHIAMATA ASINCRONA");
@@ -238,7 +255,7 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
     });
 }
 
-}
+
 
 function visualizzaFermateLista(id) {
     $.ajax({
@@ -333,7 +350,10 @@ function mostraStazioniConPacchetto(POIList) {
                         //$('#percorsi-suggeriti').append("<li class='list-group-item d-flex justify-content-between align-content-center'><div class='d-flex flex-row'><i class='fa-sharp fa-solid fa-map-pin'></i><div class='ml-2'><h6 class='mb-0'>" +item2.Nome+ "</h6><div class='about'><span id='coord'></span></div></div></div></li>")
                         visualizzaLuoghiSuMappa(item2.features[0].geometry.coordinates[1], item2.features[0].geometry.coordinates[0], item2.Nome, "Stazione", col="blue")
                         if(i==0){
-                            lista_stazioni_suggerite.push(item2)
+
+                                console.log("weeeeeee")
+                                lista_stazioni_suggerite.push(item2)
+
                         }
                         i++;
                     });
@@ -343,8 +363,11 @@ function mostraStazioniConPacchetto(POIList) {
 
             $("#percorsi-suggeriti").append("<hr><h4>PERCORSO CONSIGLIATO:</h4>");
             for(var j=0;j<lista_stazioni_suggerite.length;j++){
-                $("#percorsi-suggeriti").append(lista_stazioni_suggerite[j].Nome+"<br>");
+                if (!(lista_stazioni_suggerite[j] in  lista_stazioni_suggerite)){
+                    $("#percorsi-suggeriti").append(lista_stazioni_suggerite[j].Nome+"<br>");
+                }
             }
+
             $("#percorsi-suggeriti").append("<hr><h5><a href='inserisciPercorso.html' class='seleziona'>Valuta percorsi alternativo</a></h5><hr>");
         },
         error: function () {
