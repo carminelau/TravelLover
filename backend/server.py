@@ -258,6 +258,24 @@ def data():
     data = list(poi_itinerary.find({},{"_id":0}))
     return jsonify(data)
 
+@app.route("/getPacchetti", methods=['POST'])
+def getpacchetti():
+    pagina = max(int(request.form.get("pagina", 1)), 1)
+    data = poi_itinerary.find({},{"_id":0}).limit(5).skip((pagina-1)*5)
+    pagine_totali = -(poi_itinerary.count_documents({}) // -(5))
+
+    risultato = {
+        "data": list(data),
+        "pagine_totali": pagine_totali,
+        "pagina_corrente": pagina
+    }
+    return jsonify(risultato)
+
+@app.route("/getPagineTotaliPacchetti", methods=['POST'])
+def getPagineTotaliPacchetti():
+    pagine_totali = -(poi_itinerary.count_documents({}) // -(5))
+    return jsonify(pagine_totali)
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)
 
