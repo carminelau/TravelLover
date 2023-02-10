@@ -158,7 +158,7 @@ https://templatemo.com/tm-580-woox-travel
                 <hr>
                 <div class="col-lg-6">
                   <input type="checkbox" class="luogo" value="alberi" id="alberi">Alberi monumentali <br>
-                  <input type="checkbox" class="luogo" value="vini" id="vini">Vini <br>
+                  <input type="checkbox" class="luogo" value="vino" id="vini">Vini <br>
                   <input type="checkbox" class="luogo" value="agriturismi"> Agriturismi <br>
                   <input type="checkbox" class="luogo" value="generici" id="generici"> Altro <br>
                   <input type="checkbox" class="luogo" value="bandiere" id="bandiere"> Bandiere blu <br>
@@ -167,7 +167,7 @@ https://templatemo.com/tm-580-woox-travel
                <div class="col-lg-6">
                   <input type="checkbox" class="luogo" value="caseifici" id="caseifici"> Caseifici <br>
                   <input type="checkbox" class="luogo" value="fattorie" id="fattorie"> Fattorie <br>
-                  <input type="checkbox" class="luogo" value="culto" id="culto"> Luoghi di culto <br>
+                  <input type="checkbox" class="luogo" value="luoghi-di-culto" id="culto"> Luoghi di culto <br>
                   <input type="checkbox" class="luogo" value="musei" id="musei"> Musei <br>
                   <input type="checkbox" class="luogo" value="teatri" id="teatri"> Teatri <br>
                   <input type="checkbox" class="luogo" value="torri" id="torri"> Torri e castelli
@@ -177,7 +177,6 @@ https://templatemo.com/tm-580-woox-travel
                   <label class="form-label">Mezzi di trasporto</label>
                   <input type="checkbox" class="mezzo" name="mezzo" value="auto">Auto
                   <input type="checkbox" class="mezzo" value="treno">Treno
-                  <input type="checkbox" class="mezzo" value="bus">Bus
                </div>
                <hr>
                <div class="col-lg-6">
@@ -238,8 +237,20 @@ https://templatemo.com/tm-580-woox-travel
                               }
                               return lista_luoghi;
                           }
-                          function visualizzaLuoghiSuMappa(lat, lon, nome, descrizione, totali) {
-                              var marker = L.marker([lat, lon]);
+                          function visualizzaLuoghiSuMappa(lat, lon, nome, descrizione, totali, col="red", radius=0) {
+
+                              var redIcon = new L.Icon({
+                                    iconUrl: 'adminpages/img/marker-icon-2x-red.png',
+                                    iconSize: [25, 41],
+                                    iconAnchor: [12, 41],
+                                    popupAnchor: [1, -34],
+                                    shadowSize: [41, 41]
+                              });
+                              var marker = L.marker([lat, lon], {icon:redIcon});
+
+                              if(col=="blue"){
+                                 var marker = L.marker([lat, lon]);
+                              }
 
                               var customPopup = "<b>"+nome+"</b><br><hr><p>"+descrizione+"</p>";
                               var customOptions =
@@ -248,12 +259,24 @@ https://templatemo.com/tm-580-woox-travel
                                   'className' : 'custom'
                               }
                               marker.bindPopup(customPopup,customOptions).addTo(map);
-                              //Creare un oggetto per il percorso utilizzando le coordinate e aggiungerlo alla mappa
-                              //var path = L.polyline(totali).addTo(map);
-                          }
+
+                              navigator.geolocation.getCurrentPosition(function(position) {
+                                  var circle = L.circle([position.coords.latitude, position.coords.longitude],{
+                                      color:'green',
+                                      fillColor: '#90EE90',
+                                      fillOpacity: 0.01,
+                                      radius: (3.24*(radius)),
+                                   }).addTo(map)
+                              });
+                           }
                       </script>
                   </fieldset>
              </div>
+              <hr>
+
+              <div id="percorso-client-result" style="margin: 0 auto;">
+
+              </div>
           </form>
         </div>
       </div>
