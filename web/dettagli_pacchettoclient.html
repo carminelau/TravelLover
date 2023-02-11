@@ -1,34 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
 
-    <title>TravelLover - percorsi</title>
+  <title>TravelLover - percorsi</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="assets/css/fontawesome.css">
-    <link rel="stylesheet" href="assets/css/templatemo-woox-travel.css">
-    <link rel="stylesheet" href="assets/css/owl.css">
-    <link rel="stylesheet" href="assets/css/animate.css">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-<!--
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+  <link rel="stylesheet" href="assets/css/templatemo-woox-travel.css">
+  <link rel="stylesheet" href="assets/css/owl.css">
+  <link rel="stylesheet" href="assets/css/animate.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+  <!--
 
 TemplateMo 580 Woox Travel
 
 https://templatemo.com/tm-580-woox-travel
 
 -->
-  </head>
+</head>
 
 <body>
+
+  <script>
+
+    function randomImage() {
+      var images = ["https://source.unsplash.com/1600x900/?nature", "https://source.unsplash.com/1600x900/?water", "https://source.unsplash.com/1600x900/?mountain", "https://source.unsplash.com/1600x900/?beach", "https://source.unsplash.com/1600x900/?sky", "https://source.unsplash.com/1600x900/?sea", "https://source.unsplash.com/1600x900/?forest"];
+      var randomImage = images[Math.floor(Math.random() * images.length)];
+      return randomImage;
+    }
+
+    window.onload = function () {
+
+      if (typeof (Storage) !== "undefined") {
+        // Store
+        console.log(localStorage.getItem("nome_pacchetto"))
+        let nome_pacchetto = localStorage.getItem("nome_pacchetto");
+        const form = new FormData();
+        form.append("nome", nome_pacchetto);
+
+        const options = {
+          method: 'POST',
+          headers: {}
+        };
+
+
+        options.body = form;
+        fetch('http://127.0.0.1:5000/getPacchetto', options)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            document.getElementById("titolo_pacchetto").innerHTML = data.pacchetto.titolo;
+            document.getElementById("descrizione_pacchetto").innerHTML = data.pacchetto.descrizione;
+            let html="";
+            data.pacchetto.listaPOI.forEach(element => {
+              var url = randomImage();
+              if(element.Descrizione.length < 50){
+                html=html.concat("<div class='col'><div class='card'><img src='"+ url +"' class='card-img-top' alt='...' style='width:100%'><div class='card-body'><h5 class='card-title'>"+ element.Nome +"</h5><p class='card-text' data-bs-toggle='tooltip' data-bs-placement='top' title='Tooltip on top'>"+ element.Descrizione +"</p></div></div></div>")
+              }
+              else{
+                html=html.concat("<div class='col'><div class='card'><img src='"+ url +"' class='card-img-top' alt='...' style='width:100%'><div class='card-body'><h5 class='card-title'>"+ element.Nome +"</h5><p class='card-text' data-bs-toggle='tooltip' data-bs-placement='top' title='Tooltip on top'>"+ element.Descrizione.substring(0, 50) + "..." +"</p></div></div></div>")
+              }
+            })
+
+            $('#carosello').append(html)
+          });
+      } else {
+        console.log("no storage")
+      }
+    };
+  </script>
 
   <!-- ***** Preloader Start ***** -->
   <div id="js-preloader" class="js-preloader">
@@ -46,32 +96,32 @@ https://templatemo.com/tm-580-woox-travel
   <!-- ***** Header Area Start ***** -->
   <header class="header-area header-sticky">
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="main-nav">
-                    <!-- ***** Logo Start ***** -->
-                    <a href="index.html" class="logo">
-                      <div class="logo-text" style = "display: flex;height: 50px;">
-                        <img src="assets/images/logoTL.png" alt="" style="width: fit-content;">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="index.html" class="logo">
+              <div class="logo-text" style="display: flex;height: 50px;">
+                <img src="assets/images/logoTL.png" alt="" style="width: fit-content;">
 
-                      </div>
-                    </a>
-                    <!-- ***** Logo End ***** -->
-                    <!-- ***** Menu Start ***** -->
-                    <ul class="nav">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html" class="active">Scopri</a></li>
-                        <!--<li><a href="deals.html">Deals</a></li>-->
-                        <li><a href="reservation.html">Crea</a></li>
-                        <li><a href="login.html">Login/Sign Up</a></li>
-                    </ul>   
-                    <a class='menu-trigger'>
-                        <span>Menu</span>
-                    </a>
-                    <!-- ***** Menu End ***** -->
-                </nav>
-            </div>
+              </div>
+            </a>
+            <!-- ***** Logo End ***** -->
+            <!-- ***** Menu Start ***** -->
+            <ul class="nav">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html" class="active">Scopri</a></li>
+              <!--<li><a href="deals.html">Deals</a></li>-->
+              <li><a href="reservation.html">Crea</a></li>
+              <li><a href="login.html">Login/Sign Up</a></li>
+            </ul>
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
         </div>
+      </div>
     </div>
   </header>
   <!-- ***** Header Area End ***** -->
@@ -83,10 +133,9 @@ https://templatemo.com/tm-580-woox-travel
         <div class="col-lg-12">
           <div class="content">
             <div class="blur-bg"></div>
-            <h4>SCOPRI LA PROVINCIA DI SALERNO</h4>
             <div class="line-dec"></div>
-            <h2>Trova il percorso adatto a te</h2>
-            <p>Libera l’esploratore che è in te e alza lo sguardo, ti aspetta una terra grandiosa.</p>
+            <h2 id="titolo_pacchetto"></h2>
+            <p id="descrizione_pacchetto"></p>
             <div class="main-button">
               <a href="reservation.html">Scopri di più</a>
             </div>
@@ -96,7 +145,7 @@ https://templatemo.com/tm-580-woox-travel
     </div>
   </div>
   <!-- ***** Main Banner Area End ***** -->
-  
+
   <div class="cities-town">
     <div class="container">
       <div class="row">
@@ -106,8 +155,7 @@ https://templatemo.com/tm-580-woox-travel
               <h2><em>Luoghi d'interesse</em></h2>
             </div>
             <div class="col-lg-12">
-              <div class="owl-cites-town owl-carousel">
-                <div class="item"><div class="thumb"><img src="https://source.unsplash.com/1080x1080/?mountain" alt="" ><h4>F.R.A.C. (Fondo regionale darte contemporanea)</h4></div></div>
+              <div class="row row-cols-1 row-cols-md-4 g-4" id="carosello">
                 
               </div>
             </div>
@@ -406,7 +454,9 @@ https://templatemo.com/tm-580-woox-travel
       <div class="row">
         <div class="col-lg-12">
           <p>Copyright © 2036 <a href="#">TravelLover</a> Company. All rights reserved.
-          <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">TemplateMo</a> Distribution: <a href="#" >ThemeWagon</a></p>
+            <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">TemplateMo</a>
+            Distribution: <a href="#">ThemeWagon</a>
+          </p>
         </div>
       </div>
     </div>
@@ -426,12 +476,12 @@ https://templatemo.com/tm-580-woox-travel
   <script src="assets/js/custom.js"></script>
 
   <script>
-    $(".option").click(function(){
+    $(".option").click(function () {
       $(".option").removeClass("active");
-      $(this).addClass("active"); 
+      $(this).addClass("active");
     });
   </script>
 
-  </body>
+</body>
 
 </html>

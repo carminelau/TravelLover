@@ -288,6 +288,16 @@ def getPagineTotaliPacchetti():
     pagine_totali = -(poi_itinerary.count_documents({}) // -(5))
     return jsonify(pagine_totali)
 
+#creare una route che restituisca il pacchetti dato il nome
+@app.route("/getPacchetto", methods=['POST'])
+def getPacchetto():
+    nome = request.form.get("nome")
+    p = poi_itinerary.find_one({"titolo": nome}, {"_id": 0})
+    if p is None:
+        return jsonify({"status": "error"})
+    else:
+        return jsonify({"status": "success", "pacchetto": p})
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)
 

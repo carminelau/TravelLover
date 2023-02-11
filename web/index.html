@@ -60,6 +60,17 @@ https://templatemo.com/tm-580-woox-travel
     });
   }
 
+  function redirect_information_page(name){
+    if (typeof (Storage) !== "undefined") {
+            // Store
+            localStorage.setItem("nome_pacchetto", "");
+            localStorage.setItem("nome_pacchetto", name);
+          } else {
+            console.log("Sorry, your browser does not support Web Storage...");
+          }
+          window.location.href = "dettagli_pacchettoclient.html";
+  }
+
   function caricapacchetti(pagina){
 
     const form = new FormData();
@@ -81,7 +92,7 @@ https://templatemo.com/tm-580-woox-travel
                     pacchetti.forEach(item => {
                       var url = randomImage();
                       let html = "<div class='col-lg-12'><div class='item'><div class='row'><div class='card mb-3'><div class='row g-0'><div class='col-md-3'><img src='"+ url +"' id='imas' class='img-fluid rounded-start' alt='...' style='border-radius: 10px;margin-top: 20px; margin-bottom: 20px;'>";
-                      html = html.concat("</div><div class='col-md-9'><div class='card-body'><h5 class='card-title'>" + item.titolo + "</h5><p class='card-text'> " + item.descrizione + "</p><p class='card-text'>Punti di interesse: ")
+                      html = html.concat("</div><div class='col-md-8'><div class='card-body'><h5 class='card-title'>" + item.titolo + "</h5><p class='card-text'> " + item.descrizione + "</p><p class='card-text'>Punti di interesse: ")
                       item.listaPOI.forEach(poi => {
                         if (item.listaPOI.indexOf(poi) == (item.listaPOI.length - 1)) {
                             html=html.concat(poi.Nome)
@@ -101,7 +112,7 @@ https://templatemo.com/tm-580-woox-travel
                         }
                       
                       });
-                      html = html.concat("</p></div></div></div></div></div></div></div>")
+                      html = html.concat("</p></div></div><div class='col-md-1'><button class='btn btn-outline-info btn-sm' onclick='redirect_information_page(\""+ item.titolo +"\")' style='margin:10px'>Visualizza Pacchetto</button></div></div></div></div></div></div>")
                       $("#pacchetti_paginazione").append(html);
                     });
                 });
