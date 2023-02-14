@@ -145,7 +145,7 @@ def creaPercorsoClient():
     luoghi2=luoghi_di_interesse_geo.find({"$and":[{"features.geometry":{"$near":{"$geometry":{"type":"Point","coordinates": [float(long), float(lat)]},"$minDistance": min,"$maxDistance": max}}},{"tipo": {"$in":tipi}}]},{"_id":0})
 
     lista_stazioni_suggerite=[]
-
+    print(luoghi_percorso)
     if "treno" in list(mezzi):
         for luogo in luoghi_percorso:
             long=luogo["features"][0]["geometry"]["coordinates"][0]
