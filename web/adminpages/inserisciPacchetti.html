@@ -419,6 +419,8 @@
                                                 shadowSize: [41, 41]
                                               });
                                               var marker = L.marker([lat, lon], {icon:redIcon});
+                                              map.panTo([lat, lon], 10);
+
 
                                               if(col=="blue"){
                                                  var marker = L.marker([lat, lon]);
@@ -441,7 +443,7 @@
                                             console.log(jsonPOI[i].Latitudine)
                                             visualizzaLuoghiSuMappa(jsonPOI[i].Latitudine, jsonPOI[i].Longitudine, jsonPOI[i].Nome, jsonPOI[i].Descrizione)
                                         }
-
+                                        
                                         var percorso = localStorage.getItem("listaPercorso")
 
                                     </script>
@@ -480,7 +482,7 @@
                                         height: 50px;
                                         font-size:100%;
                                     }
-                                    //button:focus{background-color: #4e73df; opacity: 70%;}
+                                    /* button:focus{background-color: #4e73df; opacity: 70%;} */
                                     a .seleziona{
                                         text-decoration:none;
                                         color: #4e73df;

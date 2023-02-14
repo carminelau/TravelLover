@@ -7,6 +7,7 @@ function aggiungiPOIaLista(poi){
 }
 function visualizzaTipoCheck(tipo, azione, scegli) {
 
+    
     $.ajax({
         url: "http://127.0.0.1:5000/visualizzaTipo",
         method: "POST",
@@ -55,14 +56,16 @@ function visualizzaTipoCheck(tipo, azione, scegli) {
 
 
 function visualizzaVicinoComune(azione, comune, scegli) {
+    console.log(comune);
+    console.log(scegli);
     $.ajax({
         url: "http://127.0.0.1:5000/visualizzaVicinoComune",
         method: "POST",
         cache: false,
         data: {
-            azione: azione,
             comune: comune,
         },
+        
         success: function (response) {
 
             if (scegli == null){console.log("non puoi scegliere")}
@@ -109,6 +112,7 @@ function visualizzaVicinoComune(azione, comune, scegli) {
                 var poi = {"Nome":item.nome, "Descrizione":item.descrizione, "Tipo":item.tipo, "Latitudine":item.features[0].geometry.coordinates[1], "Longitudine":item.features[0].geometry.coordinates[0]}
 
                 var poi = JSON.stringify(poi).replace(/'/g, " ")
+                console.log(selectedValues);
                 if(selectedValues.includes(item.tipo) || selectedValues.length==0){
                     $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px'> <div class='card-body'> <h5 class='card-title'>" + item.nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.descrizione + "</p> <a href='#' class='card-link'>Modifica</a> <a href='#' class='card-link'>Elimina</a> <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link'>Aggiungi a pacchetto </div> </div>");
                 }
@@ -133,6 +137,89 @@ function visualizzaVicinoComune(azione, comune, scegli) {
             alert("ERRORE CHIAMATA ASINCRONA");
         }
     });
+}
+
+function visualizzaVicinoComune2(azione, comune, scegli) {
+    console.log(comune);
+    console.log(scegli);
+    const form = new FormData();
+    form.append("comune", comune);
+
+    const options = {
+        method: 'POST',
+        headers: {}
+    };
+
+    options.body = form;
+    fetch("http://127.0.0.1:5000/visualizzaVicinoComune",options)
+    .then(response => response.json())
+    .then(data => {
+        if (scegli == null){console.log("non puoi scegliere")}
+
+        var selectedValues = [];
+        var agriturismi = document.getElementById('agriturismi2');
+        var alberi = document.getElementById('alberi2');
+        var vini = document.getElementById('vini2');
+        var torri = document.getElementById('torri2');
+        var bandiere = document.getElementById('bandiere2');
+        var generici = document.getElementById('generici2');
+        var caseifici = document.getElementById('caseifici2');
+        var biblioteche = document.getElementById('biblioteche2');
+        var culto = document.getElementById('culto2');
+        var musei = document.getElementById('musei2');
+        var teatri = document.getElementById('teatri2');
+        var fattorie = document.getElementById('fattorie2');
+
+        if (agriturismi.checked == true ) selectedValues.push("agriturismi");
+        if (alberi.checked == true) selectedValues.push("alberi");
+        if (vini.checked == true) selectedValues.push("vino");
+        if (torri.checked == true) selectedValues.push("torri");
+        if (bandiere.checked == true) selectedValues.push("bandiere");
+        if (generici.checked == true) selectedValues.push("generici");
+        if (caseifici.checked == true) selectedValues.push("caseifici");
+        if (biblioteche.checked == true) selectedValues.push("biblioteche");
+        if (culto.checked == true) selectedValues.push("culto");
+        if (musei.checked == true) selectedValues.push("musei");
+        if (teatri.checked == true) selectedValues.push("teatri");
+        if (fattorie.checked == true) selectedValues.push("fattorie");
+
+        console.log(data)
+
+        $(".risultato").empty();
+
+        $(".risultato").css("text-align", "left");
+        $(".risultato").css("margin", "0 auto");
+        $(".risultato").css("position", "relative");
+        $(".risultato").css("width", "100%");
+
+        console.log(data.luoghi)
+
+        data.luoghi.forEach(function (item){
+            var poi = {"Nome":item.nome, "Descrizione":item.descrizione, "Tipo":item.tipo, "Latitudine":item.features[0].geometry.coordinates[1], "Longitudine":item.features[0].geometry.coordinates[0]}
+
+            var poi = JSON.stringify(poi).replace(/'/g, " ")
+            console.log(selectedValues);
+            if(selectedValues.includes(item.tipo) || selectedValues.length==0){
+                $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px'> <div class='card-body'> <h5 class='card-title'>" + item.nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.descrizione + "</p> <a href='#' class='card-link'>Modifica</a> <a href='#' class='card-link'>Elimina</a> <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link'>Aggiungi a pacchetto </div> </div>");
+            }
+
+            var links = document.getElementsByClassName("card-link");
+            for (let i = 0; i < links.length; i++) {
+              links[i].addEventListener("click", function() {
+                if (scegli==null){window.location.replace("inserisciPacchetti.html");}
+                else{this.style.color = "black";this.textContent="Aggiunto a pacchetto"}
+              });
+              links[i].addEventListener("mouseover", function() {
+                this.style.textDecoration = "underline";
+              });
+              links[i].addEventListener("mouseout", function() {
+                this.style.textDecoration = "none";
+              });
+            }
+
+        });
+    });
+    
 }
 
 function visualzzafermatebytipo(tipo, azione) {
@@ -343,22 +430,24 @@ function mostraStazioniConPacchetto(POIList) {
             $("#percorso-suggeriti").empty();
 
             var lista_stazioni_suggerite=[]
-
             response.lista_stazioni.forEach(function (item) {
                     var i = 0;
-                    item.forEach(function (item2) {
-                        //$('#percorsi-suggeriti').append("<li class='list-group-item d-flex justify-content-between align-content-center'><div class='d-flex flex-row'><i class='fa-sharp fa-solid fa-map-pin'></i><div class='ml-2'><h6 class='mb-0'>" +item2.Nome+ "</h6><div class='about'><span id='coord'></span></div></div></div></li>")
-                        visualizzaLuoghiSuMappa(item2.features[0].geometry.coordinates[1], item2.features[0].geometry.coordinates[0], item2.Nome, "Stazione", col="blue")
-                        if(i==0){
+                    lista_stazioni_suggerite.push(item)
+                    
+                    visualizzaLuoghiSuMappa(item.features[0].geometry.coordinates[1], item.features[0].geometry.coordinates[0], item.Nome, "Stazione", col="blue")
+                    // item.forEach(function (item2) {
+                    //     //$('#percorsi-suggeriti').append("<li class='list-group-item d-flex justify-content-between align-content-center'><div class='d-flex flex-row'><i class='fa-sharp fa-solid fa-map-pin'></i><div class='ml-2'><h6 class='mb-0'>" +item2.Nome+ "</h6><div class='about'><span id='coord'></span></div></div></div></li>")
+                    //     visualizzaLuoghiSuMappa(item2.features[0].geometry.coordinates[1], item2.features[0].geometry.coordinates[0], item2.Nome, "Stazione", col="blue")
+                    //     if(i==0){
 
-                                console.log("weeeeeee")
-                                lista_stazioni_suggerite.push(item2)
+                    //             console.log("weeeeeee")
+                    //             lista_stazioni_suggerite.push(item2)
 
-                        }
-                        i++;
-                    });
+                    //     }
+                    //     i++;
+                    // });
             });
-
+            localStorage.setItem("listaPercorso","")
             localStorage.setItem("listaPercorso",JSON.stringify(lista_stazioni_suggerite))
 
             $("#percorsi-suggeriti").append("<hr><h4>PERCORSO CONSIGLIATO:</h4>");

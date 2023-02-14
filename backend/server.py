@@ -224,8 +224,13 @@ def creaPacchetto():
     listaPOI=json.loads(request.form.get("POIList"))
     percorso=json.loads(request.form.get("percorso"))
 
-
-    pacchetto={"titolo":titolo, "descrizione": descrizione, "listaPOI":listaPOI, "percorso": list(percorso)}
+    res = []
+    temp = {}
+    for i in percorso:
+        temp = i
+        if temp not in res:
+            res.append(temp)
+    pacchetto={"titolo":titolo, "descrizione": descrizione, "listaPOI":listaPOI, "percorso": res}
 
     #a questo punto dovremmo inserire il nuovo pacchetto nel db, e il percorso nella sua collection, ma non mi funziona
     poi_itinerary.insert_one(pacchetto)
@@ -261,7 +266,9 @@ def mostraStazioniConPacchetto():
         # restituisce tutte gli elementi della collection ordinati dal più vicino al più lontano
         # find in collection geojson 3 fermate near a longitudine_POI, latiduine_POI
         lista_fermate_vicino_poi_corrente = stazioni_fermate_geo.find({"$and":[{"features.geometry":{"$near": {"$geometry": {"type": "Point", "coordinates": [float(longitudine_POI), float(latitudine_POI)]}}}},{"Tipo": "Treni"}]},{"_id":0})
-        lista_fermate_vicino_poi.append(list(lista_fermate_vicino_poi_corrente[0:3]))
+        for i in range (0,3):
+            if lista_fermate_vicino_poi_corrente[i] not in lista_fermate_vicino_poi:
+                lista_fermate_vicino_poi.append(lista_fermate_vicino_poi_corrente[i])
 
     return jsonify({"status":"success","lista_stazioni":lista_fermate_vicino_poi})
 
@@ -297,6 +304,22 @@ def getPacchetto():
         return jsonify({"status": "error"})
     else:
         return jsonify({"status": "success", "pacchetto": p})
+    
+#creare una route per sostituire i valori nan con "" per evitare errori
+@app.route("/replaceNan", methods=['POST'])
+def replaceNan():
+    data = luoghi_di_interesse_geo.find({},{"_id":0})
+    array = list(data)
+    lista=[]
+    for d in array:
+        if(type(d['descrizione']) is float):
+            d['descrizione']=""
+        lista.append(d)
+    luoghi_di_interesse_geo.drop()
+    luoghi_di_interesse_geo.insert_many(lista)
+    return jsonify({"status": "success"})
+
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port="5000", debug=True)
