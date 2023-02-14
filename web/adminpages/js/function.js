@@ -30,7 +30,7 @@ function visualizzaTipoCheck(tipo, azione, scegli) {
 
                 var poi = {"Nome":item.Nome, "Descrizione":item.Descrizione, "Tipo":item.Tipo, "Latitudine":item.Latitudine, "Longitudine":item.Longitudine}
                 var poi = JSON.stringify(poi).replace(/'/g, " ")
-                $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px;'> <div class='card-body'> <h5 class='card-title'>" + item.Nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.Descrizione + "</p> <a href='#' class='card-link'>Modifica</a> <a href='#' class='card-link'>Elimina</a>   <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link' style='text-decoration: black; hover: underline;'>Aggiungi a pacchetto</a> </div> </div>");
+                $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px;'> <div class='card-body'> <h5 class='card-title'>" + item.Nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.Descrizione + "</p> <a href='#' class='card-link'>Elimina</a>   <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link' style='text-decoration: black; hover: underline;'>Aggiungi a pacchetto</a> </div> </div>");
 
                 var links = document.getElementsByClassName("card-link");
                 for (let i = 0; i < links.length; i++) {
@@ -78,7 +78,7 @@ function visualizzaVicinoComune(azione, comune, scegli) {
             var bandiere = document.getElementById('bandiere2');
             var generici = document.getElementById('generici2');
             var caseifici = document.getElementById('caseifici2');
-            var biblioteche = document.getElementById('biblioteche2');
+            //var biblioteche = document.getElementById('biblioteche2');
             var culto = document.getElementById('culto2');
             var musei = document.getElementById('musei2');
             var teatri = document.getElementById('teatri2');
@@ -91,7 +91,7 @@ function visualizzaVicinoComune(azione, comune, scegli) {
             if (bandiere.checked == true) selectedValues.push("bandiere");
             if (generici.checked == true) selectedValues.push("generici");
             if (caseifici.checked == true) selectedValues.push("caseifici");
-            if (biblioteche.checked == true) selectedValues.push("biblioteche");
+            //if (biblioteche.checked == true) selectedValues.push("biblioteche");
             if (culto.checked == true) selectedValues.push("culto");
             if (musei.checked == true) selectedValues.push("musei");
             if (teatri.checked == true) selectedValues.push("teatri");
@@ -114,7 +114,7 @@ function visualizzaVicinoComune(azione, comune, scegli) {
                 var poi = JSON.stringify(poi).replace(/'/g, " ")
                 console.log(selectedValues);
                 if(selectedValues.includes(item.tipo) || selectedValues.length==0){
-                    $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px'> <div class='card-body'> <h5 class='card-title'>" + item.nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.descrizione + "</p> <a href='#' class='card-link'>Modifica</a> <a href='#' class='card-link'>Elimina</a> <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link'>Aggiungi a pacchetto </div> </div>");
+                    $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px'> <div class='card-body'> <h5 class='card-title'>" + item.nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.descrizione + "</p>  <a href='#' class='card-link'>Elimina</a> <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link'>Aggiungi a pacchetto </div> </div>");
                 }
 
                 var links = document.getElementsByClassName("card-link");
@@ -457,7 +457,7 @@ function mostraStazioniConPacchetto(POIList) {
                 }
             }
 
-            $("#percorsi-suggeriti").append("<hr><h5><a href='inserisciPercorso.html' class='seleziona'>Valuta percorsi alternativo</a></h5><hr>");
+            $("#percorsi-suggeriti").append("<hr><h5><a href='visualizzaPercorso.html' class='seleziona'>Valuta percorsi alternativo</a></h5><hr>");
         },
         error: function () {
             alert("ERRORE CHIAMATA ASINCRONA");
