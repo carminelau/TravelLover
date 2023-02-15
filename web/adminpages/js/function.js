@@ -5,9 +5,23 @@ function aggiungiPOIaLista(poi){
     localStorage.setItem("POIPacchetto", JSON.stringify(listaPOIPacchetto));
     console.log(listaPOIPacchetto)
 }
-function visualizzaTipoCheck(tipo, azione, scegli) {
 
-    
+function rimuoviPOIdaLista(poi){
+   var trovato;
+   //se poi è in lista rimuovi da listaPOIPacchetto il poi
+   for(var i = 0; i<listaPOIPacchetto.length; i++){
+        if(listaPOIPacchetto[i].Nome == poi.Nome){
+            listaPOIPacchetto.splice(i,1);
+            trovato=1;
+        }
+   }
+   //se listaPOIPacchetto o l'elemento non ci sta è vuoto non puoi elimina e quindi il click non dovrebbe fa niente
+   if((listaPOIPacchetto.length==0) || (trovato!=1) ){
+        alert('Elemento non presente nel pacchetto');
+   }
+}
+
+function visualizzaTipoCheck(tipo, azione, scegli) {
     $.ajax({
         url: "http://127.0.0.1:5000/visualizzaTipo",
         method: "POST",
@@ -21,22 +35,47 @@ function visualizzaTipoCheck(tipo, azione, scegli) {
 
             var lista =[]
 
-            $(".risultato").css("text-align", "left");
-            $(".risultato").css("margin", "0 auto");
-            $(".risultato").css("position", "relative");
-            $(".risultato").css("width", "100%");
+            $(".risultato2").css("text-align", "left");
+            $(".risultato2").css("margin", "0 auto");
+            $(".risultato2").css("position", "relative");
+            $(".risultato2").css("width", "100%");
+
+            if ($('.toggleRisultato2').length === 0) {
+                $(".risultato2").append("<hr><h4 style='text-align: center;'>Luoghi per tipo</h4>");
+                $(".risultato2").append("<button class='btn btn-secondary toggleRisultato2'>Show/Hide</button>");
+            }
+
+
+            $(".risultato2-1").css("text-align", "left");
+            $(".risultato2-1").css("margin", "0 auto");
+            $(".risultato2-1").css("position", "relative");
+            $(".risultato2-1").css("width", "100%");
+
+
+            $(".toggleRisultato2").click(function() {
+              $(".risultato2-1").toggle();
+            });
+            $(".toggleRisultato2").css({
+              "display": "block",
+              "margin": "0 auto",
+              "margin-bottom": "8px"
+            });
 
             response.luoghi.forEach(function (item) {
 
                 var poi = {"Nome":item.Nome, "Descrizione":item.Descrizione, "Tipo":item.Tipo, "Latitudine":item.Latitudine, "Longitudine":item.Longitudine}
                 var poi = JSON.stringify(poi).replace(/'/g, " ")
-                $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px;'> <div class='card-body'> <h5 class='card-title'>" + item.Nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.Descrizione + "</p> <a href='#' class='card-link'>Elimina</a>   <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link' style='text-decoration: black; hover: underline;'>Aggiungi a pacchetto</a> </div> </div>");
 
-                var links = document.getElementsByClassName("card-link");
+                $(".risultato2-1").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px;'> <div class='card-body'> <h5 class='card-title'>" + item.Nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.Descrizione + "</p> <a href='javascript:rimuoviPOIdaLista("+poi+");' class='card-link el'>Rimuovi</a>   <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link ag' style='text-decoration: black; hover: underline;'>Aggiungi a pacchetto</a> </div> </div>");
+
+                var links = document.getElementsByClassName("card-link ag");
+                var linksElimina = document.getElementsByClassName("card-link el");
+
                 for (let i = 0; i < links.length; i++) {
                   links[i].addEventListener("click", function() {
                     if (scegli==null){window.location.replace("inserisciPacchetti.html");}
-                    else{this.style.color = "black"; this.textContent="Aggiunto a pacchetto"}
+                    else{this.style.color = "black"; this.textContent="Aggiunto a pacchetto"; linksElimina[i].textContent="Elimina"; linksElimina[i].style.color="#4e73df";}
+
                   });
                   links[i].addEventListener("mouseover", function() {
                     this.style.textDecoration = "underline";
@@ -45,8 +84,22 @@ function visualizzaTipoCheck(tipo, azione, scegli) {
                     this.style.textDecoration = "none";
                   });
                 }
+                for (let i = 0; i < links.length; i++) {
+                  linksElimina[i].addEventListener("click", function() {
+                    if (scegli==null){window.location.replace("inserisciPacchetti.html");}
+                    else{this.style.color = "black";this.textContent="Rimosso da pacchetto";links[i].textContent="Aggiungi a pacchetto"; links[i].style.color="#4e73df";}
+                  });
+                  linksElimina[i].addEventListener("mouseover", function() {
+                    this.style.textDecoration = "underline";
+                  });
+                  linksElimina[i].addEventListener("mouseout", function() {
+                    this.style.textDecoration = "none";
+                  });
+                }
+
 
             });
+
         },
         error: function () {
             alert("ERRORE CHIAMATA ASINCRONA");
@@ -99,12 +152,31 @@ function visualizzaVicinoComune(azione, comune, scegli) {
 
             console.log(response)
 
-            $(".risultato").empty();
+            $(".risultato1").empty();
 
-            $(".risultato").css("text-align", "left");
-            $(".risultato").css("margin", "0 auto");
-            $(".risultato").css("position", "relative");
-            $(".risultato").css("width", "100%");
+            $(".risultato1").css("text-align", "left");
+            $(".risultato1").css("margin", "0 auto");
+            $(".risultato1").css("position", "relative");
+            $(".risultato1").css("width", "100%");
+
+            $(".risultato1").append("<hr><h4 style='text-align: center;'>Luoghi per comune</h4>")
+
+            $(".risultato1").append("<button class='btn btn-secondary toggleRisultato3'>Show/Hide</button>");
+
+            $(".risultato1-1").css("text-align", "left");
+            $(".risultato1-1").css("margin", "0 auto");
+            $(".risultato1-1").css("position", "relative");
+            $(".risultato1-1").css("width", "100%");
+
+            $(".toggleRisultato3").click(function() {
+              $(".risultato1-1").toggle();
+            });
+            $(".toggleRisultato3").css({
+              "display": "block",
+              "margin": "0 auto",
+              "margin-bottom": "8px"
+            });
+
 
             console.log(response.luoghi)
 
@@ -114,19 +186,34 @@ function visualizzaVicinoComune(azione, comune, scegli) {
                 var poi = JSON.stringify(poi).replace(/'/g, " ")
                 console.log(selectedValues);
                 if(selectedValues.includes(item.tipo) || selectedValues.length==0){
-                    $(".risultato").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px'> <div class='card-body'> <h5 class='card-title'>" + item.nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.descrizione + "</p>  <a href='#' class='card-link'>Elimina</a> <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link'>Aggiungi a pacchetto </div> </div>");
+                    $(".risultato1-1").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px'> <div class='card-body'> <h5 class='card-title'>" + item.nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.descrizione + "</p>  <a href='javascript:rimuoviPOIdaLista("+poi+");' class='card-link el'>Rimuovi</a> <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link a'>Aggiungi a pacchetto </div> </div>");
                 }
 
-                var links = document.getElementsByClassName("card-link");
+                var links = document.getElementsByClassName("card-link a");
+                var linksElimina = document.getElementsByClassName("card-link el");
+
                 for (let i = 0; i < links.length; i++) {
                   links[i].addEventListener("click", function() {
                     if (scegli==null){window.location.replace("inserisciPacchetti.html");}
-                    else{this.style.color = "black";this.textContent="Aggiunto a pacchetto"}
+                    else{this.style.color = "black";this.textContent="Aggiunto a pacchetto"; linksElimina[i].textContent="Elimina"; linksElimina[i].style.color="#4e73df";}
                   });
                   links[i].addEventListener("mouseover", function() {
                     this.style.textDecoration = "underline";
                   });
                   links[i].addEventListener("mouseout", function() {
+                    this.style.textDecoration = "none";
+                  });
+                }
+
+                for (let i = 0; i < links.length; i++) {
+                  linksElimina[i].addEventListener("click", function() {
+                    if (scegli==null){window.location.replace("inserisciPacchetti.html");}
+                    else{this.style.color = "black";this.textContent="Rimosso da pacchetto";links[i].textContent="Aggiungi a pacchetto"; links[i].style.color="#4e73df";}
+                  });
+                  linksElimina[i].addEventListener("mouseover", function() {
+                    this.style.textDecoration = "underline";
+                  });
+                  linksElimina[i].addEventListener("mouseout", function() {
                     this.style.textDecoration = "none";
                   });
                 }
@@ -204,6 +291,8 @@ function visualizzaVicinoComune2(azione, comune, scegli) {
             }
 
             var links = document.getElementsByClassName("card-link");
+            var linksElimina = document.getElementsByClassName("card-link el");
+
             for (let i = 0; i < links.length; i++) {
               links[i].addEventListener("click", function() {
                 if (scegli==null){window.location.replace("inserisciPacchetti.html");}
@@ -213,6 +302,18 @@ function visualizzaVicinoComune2(azione, comune, scegli) {
                 this.style.textDecoration = "underline";
               });
               links[i].addEventListener("mouseout", function() {
+                this.style.textDecoration = "none";
+              });
+            }
+            for (let i = 0; i < links.length; i++) {
+              linksElimina[i].addEventListener("click", function() {
+                if (scegli==null){window.location.replace("inserisciPacchetti.html");}
+                else{this.style.color = "black";this.textContent="Rimosso da pacchetto";links[i].textContent="Aggiungi a pacchetto"; links[i].style.color="#4e73df"}
+              });
+              linksElimina[i].addEventListener("mouseover", function() {
+                this.style.textDecoration = "underline";
+              });
+              linksElimina[i].addEventListener("mouseout", function() {
                 this.style.textDecoration = "none";
               });
             }
@@ -337,6 +438,7 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
 
         },
         error: function () {
+            if(posizioneUtenteLat == null || posizioneUtenteLong == null) {alert("COORDINATE NULLE: scegliere punto di partenza")}
             alert("ERRORE CHIAMATA ASINCRONA");
         }
     });
@@ -365,7 +467,7 @@ function visualizzaFermateLista(id) {
     });
 }
 
-function creaPacchetto(titolo, descrizione, POIList, percorso) {
+function creaPacchetto(titolo, descrizione, POIList, percorso, tipologia) {
     $.ajax({
         url: "http://127.0.0.1:5000/creaPacchetto",
         method: "POST",
@@ -375,6 +477,7 @@ function creaPacchetto(titolo, descrizione, POIList, percorso) {
             descrizione: descrizione,
             POIList: JSON.stringify(POIList),
             percorso: JSON.stringify(percorso),
+            tipologia: tipologia,
         },
         success: function (response) {
 
@@ -431,18 +534,15 @@ function mostraStazioniConPacchetto(POIList) {
 
             var lista_stazioni_suggerite=[]
             response.lista_stazioni.forEach(function (item) {
-                    var i = 0;
+                    //var i = 0;
                     lista_stazioni_suggerite.push(item)
-                    
                     visualizzaLuoghiSuMappa(item.features[0].geometry.coordinates[1], item.features[0].geometry.coordinates[0], item.Nome, "Stazione", col="blue")
                     // item.forEach(function (item2) {
                     //     //$('#percorsi-suggeriti').append("<li class='list-group-item d-flex justify-content-between align-content-center'><div class='d-flex flex-row'><i class='fa-sharp fa-solid fa-map-pin'></i><div class='ml-2'><h6 class='mb-0'>" +item2.Nome+ "</h6><div class='about'><span id='coord'></span></div></div></div></li>")
                     //     visualizzaLuoghiSuMappa(item2.features[0].geometry.coordinates[1], item2.features[0].geometry.coordinates[0], item2.Nome, "Stazione", col="blue")
                     //     if(i==0){
-
                     //             console.log("weeeeeee")
                     //             lista_stazioni_suggerite.push(item2)
-
                     //     }
                     //     i++;
                     // });

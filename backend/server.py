@@ -223,6 +223,7 @@ def creaPacchetto():
     descrizione=request.form.get("descrizione")
     listaPOI=json.loads(request.form.get("POIList"))
     percorso=json.loads(request.form.get("percorso"))
+    tipologia=request.form.get("tipologia")
 
     res = []
     temp = {}
@@ -230,7 +231,7 @@ def creaPacchetto():
         temp = i
         if temp not in res:
             res.append(temp)
-    pacchetto={"titolo":titolo, "descrizione": descrizione, "listaPOI":listaPOI, "percorso": res}
+    pacchetto={"titolo":titolo, "descrizione": descrizione, "listaPOI":listaPOI, "percorso": res, "tipologia":tipologia}
 
     #a questo punto dovremmo inserire il nuovo pacchetto nel db, e il percorso nella sua collection, ma non mi funziona
     poi_itinerary.insert_one(pacchetto)
@@ -266,7 +267,7 @@ def mostraStazioniConPacchetto():
         # restituisce tutte gli elementi della collection ordinati dal più vicino al più lontano
         # find in collection geojson 3 fermate near a longitudine_POI, latiduine_POI
         lista_fermate_vicino_poi_corrente = stazioni_fermate_geo.find({"$and":[{"features.geometry":{"$near": {"$geometry": {"type": "Point", "coordinates": [float(longitudine_POI), float(latitudine_POI)]}}}},{"Tipo": "Treni"}]},{"_id":0})
-        for i in range (0,3):
+        for i in range (0,1):
             if lista_fermate_vicino_poi_corrente[i] not in lista_fermate_vicino_poi:
                 lista_fermate_vicino_poi.append(lista_fermate_vicino_poi_corrente[i])
 
@@ -319,6 +320,37 @@ def replaceNan():
     luoghi_di_interesse_geo.insert_many(lista)
     return jsonify({"status": "success"})
 
+@app.route("/getLuoghiDisponibili", methods=['POST'])
+def getLuoghiDisponibili():
+    range = request.form.getlist("range")
+    latitudine=request.form.get("latitudine")
+    longitudine=request.form.get("longitudine")
+
+    min = 0
+    max = 0
+
+    if "0-5" in range:
+        min = 0
+        max = 5000
+    if "5-10" in range:
+        min = 5000
+        max = 10000
+    if "10-15" in range:
+        min = 10000
+        max = 15000
+    if "15-20" in range:
+        min = 15000
+        max = 20000
+    if "+20" in range:
+        min = 20000
+        max = 50000
+
+    luoghi_percorso = luoghi_di_interesse_geo.find({"$and": [{ "features.geometry": {"$near": {"$geometry": {"type": "Point","coordinates": [float(longitudine), float(latitudine)]},"$minDistance": min,"$maxDistance": max}}}]},{"_id":0})
+    luoghi2 = luoghi_di_interesse_geo.find({"$and": [{"features.geometry": {"$near": {"$geometry": {"type": "Point", "coordinates": [float(longitudine), float(latitudine)]}, "$minDistance": min,"$maxDistance": max}}}]}, {"_id": 0})
+
+    tipi_disponibili= luoghi2.distinct("tipo")
+
+    return tipi_disponibili
 
 
 if __name__ == "__main__":

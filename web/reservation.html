@@ -174,7 +174,6 @@ https://templatemo.com/tm-580-woox-travel
                <script>
                   function resetMap() {
                       location.reload()
-
                   }
                   var map = L.map('map').setView([40.68154, 14.7749133], 11);
                   L.tileLayer('https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=m5sIKtQYgI1arDxvl4ob', {
@@ -187,6 +186,8 @@ https://templatemo.com/tm-580-woox-travel
                       var div = L.DomUtil.create("div", "legend");
                       div.innerHTML += '<i style="background: blue"></i><span>Stazioni</span><br>';
                       div.innerHTML += '<i style="background: red"></i><span>Luoghi</span><br>';
+                      div.innerHTML += '<i style="background: green"></i><span>Posizione iniziale</span><br>';
+
                       return div;
                     };
 
@@ -198,48 +199,27 @@ https://templatemo.com/tm-580-woox-travel
                 <h4>Crea il tuo <em>pacchetto personalizzato</em></h4>
              </div>
              <div class="row">
-                <label class="form-label">Punti di interesse:</label><br>
-                <hr>
                 <div class="col-lg-6">
-                  <input type="checkbox" class="luogo" value="alberi" id="alberi">Alberi monumentali <br>
-                  <input type="checkbox" class="luogo" value="vino" id="vini">Vini <br>
-                  <input type="checkbox" class="luogo" value="agriturismi"> Agriturismi <br>
-                  <input type="checkbox" class="luogo" value="generici" id="generici"> Altro <br>
-                  <input type="checkbox" class="luogo" value="bandiere" id="bandiere"> Bandiere blu <br>
-                  <input type="checkbox" class="luogo" value="biblioteche" id="biblioteche"> Biblioteche <br>
+                     <label class="form-label">Modalità:</label>
+                     <input type="radio" name="posizione" class="posizione" value="posizionecorrente" onclick="getPuntoPartenza('posizionecorrente')">A partire dalla tua posizione corrente
+                     <input type="radio" name="posizione" class="posizione" value="altraposizione" onclick="getPuntoPartenza('altraposizione')">Scegli un'altra posizione di partenza sulla mappa
                 </div>
-               <div class="col-lg-6">
-                  <input type="checkbox" class="luogo" value="caseifici" id="caseifici"> Caseifici <br>
-                  <input type="checkbox" class="luogo" value="fattorie" id="fattorie"> Fattorie <br>
-                  <input type="checkbox" class="luogo" value="luoghi-di-culto" id="culto"> Luoghi di culto <br>
-                  <input type="checkbox" class="luogo" value="musei" id="musei"> Musei <br>
-                  <input type="checkbox" class="luogo" value="teatri" id="teatri"> Teatri <br>
-                  <input type="checkbox" class="luogo" value="torri" id="torri"> Torri e castelli
-               </div>
-               <hr>
-               <div class="col-lg-6">
-                  <label class="form-label">Mezzi di trasporto</label>
-                  <input type="checkbox" class="mezzo" name="mezzo" value="auto">Auto
-                  <input type="checkbox" class="mezzo" value="treno">Treno
-               </div>
-               <hr>
-               <div class="col-lg-6">
-                  <label class="form-label">A quanti chilometri da te:</label>
-                  <input type="radio" name="km" class="km" value="0-5">-5km
-                  <input type="radio" name="km" class="km" value="5-10">5-10km
-                  <input type="radio" name="km" class="km" value="10-15">10-15km
-                  <input type="radio" name="km" class="km" value="15-20">15-20km
-                  <input type="radio" name="km" class="km" value="+20">+20km
-                  <script>
-                      var lat;
-                      var long
-                      if ("geolocation" in navigator) {
+                <script>
+                  var lat;
+                  var long;
+                  function getPuntoPartenza(modalita){
+                    var locationFlag;
+                    if(modalita=="posizionecorrente"){
+                        if(locationFlag==true){map.off();}
+
+                        console.log("posizionecorrente")
+                        if ("geolocation" in navigator) {
                           navigator.geolocation.getCurrentPosition(function(position) {
                             console.log("Latitude: " + position.coords.latitude);
                             console.log("Longitude: " + position.coords.longitude);
 
                             var redIcon = new L.Icon({
-                                iconUrl: 'adminpages/img/marker-icon-2x-red.png',
+                                iconUrl: 'adminpages/img/marker-icon-2x-green.png',
                                 iconSize: [25, 41],
                                 iconAnchor: [12, 41],
                                 popupAnchor: [1, -34],
@@ -247,6 +227,16 @@ https://templatemo.com/tm-580-woox-travel
                             });
 
                             var marker = L.marker([position.coords.latitude, position.coords.longitude],{icon:redIcon}).addTo(map);
+                            var customPopup = "<b>La tua posizione</b>";
+                            var customOptions =
+                            {
+                              'maxWidth': '500',
+                              'className' : 'custom'
+                            }
+                            marker.bindPopup(customPopup,customOptions).addTo(map);
+
+                            locationFlag=true;
+                            console.log(locationFlag)
 
                             lat=position.coords.latitude
                             long=position.coords.longitude
@@ -254,7 +244,176 @@ https://templatemo.com/tm-580-woox-travel
                         } else {
                           console.log("Geolocation is not supported by this browser.");
                         }
-                  </script>
+                    }
+                    if(modalita=="altraposizione"){
+                        console.log("altraposizione")
+                        map.on('click', function(e) {
+                          var latlng = e.latlng;
+
+                          lat=latlng.lat;
+                          long=latlng.lng;
+
+                          var redIcon = new L.Icon({
+                            iconUrl: 'adminpages/img/marker-icon-2x-green.png',
+                            iconSize: [25, 41],
+                            iconAnchor: [12, 41],
+                            popupAnchor: [1, -34],
+                            shadowSize: [41, 41]
+                          });
+
+                          console.log(lat)
+                          console.log(long)
+
+                          locationFlag=true;
+                          if(locationFlag==true){map.off('click');}
+
+                          var marker = L.marker([lat, long],{icon:redIcon}).addTo(map);
+
+                          var customPopup = "<b>Posizione scelta</b>";
+                          var customOptions =
+                          {
+                              'maxWidth': '500',
+                              'className' : 'custom'
+                          }
+                          marker.bindPopup(customPopup,customOptions).addTo(map);
+
+                          console.log(locationFlag)
+                        });
+                    }
+                  }
+                </script>
+                <hr>
+                <div class="col-lg-6">
+                  <label class="form-label">A quanti chilometri dalla posizione:</label>
+                  <input type="radio" name="km" class="km" value="0-5" onclick="getTipiDisponibili()">-5km
+                  <input type="radio" name="km" class="km" value="5-10" onclick="getTipiDisponibili()">5-10km
+                  <input type="radio" name="km" class="km" value="10-15" onclick="getTipiDisponibili()">10-15km
+                  <input type="radio" name="km" class="km" value="15-20" onclick="getTipiDisponibili()">15-20km
+                  <input type="radio" name="km" class="km" value="+20" onclick="getTipiDisponibili()">+20km
+               </div>
+               <script>
+                   function getTipiDisponibili(){
+                       if(lat == null || long == null) {alert("COORDINATE NULLE: scegliere punto di partenza")}
+
+                       var range;
+                       var km = document.getElementsByClassName('km');
+                       var range;
+                       for (i = 0; i < km.length; i++) {
+                          if(km[i].checked == true){range = (km[i].value)}
+                       }
+                       $.ajax({
+                            url: "http://127.0.0.1:5000/getLuoghiDisponibili",
+                            method: "POST",
+                            cache: false,
+                            data: {
+                                range: range,
+                                latitudine: lat,
+                                longitudine: long,
+                            },
+                            success: function (response) {
+                                console.log(response)
+
+                                if(!response.includes("agriturismi")){
+                                    $("#agriturismi").css("display","none");
+                                    $("#agritursmilabel").css("display","none");
+                                }else if(response.includes("agriturismi")){
+                                    $("#agriturismi").css("display","inline");
+                                    $("#agriturismilabel").css("display","inline");
+                                }
+
+                                if(!response.includes("alberi")){
+                                    $("#alberi").css("display","none");
+                                    $("#alberilabel").css("display","none");
+                                }else if(response.includes("alberi")){
+                                    $("#alberi").css("display","inline");
+                                    $("#alberilabel").css("display","inline");
+                                }
+
+                                if(!response.includes("vino")){
+                                    $("#vini").css("display","none");
+                                    $("#vinilabel").css("display","none");
+                                }else if(response.includes("vino")){
+                                    $("#vini").css("display","inline");
+                                    $("#vinilabel").css("display","inline");
+                                }
+
+                                if(!response.includes("bandiere")){
+                                    $("#bandiere").css("display","none");
+                                    $("#bandierelabel").css("display","none");
+                                }else if(response.includes("bandiere")){
+                                    $("#bandiere").css("display","inline");
+                                    $("#bandierelabel").css("display","inline");
+                                }
+
+                                if(!response.includes("caseifici")){
+                                    $("#caseifici").css("display","none");
+                                    $("#caseificilabel").css("display","none");
+                                }else if(response.includes("caseifici")){
+                                    $("#caseifici").css("display","inline");
+                                    $("#caseificilabel").css("display","inline");
+                                }
+
+                                if(!response.includes("fattorie")){
+                                    $("#fattorie").css("display","none");
+                                    $("#fattorielabel").css("display","none");
+                                }else if(response.includes("fattorie")){
+                                    $("#fattorie").css("display","inline");
+                                    $("#fattorielabel").css("display","inline");
+                                }
+
+
+                                if(!response.includes("luoghi-di-culto")){
+                                    $("#culto").css("display","none");
+                                    $("#cultolabel").css("display","none");
+                                }else if(response.includes("luoghi-di-culto")){
+                                    $("#culto").css("display","inline");
+                                    $("#cultolabel").css("display","inline");
+                                }
+
+                                if(!response.includes("teatri")){
+                                    $("#teatri").css("display","none");
+                                    $("#teatrilabel").css("display","none");
+                                }else if(response.includes("teatri")){
+                                    $("#teatri").css("display","inline");
+                                    $("#teatrilabel").css("display","inline");
+                                }
+
+                                if(!response.includes("torri")){
+                                    $("#torri").css("display","none");
+                                    $("#torrilabel").css("display","none");
+                                }else if(response.includes("torri")){
+                                    $("#torri").css("display","inline");
+                                    $("#torrilabel").css("display","inline");
+                                }
+                            },
+                            error: function () {
+                                alert("ERRORE CHIAMATA ASINCRONA");
+                            }
+                        });
+                   }
+               </script>
+               <hr>
+               <label class="form-label">Punti di interesse:</label><br>
+               <hr>
+               <div class="col-lg-6" id="s1">
+                  <input type="checkbox" class="luogo" value="alberi" id="alberi"><label for="alberi" id="alberilabel" style="color: black;">Alberi monumentali</label><br>
+                  <input type="checkbox" class="luogo" value="vino" id="vini"><label for="vini" id="vinilabel" style="color: black;">Vini</label><br>
+                  <input type="checkbox" class="luogo" value="agriturismi" id="agriturismi"><label for="agriturismi" id="agriturismilabel" style="color: black;">Agriturismi</label><br>
+                  <input type="checkbox" class="luogo" value="bandiere" id="bandiere"><label for="bandiere" id="bandierelabel" style="color: black;">Bandiere blu</label><br>
+                  <input type="checkbox" class="luogo" value="caseifici" id="caseifici"><label for="caseifici" id="caseificilabel" style="color: black;">Caseifici</label><br>
+               </div>
+               <div class="col-lg-6" id="s2">
+                   <input type="checkbox" class="luogo" value="fattorie" id="fattorie"><label for="fattorie" id="fattorielabel" style="color: black;">Fattorie</label><br>
+                   <input type="checkbox" class="luogo" value="luoghi-di-culto" id="culto"><label for="culto" id="cultolabel" style="color: black;">Luoghi di culto</label><br>
+                   <input type="checkbox" class="luogo" value="musei" id="musei"><label for="musei" id="museilabel" style="color: black;">Musei</label><br>
+                   <input type="checkbox" class="luogo" value="teatri" id="teatri"><label for="teatri" id="teatrilabel" style="color: black;">Teatri</label><br>
+                   <input type="checkbox" class="luogo" value="torri" id="torri"><label for="torri" id="torrilabel" style="color: black;">Torri e castelli</label>
+               </div>
+               <hr>
+               <div class="col-lg-6">
+                  <label class="form-label">Mezzi di trasporto</label>
+                  <input type="checkbox" class="mezzo" name="mezzo" value="auto">Auto
+                  <input type="checkbox" class="mezzo" value="treno">Treno
                </div>
                <hr>
              </div>
@@ -290,6 +449,7 @@ https://templatemo.com/tm-580-woox-travel
                               return lista_luoghi;
                           }
                           function visualizzaLuoghiSuMappa(lat, lon, nome, descrizione, totali, col="red", radius=0) {
+                              if(lat == null || long == null) {alert("COORDINATE NULLE: scegliere punto di partenza")}
 
                               var redIcon = new L.Icon({
                                     iconUrl: 'adminpages/img/marker-icon-2x-red.png',
@@ -311,15 +471,6 @@ https://templatemo.com/tm-580-woox-travel
                                   'className' : 'custom'
                               }
                               marker.bindPopup(customPopup,customOptions).addTo(map);
-
-<!--                              navigator.geolocation.getCurrentPosition(function(position) {-->
-<!--                                  var circle = L.circle([position.coords.latitude, position.coords.longitude],{-->
-<!--                                      color:'green',-->
-<!--                                      fillColor: '#90EE90',-->
-<!--                                      fillOpacity: 0.01,-->
-<!--                                      radius: (3.24*(radius)),-->
-<!--                                   }).addTo(map)-->
-<!--                              });-->
                            }
                       </script>
                   </fieldset>

@@ -81,8 +81,8 @@ https://templatemo.com/tm-580-woox-travel
         headers: {}
     };
 
-
     options.body = form;
+
     fetch("http://127.0.0.1:5000/getPacchetti", options)
                 .then(response => response.json())
                 .then(data => {
@@ -352,6 +352,68 @@ https://templatemo.com/tm-580-woox-travel
             <h2>Visualizza i nostri pacchetti</h2>
             <p>Numerosi itinerari che per conoscere la provincia di Salerno, le sue specialità, la sua natura, la sua
               storia e la sua popolazione.</p>
+            <hr>
+            <input type="checkbox" id="mare" name="mare" value="mare" class="mare">
+            <label for="mare">Mare</label>
+
+            <input type="checkbox" id="gastronomia" name="gastronomia" value="gastronomia" class="gastronomia">
+            <label for="gastronomia">Gastronomia</label>
+
+            <input type="checkbox" id="museiteatri" name="museiteatri" value="museiteatri" class="museiteatri">
+            <label for="museiteatri">Teatri e musei</label>
+
+            <input type="checkbox" id="verde" name="verde" value="verde" class="verde">
+            <label for="verde">Aree verdi</label>
+
+            <input type="checkbox" id="castelli" name="castelli" value="castelli" class="castelli">
+            <label for="castelli">Torri e castelli</label>
+
+            <input type="checkbox" id="chiese" name="chiese" value="chiese" class="chiese">
+            <label for="chiese">Luoghi di culto</label>
+
+            <input type="checkbox" id="itinerario" name="itinerario" value="itinerario" class="itinerario">
+            <label for="itinerario">Itinerario misto</label>
+
+            <button id="tipologia" class="tipologia" name="tipologia" onclick="visualizzaPacchettoTipo(document.getElementById('mare'),document.getElementById('verde'),document.getElementById('gastronomia'),document.getElementById('castelli'),document.getElementById('teatrimusei'),document.getElementById('chiese'),document.getElementById('itinerari'))" style="margin-left: 15px;">cerca</button>
+            <hr>
+            <style>
+              input[type="checkbox"] {margin-right: 2px;}
+              label{padding: 5px;}
+            </style>
+            <script>
+              function visualizzaPacchettoTipo(mare, verde, gastronomia, castelli, teatrimusei, chiese, itinerario){
+                $("#pacchetti_paginazione").empty();
+
+                if(mare.checked==true){
+                    $("#pacchetti_paginazione").append("<h1>devono uscire quelli mare</h1>")
+
+
+
+
+                }
+                if(verde.checked==true){
+
+                }
+                if(gastronomia.checked==true){
+
+                }
+                if(castelli.checked==true){
+
+                }
+                if(teatrimusei.checked==true){
+
+                }
+                if(chiese.checked==true){
+
+                }
+                if(itinerario.checked==true){
+
+                }
+
+
+
+              }
+            </script>
           </div>
         </div>
       </div>

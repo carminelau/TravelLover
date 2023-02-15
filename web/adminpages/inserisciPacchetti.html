@@ -442,7 +442,7 @@
                                     </div>
                                     <br>
 <!--                                    <input type="radio" id="mostra-fermate" class="mostra-fermate" onclick='mostraFermateConPacchetto(jsonPOI)'>Mostra fermate vicine<br>-->
-                                    <input type="radio" id="mostra-stazioni" class="mostra-stazioni" onclick='mostraStazioniConPacchetto(jsonPOI)'>Mostra stazioni vicine<hr>
+                                    <input type="radio" id="mostra-stazioni" class="mostra-stazioni" onclick='mostraStazioniConPacchetto(jsonPOI)'>Mostra stazioni vicine
                                     <div id="percorsi-suggeriti"></div>
                                 </div>
                             </div>
@@ -450,10 +450,21 @@
                         <div class="col-lg-6">
                             <div class="card mb-4 py-3">
                                 <div id="creaPercorso">
-                                    <h3>CREA UN NUOVO PACCHETTO</h3>
+                                    <h3>CREA UN NUOVO PACCHETTO</h3><hr>
+                                    <h5><a href="singoliPOI.html?scegli=si" class="seleziona">Scegli i luoghi di interesse</a></h5><hr>
                                     <h5>Nome pacchetto: </h5><input type="text" id="titolo" name="titolo" class="titolo" placeholder="Inserisci titolo qui" required><br>
                                     <h5>Descrizione esperienza: </h5><textarea rows="5" cols="50" name="descrizione" id="descrizione" class="descrizione" placeholder="Inserisci descrizione qui" required></textarea><br>
-                                    <h5><a href="singoliPOI.html?scegli=si" class="seleziona">Scegli i luoghi di interesse</a></h5><hr>
+                                    <h5 style="display: inline-block; margin-right: 10px;">Tipologia esperienza:</h5>
+                                    <select name="tipologia" id="tipologia" style="display: inline-block;" required>
+                                        <option disabled selected value>Seleziona tipo</option>
+                                        <option value="mare">Mare</option>
+                                        <option value="gastronomia">Gastronomia</option>
+                                        <option value="museiteatri">Teatri e musei</option>
+                                        <option value="verde">Aree verdi</option>
+                                        <option value="castelli">Torri e castelli</option>
+                                        <option value="chiese">Luoghi di culto</option>
+                                        <option value="itinerario">Itinerario misto</option>
+                                    </select>
                                     <div id="luogo"></div>
                                     <script>
                                         function visualizzaLuoghiSuMappa(lat, lon, nome, descrizione, col="red") {
@@ -493,7 +504,7 @@
                                         var percorso = localStorage.getItem("listaPercorso")
 
                                     </script>
-                                    <button onclick="creaPacchetto(document.getElementById('titolo').value,document.getElementById('descrizione').value, jsonPOI, JSON.parse(percorso))">CREA PACCHETTO</button>
+                                    <button onclick="creaPacchetto(document.getElementById('titolo').value,document.getElementById('descrizione').value, jsonPOI, JSON.parse(percorso), document.getElementById('tipologia').value)">CREA PACCHETTO</button>
                                 </div>
                                 <style>
                                     #creaPercorso{
