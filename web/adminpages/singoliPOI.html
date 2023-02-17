@@ -228,7 +228,6 @@
                                     <input type="checkbox" name="agriturismi" id="agriturismi" onclick="visualizzaTipoCheck('agriturismi', document.getElementById('agriturismi').value, scegli)"> Agriturismi <br>
                                     <input type="checkbox" name="generici" id="generici" onclick="visualizzaTipoCheck('generici', document.getElementById('generici').value, scegli)"> Altro <br>
                                     <input type="checkbox" name="bandiere" id="bandiere" onclick="visualizzaTipoCheck('bandiere', document.getElementById('bandiere').value, scegli)"> Bandiere blu <br>
-<!--                                    <input type="checkbox" name="biblioteche" id="biblioteche" onclick="visualizzaTipoCheck('biblioteche', document.getElementById('biblioteche').value, scegli)"> Biblioteche <br>-->
                                     <input type="checkbox" name="caseifici" id="caseifici" onclick="visualizzaTipoCheck('caseifici', document.getElementById('caseifici').value, scegli)"> Caseifici <br>
                                     <input type="checkbox" name="fattorie" id="fattorie" onclick="visualizzaTipoCheck('fattorie', document.getElementById('fattorie').value, scegli)"> Fattorie <br>
                                     <input type="checkbox" name="luoghi-di-culto" id="luoghi-di-culto" onclick="visualizzaTipoCheck('luoghi-di-culto', document.getElementById('luoghi-di-culto').value, scegli)"> Luoghi di culto <br>
@@ -243,12 +242,110 @@
                                 <div class="card-body">
                                     <h3>Seleziona un comune di riferimento</h3>
                                     <h6>Vuoi creare un pacchetto ad-hoc per specifici comuni?</h6>
-                                    <select name="comuni" id="comuni">
+                                    <script>
+                                        function getTipiDisponibili(){
+                                           var comune = document.getElementById('comuni').value;
+                                           $.ajax({
+                                                url: "http://127.0.0.1:5000/visualizzaVicinoComuneTipi",
+                                                method: "POST",
+                                                cache: false,
+                                                data: {
+                                                    comune: comune,
+                                                },
+                                                success: function (response) {
+                                                    console.log(response)
+
+                                                   if(!response.includes("agriturismi")){
+                                                        $("#agriturismi2").css("display","none");
+                                                        $("#agriturismilabel").css("display","none");
+                                                    }else if(response.includes("agriturismi")){
+                                                        $("#agriturismi2").css("display","inline");
+                                                        $("#agriturismilabel").css("display","inline");
+                                                    }
+                                                    if(!response.includes("alberi")){
+                                                        $("#alberi2").css("display","none");
+                                                        $("#alberilabel").css("display","none");
+                                                    }else if(response.includes("alberi")){
+                                                        $("#alberi2").css("display","inline");
+                                                        $("#alberilabel").css("display","inline");
+                                                    }
+                                                    if(!response.includes("vino")){
+                                                        $("#vini2").css("display","none");
+                                                        $("#vinilabel").css("display","none");
+                                                    }else if(response.includes("vino")){
+                                                        $("#vini2").css("display","inline");
+                                                        $("#vinilabel").css("display","inline");
+                                                    }
+                                                    if(!response.includes("bandiere")){
+                                                        $("#bandiere2").css("display","none");
+                                                        $("#bandierelabel").css("display","none");
+                                                    }else if(response.includes("bandiere")){
+                                                        $("#bandiere2").css("display","inline");
+                                                        $("#bandierelabel").css("display","inline");
+                                                    }
+                                                    if(!response.includes("caseifici")){
+                                                        $("#caseifici2").css("display","none");
+                                                        $("#caseificilabel").css("display","none");
+                                                    }else if(response.includes("caseifici")){
+                                                        $("#caseifici2").css("display","inline");
+                                                        $("#caseificilabel").css("display","inline");
+                                                    }
+                                                    if(!response.includes("fattorie")){
+                                                        $("#fattorie2").css("display","none");
+                                                        $("#fattorielabel").css("display","none");
+                                                    }else if(response.includes("fattorie")){
+                                                        $("#fattorie2").css("display","inline");
+                                                        $("#fattorielabel").css("display","inline");
+                                                    }
+                                                    if(!response.includes("luoghi-di-culto")){
+                                                        $("#culto2").css("display","none");
+                                                        $("#cultolabel").css("display","none");
+                                                    }else if(response.includes("luoghi-di-culto")){
+                                                        $("#culto2").css("display","inline");
+                                                        $("#cultolabel").css("display","inline");
+                                                    }
+                                                    if(!response.includes("teatri")){
+                                                        $("#teatri2").css("display","none");
+                                                        $("#teatrilabel").css("display","none");
+                                                    }else if(response.includes("teatri")){
+                                                        $("#teatri2").css("display","inline");
+                                                        $("#teatrilabel").css("display","inline");
+                                                    }
+                                                    if(!response.includes("torri")){
+                                                        $("#torri2").css("display","none");
+                                                        $("#torrilabel").css("display","none");
+                                                    }else if(response.includes("torri")){
+                                                        $("#torri2").css("display","inline");
+                                                        $("#torrilabel").css("display","inline");
+                                                    }
+                                                    if(!response.includes("musei")){
+                                                        $("#musei2").css("display","none");
+                                                        $("#museilabel").css("display","none");
+                                                    }else if(response.includes("torri")){
+                                                        $("#musei2").css("display","inline");
+                                                        $("#museilabel").css("display","inline");
+                                                    }
+                                                    if(!response.includes("generici")){
+                                                        $("#generici2").css("display","none");
+                                                        $("#genericilabel").css("display","none");
+                                                    }else if(response.includes("generici")){
+                                                        $("#generici2").css("display","inline");
+                                                        $("#genericilabel").css("display","inline");
+                                                    }
+
+                                                    if(response==null){$("#nessuno").append("<h5>Nessun POI pere questo comune</h5>")}
+                                                },
+                                                error: function () {
+                                                    alert("ERRORE CHIAMATA ASINCRONA");
+                                                }
+                                            });
+                                       }
+                                   </script>
+                                    <select name="comuni" id="comuni" onchange="getTipiDisponibili();">
                                         <option disabled selected value>Seleziona comune</option>
                                         <option value="Acerno">Acerno</option>
                                         <option value="Agropoli">Agropoli</option>
                                         <option value="Albanella">Albanella</option>
-                                        <option value="Alfano">Alfano</option>
                                         <option value="Altavilla Silentina">Altavilla Silentina</option>
                                         <option value="Amalfi">Amalfi</option>
                                         <option value="Angri">Angri</option>
@@ -404,26 +501,29 @@
                                         <option value="Vibonati">Vibonati</option>
                                         <option value="Vietri sul Mare">Vietri sul Mare</option>
                                     </select>
+                                    <button type="button" onclick="visualizzaVicinoComune('byComune',document.getElementById('comuni').value, scegli)">cerca</button>
                                     <br>
                                     <hr>
-                                    <input type="checkbox" name="alberi" id="alberi2"> Alberi monumentali <br>
-                                    <input type="checkbox" name="vini" id="vini2"> Vini <br>
-                                    <input type="checkbox" name="agriturismi" id="agriturismi2"> Agriturismi <br>
-                                    <input type="checkbox" name="generici" id="generici2"> Altro <br>
-                                    <input type="checkbox" name="bandiere" id="bandiere2"> Bandiere blu <br>
-<!--                                    <input type="checkbox" name="biblioteche" id="biblioteche2"> Biblioteche <br>-->
-                                    <input type="checkbox" name="caseifici" id="caseifici2"> Caseifici <br>
-                                    <input type="checkbox" name="fattorie" id="fattorie2"> Fattorie <br>
-                                    <input type="checkbox" name="culto" id="culto2"> Luoghi di culto <br>
-                                    <input type="checkbox" name="musei" id="musei2"> Musei <br>
-                                    <input type="checkbox" name="teatri" id="teatri2"> Teatri <br>
-                                    <input type="checkbox" name="torri" id="torri2"> Torri e castelli <br>
-                                    <br>
-                                    <button type="button" onclick="visualizzaVicinoComune('byComune',document.getElementById('comuni').value, scegli)">cerca</button>
+                                    <input type="checkbox" name="alberi" id="alberi2"><label for="alberi2" id="alberilabel">Alberi monumentali</label><br>
+                                    <input type="checkbox" name="vini" id="vini2"><label for="vini2" id="vinilabel">Vini</label><br>
+                                    <input type="checkbox" name="agriturismi" id="agriturismi2"><label for="agriturismi2" id="agriturismilabel">Agriturismi</label><br>
+                                    <input type="checkbox" name="generici" id="generici2"><label for="generici2" id="genericilabel">Altro</label><br>
+                                    <input type="checkbox" name="bandiere" id="bandiere2"><label for="bandiere2" id="bandierelabel">Bandiere blu</label><br>
+                                    <input type="checkbox" name="caseifici" id="caseifici2"><label for="caseifici2" id="caseificilabel">Caseifici</label><br>
+                                    <input type="checkbox" name="fattorie" id="fattorie2"><label for="fattorie2" id="fattorielabel">Fattorie</label><br>
+                                    <input type="checkbox" name="culto" id="culto2"><label for="culto2" id="cultolabel">Luoghi di culto</label><br>
+                                    <input type="checkbox" name="musei" id="musei2"><label for="musei2" id="museilabel">Musei</label><br>
+                                    <input type="checkbox" name="teatri" id="teatri2"><label for="teatri2" id="teatrilabel">Teatri</label><br>
+                                    <input type="checkbox" name="torri" id="torri2"><label for="torri2" id="torrilabel">Torri e castelli</label>
+                                    <div id="nessuno"></div>
                                 </div>
                             </div>
-
                         </div>
+                        <style>
+                            button{
+                                border-radius: 5px;
+                            }
+                        </style>
 
                         <div class="col-lg-6">
                             <div class="card mb-4 py-3">

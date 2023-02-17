@@ -112,7 +112,7 @@ https://templatemo.com/tm-580-woox-travel
                         <li><a href="about.html">Scopri</a></li>
                         <!--<li><a href="deals.html">Deals</a></li>-->
                         <li><a href="reservation.html" class="active">Crea</a></li>
-                        <li><a href="login.html">Login/Sign Up</a></li>
+                        <li><a href="login.html">Login/Admin</a></li>
                     </ul>   
                     <a class='menu-trigger'>
                         <span>Menu</span>
@@ -132,7 +132,6 @@ https://templatemo.com/tm-580-woox-travel
           <h4>In base ai tuoi gusti e alle tue esigenze</h4>
           <h2>Crea il tuo itinerario ideale</h2>
           <p>Seleziona i tuoi interessi, le tempistiche richieste, il tuo mezzo di trasporto per creare un'esperienza unica solo per te</p>
-          <div class="main-button"><a href="about.html">Scopri Salerno</a></div>
         </div>
       </div>
     </div>
@@ -387,7 +386,6 @@ https://templatemo.com/tm-580-woox-travel
                                 }
                             },
                             error: function () {
-                                alert("ERRORE CHIAMATA ASINCRONA");
                             }
                         });
                    }
@@ -464,13 +462,20 @@ https://templatemo.com/tm-580-woox-travel
                                  var marker = L.marker([lat, lon]);
                               }
 
-                              var customPopup = "<b>"+nome+"</b><br><hr><p>"+descrizione+"</p>";
+                              var customPopup
+                              if(descrizione=="Stazione"){
+                                 console.log(descrizione)
+                                 customPopup = "<div class='popup-content'><b>" + nome + "</b><br><hr><p>" + descrizione + "</p><br><a href='https://www.google.com/search?q=stazioneferroviaria" + nome + "'target='_blank'>Stazione ferroviaria "+nome+"</a></div>";
+                              }else{
+                                 customPopup = "<div class='popup-content' style='height: 200px; overflow-y: scroll;'><b>" + nome + "</b><br><hr><p>" + descrizione + "</p><br><a href='https://www.google.com/search?q="+nome+ "'target='_blank'>"+nome+"</a></div>";
+                              }
                               var customOptions =
                               {
                                   'maxWidth': '500',
-                                  'className' : 'custom'
+                                  'className' : 'custom',
                               }
                               marker.bindPopup(customPopup,customOptions).addTo(map);
+
                            }
                       </script>
                   </fieldset>

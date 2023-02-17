@@ -80,6 +80,14 @@ def vicinoComune():
 
     return jsonify(risposta)
 
+@app.route("/visualizzaVicinoComuneTipi", methods=['POST'])
+def vicinoComuneTipi():
+    comune = request.form.get("comune")
+    geo_comune=comuni_geojson.find_one({"properties.name": comune})["geometry"]["coordinates"][0]
+    luoghi_dentro_comune=luoghi_di_interesse_geo.find({"features.geometry":{"$geoWithin":{"$polygon":geo_comune}}},{"_id":0})
+    tipi_disponibili= luoghi_dentro_comune.distinct("tipo")
+    return tipi_disponibili
+
 #inserire geojson dei comuni della provincia di salerno
 @app.route("/insertComuni", methods=['POST'])
 def insertComuni():

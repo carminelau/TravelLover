@@ -34,23 +34,20 @@ function visualizzaTipoCheck(tipo, azione, scegli) {
             console.log(response)
 
             var lista =[]
+            $(".risultato2").empty();
 
             $(".risultato2").css("text-align", "left");
             $(".risultato2").css("margin", "0 auto");
             $(".risultato2").css("position", "relative");
             $(".risultato2").css("width", "100%");
 
-            if ($('.toggleRisultato2').length === 0) {
-                $(".risultato2").append("<hr><h4 style='text-align: center;'>Luoghi per tipo</h4>");
-                $(".risultato2").append("<button class='btn btn-secondary toggleRisultato2'>Show/Hide</button>");
-            }
-
+            $(".risultato2").append("<hr><h4 style='text-align: center;'>Luoghi per tipo</h4>");
+            $(".risultato2").append("<button class='btn btn-secondary toggleRisultato2'>Show/Hide</button>");
 
             $(".risultato2-1").css("text-align", "left");
             $(".risultato2-1").css("margin", "0 auto");
             $(".risultato2-1").css("position", "relative");
             $(".risultato2-1").css("width", "100%");
-
 
             $(".toggleRisultato2").click(function() {
               $(".risultato2-1").toggle();
@@ -84,7 +81,7 @@ function visualizzaTipoCheck(tipo, azione, scegli) {
                     this.style.textDecoration = "none";
                   });
                 }
-                for (let i = 0; i < links.length; i++) {
+                for (let i = 0; i < linksElimina.length; i++) {
                   linksElimina[i].addEventListener("click", function() {
                     if (scegli==null){window.location.replace("inserisciPacchetti.html");}
                     else{this.style.color = "black";this.textContent="Rimosso da pacchetto";links[i].textContent="Aggiungi a pacchetto"; links[i].style.color="#4e73df";}
@@ -160,7 +157,6 @@ function visualizzaVicinoComune(azione, comune, scegli) {
             $(".risultato1").css("width", "100%");
 
             $(".risultato1").append("<hr><h4 style='text-align: center;'>Luoghi per comune</h4>")
-
             $(".risultato1").append("<button class='btn btn-secondary toggleRisultato3'>Show/Hide</button>");
 
             $(".risultato1-1").css("text-align", "left");
@@ -205,7 +201,7 @@ function visualizzaVicinoComune(azione, comune, scegli) {
                   });
                 }
 
-                for (let i = 0; i < links.length; i++) {
+                for (let i = 0; i < linksElimina.length; i++) {
                   linksElimina[i].addEventListener("click", function() {
                     if (scegli==null){window.location.replace("inserisciPacchetti.html");}
                     else{this.style.color = "black";this.textContent="Rimosso da pacchetto";links[i].textContent="Aggiungi a pacchetto"; links[i].style.color="#4e73df";}
@@ -414,7 +410,6 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
                 totalecordinate.push([latitudine,longitudine])
                 visualizzaLuoghiSuMappa(latitudine, longitudine, nome, descrizione, totalecordinate)
 
-
                 $("#percorso-client-result").append("<br><h6>Nome luogo d'interesse: </h6>"+nome+"<br><h6>Descrizione: </h6>"+descrizione+"<br>");
 
             });
@@ -439,7 +434,7 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
         },
         error: function () {
             if(posizioneUtenteLat == null || posizioneUtenteLong == null) {alert("COORDINATE NULLE: scegliere punto di partenza")}
-            alert("ERRORE CHIAMATA ASINCRONA");
+            //alert("ERRORE CHIAMATA ASINCRONA");
         }
     });
 }
@@ -485,14 +480,14 @@ function creaPacchetto(titolo, descrizione, POIList, percorso, tipologia) {
             console.log(POIList)
             console.log(response)
 
-            $("#creato").empty()
+            $(".creato").empty()
 
-            $("#creato").css("text-align", "center");
-            $("#creato").css("margin", "0 auto");
-            $("#creato").css("position", "relative");
-            $("#creato").css("width", "100%");
+            $(".creato").css("text-align", "center");
+            $(".creato").css("margin", "0 auto");
+            $(".creato").css("position", "relative");
+            $(".creato").css("width", "100%");
 
-            $("#creato").append("<hr><h3><b>PACCHETTO CREATO CON SUCCESSO<b></h3><hr>");
+            $(".creato").append("<hr><h3><b>PACCHETTO CREATO CON SUCCESSO<b></h3><hr>");
 
 
         },
@@ -557,7 +552,7 @@ function mostraStazioniConPacchetto(POIList) {
                 }
             }
 
-            $("#percorsi-suggeriti").append("<hr><h5><a href='visualizzaPercorso.html' class='seleziona'>Valuta percorsi alternativo</a></h5><hr>");
+            $("#percorsi-suggeriti").append("<hr><h5><a href='visualizzaPercorso.html' class='seleziona'>Valuta percorsi alternativi</a></h5><hr>");
         },
         error: function () {
             alert("ERRORE CHIAMATA ASINCRONA");
