@@ -88,6 +88,29 @@ def vicinoComuneTipi():
     tipi_disponibili= luoghi_dentro_comune.distinct("tipo")
     return tipi_disponibili
 
+@app.route("/getNumPOIOgniComune", methods=['POST'])
+def getNumPOIOgniComune():
+    tipi_disponibili = {}
+
+    geo_comuni = comuni_geojson.find({})
+
+    for geo_comune in geo_comuni:
+
+        try:
+            luoghi_dentro_comune = list(luoghi_di_interesse_geo.find({"features.geometry": {"$geoWithin": {"$polygon": geo_comune["geometry"]["coordinates"][0]}}}, {"_id": 0}))
+        except:
+            print(geo_comune)
+
+        tipi = {}
+        for luogo in luoghi_dentro_comune:
+            tipo = luogo.get("tipo")
+            tipi[tipo] = tipi.get(tipo, 0) + 1
+
+        tipi_disponibili[geo_comune["properties"]["name"]] = tipi
+
+    return jsonify({"tipi": tipi_disponibili, "comuni": comuni_geojson.distinct("properties.name")})
+
+
 #inserire geojson dei comuni della provincia di salerno
 @app.route("/insertComuni", methods=['POST'])
 def insertComuni():
