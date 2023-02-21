@@ -30,7 +30,7 @@ https://templatemo.com/tm-580-woox-travel
 
 </head>
 
-<script> 
+<script>
   //funzione per sostituire l'immagine con una ransominca di unsplash
   function randomImage() {
     var images = ["https://source.unsplash.com/1600x900/?nature", "https://source.unsplash.com/1600x900/?water", "https://source.unsplash.com/1600x900/?mountain", "https://source.unsplash.com/1600x900/?beach", "https://source.unsplash.com/1600x900/?sky", "https://source.unsplash.com/1600x900/?sea", "https://source.unsplash.com/1600x900/?forest"];
@@ -38,93 +38,100 @@ https://templatemo.com/tm-580-woox-travel
     return randomImage;
   }
 
-  function caricanumpagine(){
+  function caricanumpagine() {
     const form = new FormData();
 
     const options = {
-        method: 'POST',
-        headers: {}
+      method: 'POST',
+      headers: {}
     };
 
     options.body = form;
-    fetch("http://127.0.0.1:5000/getPagineTotaliPacchetti",options)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      var num_pagine = data;
-      $("#paginazione").empty();
-      for (var i = 1; i <= num_pagine; i++) {
-        let html = "<li><a id='li"+i+"' onclick='caricapacchetti(" + i + ")'>" + i + "</a></li>"
-        $("#paginazione").append(html);
-      }
-    });
+    fetch("http://127.0.0.1:5000/getPagineTotaliPacchetti", options)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        var num_pagine = data;
+        $("#paginazione").empty();
+        for (var i = 1; i <= num_pagine; i++) {
+          let html = "<li><a id='li" + i + "' onclick='caricapacchetti(" + i + ")'>" + i + "</a></li>"
+          $("#paginazione").append(html);
+        }
+      });
   }
 
-  function redirect_information_page(name){
+  function redirect_information_page(name) {
     if (typeof (Storage) !== "undefined") {
-            // Store
-            localStorage.setItem("nome_pacchetto", "");
-            localStorage.setItem("nome_pacchetto", name);
-          } else {
-            console.log("Sorry, your browser does not support Web Storage...");
-          }
-          window.location.href = "dettagli_pacchettoclient.html";
+      // Store
+      localStorage.setItem("nome_pacchetto", "");
+      localStorage.setItem("nome_pacchetto", name);
+    } else {
+      console.log("Sorry, your browser does not support Web Storage...");
+    }
+    window.location.href = "dettagli_pacchettoclient.html";
   }
 
-  function caricapacchetti(pagina){
+  function caricapacchetti(pagina, tipo) {
 
     const form = new FormData();
     form.append("pagina", pagina);
+    form.append("tipo", tipo);
 
     const options = {
-        method: 'POST',
-        headers: {}
+      method: 'POST',
+      headers: {}
     };
 
     options.body = form;
 
     fetch("http://127.0.0.1:5000/getPacchetti", options)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                    $("#pacchetti_paginazione").empty();
-                    var pacchetti = data["data"];
-                    pacchetti.forEach(item => {
-                      var url = randomImage();
-                      let html = "<div class='col-lg-12'><div class='item'><div class='row'><div class='card mb-3'><div class='row g-0'><div class='col-md-3'><img src='"+ url +"' id='imas' class='img-fluid rounded-start' alt='...' style='border-radius: 10px;margin-top: 20px; margin-bottom: 20px;'>";
-                      html = html.concat("</div><div class='col-md-8'><div class='card-body'><h5 class='card-title'>" + item.titolo + "</h5><p class='card-text'> " + item.descrizione + "</p><p class='card-text'>Punti di interesse: ")
-                      item.listaPOI.forEach(poi => {
-                        if (item.listaPOI.indexOf(poi) == (item.listaPOI.length - 1)) {
-                            html=html.concat(poi.Nome)
-                        }
-                        else {
-                            html =html.concat(poi.Nome + ", ")
-                        }
-                      
-                      });
-                      html = html.concat("</p><p class='card-text'>Stazioni vicine: ")
-                      item.percorso.forEach(stazione => {
-                        if (item.percorso.indexOf(stazione) == (item.percorso.length - 1)) {
-                            html=html.concat(stazione.Nome)
-                        }
-                        else {
-                            html =html.concat(stazione.Nome + ", ")
-                        }
-                      
-                      });
-                      html = html.concat("</p></div></div><div class='col-md-1'><button class='btn btn-outline-info btn-sm' onclick='redirect_information_page(\""+ item.titolo +"\")' style='margin:10px'>Visualizza Pacchetto</button></div></div></div></div></div></div>")
-                      $("#pacchetti_paginazione").append(html);
-                    });
-                });
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        $("#pacchetti_paginazione").empty();
+        var pacchetti = data["data"];
+        pacchetti.forEach(item => {
+          var url = randomImage();
+          let html = "<div class='col-lg-12'><div class='item'><div class='row'><div class='card mb-3'><div class='row g-0'><div class='col-md-3'><img src='" + url + "' id='imas' class='img-fluid rounded-start' alt='...' style='border-radius: 10px;margin-top: 20px; margin-bottom: 20px;'>";
+          html = html.concat("</div><div class='col-md-8'><div class='card-body'><h5 class='card-title'>" + item.titolo + "</h5><p class='card-text'> " + item.descrizione + "</p><p class='card-text'>Punti di interesse: ")
+          item.listaPOI.forEach(poi => {
+            if (item.listaPOI.indexOf(poi) == (item.listaPOI.length - 1)) {
+              html = html.concat(poi.Nome)
+            }
+            else {
+              html = html.concat(poi.Nome + ", ")
+            }
+
+          });
+          html = html.concat("</p><p class='card-text'>Stazioni vicine: ")
+          item.percorso.forEach(stazione => {
+            if (item.percorso.indexOf(stazione) == (item.percorso.length - 1)) {
+              html = html.concat(stazione.Nome)
+            }
+            else {
+              html = html.concat(stazione.Nome + ", ")
+            }
+
+          });
+          html = html.concat("</p></div></div><div class='col-md-1'><button class='btn btn-outline-info btn-sm' onclick='redirect_information_page(\"" + item.titolo + "\")' style='margin:10px'>Visualizza Pacchetto</button></div></div></div></div></div></div>")
+          $("#pacchetti_paginazione").append(html);
+        });
+        var num_pagine = data['pagine_totali'];
+        $("#paginazione").empty();
+        for (var i = 1; i <= num_pagine; i++) {
+          let html = "<li><a id='li" + i + "' onclick='caricapacchetti(" + i + ")'>" + i + "</a></li>"
+          $("#paginazione").append(html);
+        }
+      });
   }
 
   window.onload = function () {
-      
-      caricapacchetti(1);
-      caricanumpagine();
-      randomImage();
 
-        };
+    caricapacchetti(1, "all");
+    caricanumpagine();
+    randomImage();
+
+  };
 </script>
 
 <body>
@@ -353,85 +360,65 @@ https://templatemo.com/tm-580-woox-travel
             <p>Numerosi itinerari che per conoscere la provincia di Salerno, le sue specialità, la sua natura, la sua
               storia e la sua popolazione.</p>
             <hr>
-            <input type="checkbox" id="mare" name="mare" value="mare" class="mare">
-            <label for="mare">Mare</label>
 
-            <input type="checkbox" id="gastronomia" name="gastronomia" value="gastronomia" class="gastronomia">
-            <label for="gastronomia">Gastronomia</label>
-
-            <input type="checkbox" id="museiteatri" name="museiteatri" value="museiteatri" class="museiteatri">
-            <label for="museiteatri">Teatri e musei</label>
-
-            <input type="checkbox" id="verde" name="verde" value="verde" class="verde">
-            <label for="verde">Aree verdi</label>
-
-            <input type="checkbox" id="castelli" name="castelli" value="castelli" class="castelli">
-            <label for="castelli">Torri e castelli</label>
-
-            <input type="checkbox" id="chiese" name="chiese" value="chiese" class="chiese">
-            <label for="chiese">Luoghi di culto</label>
-
-            <input type="checkbox" id="itinerario" name="itinerario" value="itinerario" class="itinerario">
-            <label for="itinerario">Itinerario misto</label>
-
-            <button id="tipologia" class="tipologia" name="tipologia" onclick="visualizzaPacchettoTipo(document.getElementById('mare'),document.getElementById('verde'),document.getElementById('gastronomia'),document.getElementById('castelli'),document.getElementById('teatrimusei'),document.getElementById('chiese'),document.getElementById('itinerari'))" style="margin-left: 15px;">cerca</button>
-            <hr>
-            <style>
-              input[type="checkbox"] {margin-right: 2px;}
-              label{padding: 5px;}
-            </style>
-            <script>
-              function visualizzaPacchettoTipo(mare, verde, gastronomia, castelli, teatrimusei, chiese, itinerario){
-                $("#pacchetti_paginazione").empty();
-
-                if(mare.checked==true){
-                    $("#pacchetti_paginazione").append("<h1>devono uscire quelli mare</h1>")
-
-
-
-
-                }
-                if(verde.checked==true){
-
-                }
-                if(gastronomia.checked==true){
-
-                }
-                if(castelli.checked==true){
-
-                }
-                if(teatrimusei.checked==true){
-
-                }
-                if(chiese.checked==true){
-
-                }
-                if(itinerario.checked==true){
-
+            <div class="row">
+              <div class="col-lg-3">
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'mare');">Mare</button>
+              </div>
+              <div class="col-lg-3">
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'gastronomia');">Gastronomia</button>
+              </div>
+              <div class="col-lg-3">
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'museiteatri');">Teatri e Musei</button>
+              </div>
+              <div class="col-lg-3">
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'verde');">Aree Verdi</button>
+              </div>
+              <div class="col-lg-3">
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'castelli');">Torri e castelli</button>
+              </div>
+              <div class="col-lg-3">
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'chiese');">Luoghi di culto</button>
+              </div>
+              <div class="col-lg-3">
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'itinerario');">Itinerario misto</button>
+              </div>
+              <div class="col-lg-3">
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'all');">Tutti</button>
+              </div>
+              <style>
+                input[type="checkbox"] {
+                  margin-right: 2px;
                 }
 
+                label {
+                  padding: 5px;
+                }
 
-
-              }
-            </script>
+                #btn-previous {
+                  margin: 5px;
+                  padding: 10px;
+                  width: 100%;
+                }
+              </style>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="items">
-            <div class="row" id="pacchetti_paginazione">  
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="items">
+              <div class="row" id="pacchetti_paginazione">
 
-            </div>
-            <div class="col-lg-12">
-              <ul class="page-numbers" id="paginazione">
-              </ul>
+              </div>
+              <div class="col-lg-12">
+                <ul class="page-numbers" id="paginazione">
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 
   <div class="call-to-action">

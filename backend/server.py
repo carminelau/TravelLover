@@ -311,9 +311,15 @@ def data():
 
 @app.route("/getPacchetti", methods=['POST'])
 def getpacchetti():
-    pagina = max(int(request.form.get("pagina", 1)), 1)
-    data = poi_itinerary.find({},{"_id":0}).limit(5).skip((pagina-1)*5)
-    pagine_totali = -(poi_itinerary.count_documents({}) // -(5))
+    tipo = request.form.get("tipo")
+    if tipo == "all":
+        pagina = max(int(request.form.get("pagina", 1)), 1)
+        data = poi_itinerary.find({},{"_id":0}).limit(5).skip((pagina-1)*5)
+        pagine_totali = -(poi_itinerary.count_documents({}) // -(5))
+    else:
+        pagina = max(int(request.form.get("pagina", 1)), 1)
+        data = poi_itinerary.find({"tipologia":tipo},{"_id":0}).limit(5).skip((pagina-1)*5)
+        pagine_totali = -(poi_itinerary.count_documents({"tipologia":tipo}) // -(5))
 
     risultato = {
         "data": list(data),
@@ -382,6 +388,36 @@ def getLuoghiDisponibili():
     tipi_disponibili= luoghi2.distinct("tipo")
 
     return tipi_disponibili
+
+#creare una route che restituisce i luoghi di interesse intorno ad un percorso
+@app.route("/getLuoghiPercorso", methods=['POST'])
+def getLuoghiPercorso():
+    ID=request.form.get("ID")
+    
+    #prendo il percorso dal db
+    per_corso = percorso.find_one({"ID": int(ID)}, {"_id": 0})
+    #prendo i punti del percorso
+    punti_percorso = per_corso["geojson"]["features"]
+    arr=[]
+    for punto in punti_percorso:
+        if punto['geometry']['type'] == "Point":
+            #per ogni punto prendo la latitudine e la longitudine
+            latitudine = punto['geometry']['coordinates'][1]
+            longitudine = punto['geometry']['coordinates'][0]
+            #per ogni punto prendo i luoghi di interesse vicini
+            luoghi_percorso = luoghi_di_interesse_geo.find({"$and": [{ "features.geometry": {"$near": {"$geometry": {"type": "Point","coordinates": [longitudine,latitudine]},"$minDistance": 0,"$maxDistance": 5000}}}]},{"_id":0})
+            tipi_disponibili= luoghi_percorso.distinct("tipo")
+            #per ogni punto aggiungo i tipi di luoghi di interesse vicini
+            punto["tipi"]=tipi_disponibili
+            #per ogni punto aggiungo i luoghi di interesse vicini
+            for luogo in luoghi_percorso[0:2]:
+                arr.append(luogo)
+    
+    return jsonify({"status": "success", "luoghi": arr})
+
+
+
+
 
 
 if __name__ == "__main__":

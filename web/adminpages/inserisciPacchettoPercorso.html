@@ -21,7 +21,6 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="js/function.js"></script>
-
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
         integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
@@ -34,7 +33,7 @@
             left: 0;
             right: 0;
             width: 100%;
-            height: 400px;
+            height: 600px;
         }
 
         #listarisultato {
@@ -43,75 +42,37 @@
             -webkit-columns: 2;
             -moz-columns: 2;
         }
-
-        .legend {
-            padding: 6px 8px;
-            font: 14px Arial, Helvetica, sans-serif;
-            background: white;
-            background: rgba(255, 255, 255, 0.8);
-            /*box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/
-            /*border-radius: 5px;*/
-            line-height: 24px;
-            color: #555;
-        }
-
-        .legend h4 {
-            text-align: center;
-            font-size: 16px;
-            margin: 2px 12px 8px;
-            color: #777;
-        }
-
-        .legend span {
-            position: relative;
-            bottom: 3px;
-        }
-
-        .legend i {
-            width: 18px;
-            height: 18px;
-            float: left;
-            margin: 0 8px 0 0;
-            opacity: 0.7;
-        }
-
-        .legend i.icon {
-            background-size: 18px;
-            background-color: rgba(255, 255, 255, 1);
-        }
     </style>
+
 </head>
 
-<script>
-    function logout() {
-        localStorage.removeItem("email");
-        localStorage.removeItem("username");
-        window.location.href = "../login.html";
-    }
 
-    var jsonPOI;
-    var stringaPOI = localStorage.getItem("POIPacchetto")
-    jsonPOI = JSON.parse(stringaPOI);
-    console.log(jsonPOI)
 
-    window.onload = function () {
-        if (typeof (Storage) !== "undefined") {
-            // Store
-            console.log(localStorage.getItem("username"))
-            let username = localStorage.getItem("username");
-            document.getElementById('username_span').innerHTML = username;
-        } else {
-            console.log("no storage")
-        }
-    };
 
-    window.addEventListener("beforeunload", function (e) {
-        localStorage.removeItem("POIPacchetto");
-    });
-
-</script>
 
 <body id="page-top">
+
+    <script>
+        function logout() {
+            localStorage.removeItem("email");
+            localStorage.removeItem("username");
+            window.location.href = "../login.html";
+        }
+
+        window.onload = function () {
+            if (typeof (Storage) !== "undefined") {
+                // Store
+                console.log(localStorage.getItem("username"))
+                let username = localStorage.getItem("username");
+                document.getElementById('username_span').innerHTML = username;
+            } else {
+                console.log("no storage")
+            }
+
+            visualizzaFermateLista();
+
+        };
+    </script>
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -213,8 +174,6 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-
-
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -251,24 +210,24 @@
 
                 </nav>
 
-                <!-- QUI VA IL MAIN CONTENT -->
 
+
+                <!-- Begin Page Content -->
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-1 text-gray-800">INSERISCI UN NUOVO PACCHETTO</h1>
-                    <p class="mb-4">Inserisci un nuovo pacchetto di promozione turistica, valutando stazioni, fermate,
-                        esperienze e luoghi di interesse</p>
+                    <h1 class="h3 mb-1 text-gray-800">VISUALIZZA I PERCORSI PRESENTI</h1>
+                    <p class="mb-4">Visualizza i percorsi presenti nella piattaforma</p>
 
                     <!-- Content Row -->
                     <div class="row">
-                        <div class="creato"></div>
-                        <!-- Border Left Utilities LA MAPPA NON ESCE -->
+                        <!-- Border Left Utilities -->
                         <div class="col-lg-6">
                             <div class="card mb-4 py-3 border-left-primary">
                                 <div class="card-body">
                                     <div id="map">
                                         <script>
+                                            let mapMarkers = [];
                                             function resetMap() {
                                                 location.reload()
 
@@ -289,23 +248,107 @@
                                             };
 
                                             legend.addTo(map);
+
+                                            function visualizzapercorsi(ID) {
+                                                const form = new FormData();
+                                                form.append("ID", ID);
+
+                                                const options = {
+                                                    method: 'POST',
+                                                    headers: {}
+                                                };
+
+                                                options.body = form;
+
+                                                fetch('http://127.0.0.1:5000/getPercorso', options)
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        console.log(data);
+                                                        if (data['status'] == "success") {
+                                                            console.log("Percorso trovato");
+                                                            for (var i = 0; i < mapMarkers.length; i++) {
+                                                                map.removeLayer(mapMarkers[i]);
+                                                            }
+                                                            var marker = L.geoJSON(data['percorso']['geojson'], {
+                                                                style: function (feature) {
+                                                                    return { color: feature.properties.color };
+                                                                }
+                                                            }).bindPopup(function (layer) {
+                                                                return layer.feature.properties.description;
+                                                            }).addTo(map);
+                                                            mapMarkers.push(marker);
+                                                        } else {
+                                                            console.log("Percorso non trovato");
+                                                        }
+
+                                                    }
+                                                    )
+                                                    .catch(err => console.error(err));
+
+                                                fetch("http://127.0.0.1:5000/getLuoghiPercorso", options)
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        console.log(data);
+                                                        if (data['status'] == "success") {
+                                                            console.log("Luoghi trovati");
+                                                            data.luoghi.forEach(element => {
+                                                                visualizzaLuoghiSuMappa(element.features[0].geometry.coordinates[1], element.features[0].geometry.coordinates[0], element.nome, element.descrizione, "red");
+                                                            });
+
+                                                        } else {
+                                                            console.log("Luoghi non trovati");
+                                                        }
+
+                                                    }
+                                                    )
+                                                    .catch(err => console.error(err));
+
+                                                function visualizzaLuoghiSuMappa(lat, lon, nome, descrizione, col = "red") {
+                                                    var redIcon = new L.Icon({
+                                                        iconUrl: 'img/marker-icon-2x-red.png',
+                                                        iconSize: [25, 41],
+                                                        iconAnchor: [12, 41],
+                                                        popupAnchor: [1, -34],
+                                                        shadowSize: [41, 41]
+                                                    });
+                                                    var marker = L.marker([lat, lon], { icon: redIcon });
+                                                    map.panTo([lat, lon], 10);
+
+
+                                                    if (col == "blue") {
+                                                        var marker = L.marker([lat, lon]);
+                                                    }
+
+                                                    var customPopup = "<b>" + nome + "</b><br><hr><p>" + descrizione + "</p>";
+                                                    var customOptions =
+                                                    {
+                                                        'maxWidth': '500',
+                                                        'className': 'custom'
+                                                    }
+                                                    marker.bindPopup(customPopup, customOptions).addTo(map);
+                                                    mapMarkers.push(marker);
+
+                                                }
+
+                                            }
                                         </script>
                                     </div>
-                                    <br>
-                                    <!--                                    <input type="radio" id="mostra-fermate" class="mostra-fermate" onclick='mostraFermateConPacchetto(jsonPOI)'>Mostra fermate vicine<br>-->
-                                    <input type="radio" id="mostra-stazioni" class="mostra-stazioni"
-                                        onclick='mostraStazioniConPacchetto(jsonPOI)'>Mostra stazioni vicine
-                                    <div id="percorsi-suggeriti"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
+
+
                             <div class="card mb-4 py-3">
                                 <div id="creaPercorso">
                                     <h3>CREA UN NUOVO PACCHETTO</h3>
                                     <hr>
-                                    <h5><a href="singoliPOI.html?scegli=si" class="seleziona">Scegli i luoghi di
-                                            interesse</a></h5>
+                                    <div class="card mb-4 py-3">
+                                        <div class="container">
+                                            <ul class="list-group text-white" id="listapercorsi">
+                                            </ul>
+                                        </div>
+                                    </div>
                                     <hr>
                                     <h5>Nome pacchetto: </h5><input type="text" id="titolo" name="titolo" class="titolo"
                                         placeholder="Inserisci titolo qui" required><br>
@@ -421,75 +464,149 @@
                                 </style>
                             </div>
                         </div>
+                        <style>
+                            body {
+                                background: #4527A0;
+                            }
+
+                            .list-group {
+                                margin: 2px;
+                                width: 100% !important;
+
+                            }
+
+                            .list-group-item {
+                                margin-top: 10px;
+                                border-radius: none;
+                                background: #002088;
+                                cursor: pointer;
+                                transition: all 0.3s ease-in-out;
+                            }
+
+
+                            .list-group-item:hover {
+                                transform: scaleX(1.05);
+                            }
+
+
+
+                            .check {
+                                opacity: 0;
+                                transition: all 0.3s ease-in-out;
+                            }
+
+                            .list-group-item:hover .check {
+                                opacity: 1;
+
+                            }
+
+                            .about span {
+                                font-size: 12px;
+                                margin-right: 10px;
+                            }
+
+                            input[type=checkbox] {
+                                position: relative;
+                                cursor: pointer;
+                            }
+
+                            input[type=checkbox]:before {
+                                content: "";
+                                display: block;
+                                position: absolute;
+                                width: 20px;
+                                height: 20px;
+                                top: 0px;
+                                left: 0;
+                                border: 1px solid #10a3f9;
+                                border-radius: 3px;
+                                background-color: white;
+
+                            }
+
+                            input[type=checkbox]:checked:after {
+                                content: "";
+                                display: block;
+                                width: 7px;
+                                height: 12px;
+                                border: solid #007bff;
+                                border-width: 0 2px 2px 0;
+                                -webkit-transform: rotate(45deg);
+                                -ms-transform: rotate(45deg);
+                                transform: rotate(45deg);
+                                position: absolute;
+                                top: 2px;
+                                left: 6px;
+                            }
+
+                            input[type="checkbox"]:checked+.check {
+                                opacity: 1;
+                            }
+                        </style>
+
                     </div>
                 </div>
-
-                <div class="creato"></div>
-
-
-
-
-
-
-
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2021</span>
-                        </div>
-                    </div>
-                </footer>
-                <!-- End of Footer -->
-
             </div>
-            <!-- End of Content Wrapper -->
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2021</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
 
         </div>
-        <!-- End of Page Wrapper -->
+        <!-- End of Content Wrapper -->
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+    </div>
+    <!-- End of Page Wrapper -->
 
-        <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" onclick="return logout()">Logout</a>
-                    </div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" onclick="return logout()">Logout</a>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
 
-        <!-- Page level plugins -->
-        <script src="vendor/chart.js/Chart.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="js/demo/chart-area-demo.js"></script>
-        <script src="js/demo/chart-pie-demo.js"></script>
-        <script src="js/function.js"></script>
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="js/function.js"></script>
 </body>
 
 </html>
