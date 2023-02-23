@@ -489,6 +489,11 @@ function creaPacchetto(titolo, descrizione, POIList, percorso, tipologia) {
 
             $(".creato").append("<hr><h3><b>PACCHETTO CREATO CON SUCCESSO<b></h3><hr>");
 
+            //mettere alert
+            alert("Pacchetto inserito con successo!"); 
+
+            window.location.href = "visualizzaPacchetti.html";
+
 
         },
         error: function () {

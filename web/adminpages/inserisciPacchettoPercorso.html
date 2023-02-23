@@ -228,6 +228,8 @@
                                     <div id="map">
                                         <script>
                                             let mapMarkers = [];
+                                            let percorso = [];
+                                            let jsonPOI = [];
                                             function resetMap() {
                                                 location.reload()
 
@@ -266,6 +268,7 @@
                                                         console.log(data);
                                                         if (data['status'] == "success") {
                                                             console.log("Percorso trovato");
+                                                            jsonPOI = data['percorso'];
                                                             for (var i = 0; i < mapMarkers.length; i++) {
                                                                 map.removeLayer(mapMarkers[i]);
                                                             }
@@ -291,6 +294,7 @@
                                                         console.log(data);
                                                         if (data['status'] == "success") {
                                                             console.log("Luoghi trovati");
+                                                            percorso = data['luoghi'];
                                                             data.luoghi.forEach(element => {
                                                                 visualizzaLuoghiSuMappa(element.features[0].geometry.coordinates[1], element.features[0].geometry.coordinates[0], element.nome, element.descrizione, "red");
                                                             });
@@ -341,7 +345,7 @@
 
                             <div class="card mb-4 py-3">
                                 <div id="creaPercorso">
-                                    <h3>CREA UN NUOVO PACCHETTO</h3>
+                                    <h3>CREA UN NUOVO PACCHETTO TRAMITE </h3>
                                     <hr>
                                     <div class="card mb-4 py-3">
                                         <div class="container">
@@ -402,11 +406,9 @@
                                             visualizzaLuoghiSuMappa(jsonPOI[i].Latitudine, jsonPOI[i].Longitudine, jsonPOI[i].Nome, jsonPOI[i].Descrizione)
                                         }
 
-                                        var percorso = localStorage.getItem("listaPercorso")
-
                                     </script>
                                     <button
-                                        onclick="creaPacchetto(document.getElementById('titolo').value,document.getElementById('descrizione').value, jsonPOI, JSON.parse(percorso), document.getElementById('tipologia').value)">CREA
+                                        onclick="creaPacchetto(document.getElementById('titolo').value,document.getElementById('descrizione').value, jsonPOI, percorso, document.getElementById('tipologia').value)">CREA
                                         PACCHETTO</button>
                                 </div>
                                 <style>
