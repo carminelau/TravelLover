@@ -38,6 +38,8 @@ https://templatemo.com/tm-580-woox-travel
     return randomImage;
   }
 
+  let tiposelezionato = "all";
+
   function caricanumpagine() {
     const form = new FormData();
 
@@ -54,7 +56,7 @@ https://templatemo.com/tm-580-woox-travel
         var num_pagine = data;
         $("#paginazione").empty();
         for (var i = 1; i <= num_pagine; i++) {
-          let html = "<li><a id='li" + i + "' onclick='caricapacchetti(" + i + ")'>" + i + "</a></li>"
+          let html = "<li><a id='li" + i + "' onclick='caricapacchetti(" + i + ",'" + tiposelezionato + "')'>" + i + "</a></li>"
           $("#paginazione").append(html);
         }
       });
@@ -73,6 +75,9 @@ https://templatemo.com/tm-580-woox-travel
 
   function caricapacchetti(pagina, tipo) {
 
+    if (tipo != tiposelezionato) {
+      tiposelezionato = tipo;
+    }
     const form = new FormData();
     form.append("pagina", pagina);
     form.append("tipo", tipo);
@@ -119,7 +124,7 @@ https://templatemo.com/tm-580-woox-travel
         var num_pagine = data['pagine_totali'];
         $("#paginazione").empty();
         for (var i = 1; i <= num_pagine; i++) {
-          let html = "<li><a id='li" + i + "' onclick='caricapacchetti(" + i + ")'>" + i + "</a></li>"
+          let html = '<li><a id=\"li' + i + '\" onclick=caricapacchetti(' + i + ',\"' + tiposelezionato + '\")>' + i + '</a></li>'
           $("#paginazione").append(html);
         }
       });
@@ -366,22 +371,28 @@ https://templatemo.com/tm-580-woox-travel
                 <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'mare');">Mare</button>
               </div>
               <div class="col-lg-3">
-                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'gastronomia');">Gastronomia</button>
+                <button class="btn btn-primary" id="btn-previous"
+                  onclick="caricapacchetti(1, 'gastronomia');">Gastronomia</button>
               </div>
               <div class="col-lg-3">
-                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'museiteatri');">Teatri e Musei</button>
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'museiteatri');">Teatri e
+                  Musei</button>
               </div>
               <div class="col-lg-3">
-                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'verde');">Aree Verdi</button>
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'verde');">Aree
+                  Verdi</button>
               </div>
               <div class="col-lg-3">
-                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'castelli');">Torri e castelli</button>
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'castelli');">Torri e
+                  castelli</button>
               </div>
               <div class="col-lg-3">
-                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'chiese');">Luoghi di culto</button>
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'chiese');">Luoghi di
+                  culto</button>
               </div>
               <div class="col-lg-3">
-                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'itinerario');">Itinerario misto</button>
+                <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'itinerario');">Itinerario
+                  misto</button>
               </div>
               <div class="col-lg-3">
                 <button class="btn btn-primary" id="btn-previous" onclick="caricapacchetti(1, 'all');">Tutti</button>

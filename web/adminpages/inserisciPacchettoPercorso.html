@@ -268,7 +268,7 @@
                                                         console.log(data);
                                                         if (data['status'] == "success") {
                                                             console.log("Percorso trovato");
-                                                            jsonPOI = data['percorso'];
+                                                            percorso[0] = data['percorso'];
                                                             for (var i = 0; i < mapMarkers.length; i++) {
                                                                 map.removeLayer(mapMarkers[i]);
                                                             }
@@ -294,7 +294,7 @@
                                                         console.log(data);
                                                         if (data['status'] == "success") {
                                                             console.log("Luoghi trovati");
-                                                            percorso = data['luoghi'];
+                                                            jsonPOI = data['luoghi'];
                                                             data.luoghi.forEach(element => {
                                                                 visualizzaLuoghiSuMappa(element.features[0].geometry.coordinates[1], element.features[0].geometry.coordinates[0], element.nome, element.descrizione, "red");
                                                             });
