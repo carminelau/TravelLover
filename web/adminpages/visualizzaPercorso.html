@@ -228,6 +228,9 @@
                                 <div class="card-body">
                                     <div id="map">
                                         <script>
+                                            let mapMarkers = [];
+
+
                                             function resetMap() {
                                                 location.reload()
 
@@ -239,6 +242,9 @@
                                             }).addTo(map);
 
                                             function visualizzapercorsi(ID) {
+                                                for (var i = 0; i < mapMarkers.length; i++) {
+                                                    map.removeLayer(mapMarkers[i]);
+                                                }
                                                 const form = new FormData();
                                                 form.append("ID", ID);
 
@@ -262,6 +268,7 @@
                                                             }).bindPopup(function (layer) {
                                                                 return layer.feature.properties.description;
                                                             }).addTo(map);
+                                                            mapMarkers.push(marker);
                                                         } else {
                                                             console.log("Percorso non trovato");
                                                         }
