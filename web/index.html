@@ -101,12 +101,23 @@ https://templatemo.com/tm-580-woox-travel
           html = html.concat("</div><div class='col-md-8'><div class='card-body'><h5 class='card-title'>" + item.titolo + "</h5><p class='card-text'> " + item.descrizione + "</p><p class='card-text'>Punti di interesse: ")
           item.listaPOI.forEach(poi => {
             if (item.listaPOI.indexOf(poi) == (item.listaPOI.length - 1)) {
-              html = html.concat(poi.Nome)
+              if (poi.Nome == null) {
+                html = html.concat(poi.nome)
+              }
+              else {
+                html = html.concat(poi.Nome)
+              }
+
             }
             else {
-              html = html.concat(poi.Nome + ", ")
-            }
+              if (poi.Nome == null) {
+                html = html.concat(poi.nome + ", ")
+              }
+              else {
+                html = html.concat(poi.Nome + ", ")
+              }
 
+            }
           });
           html = html.concat("</p><p class='card-text'>Stazioni vicine: ")
           item.percorso.forEach(stazione => {

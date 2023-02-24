@@ -243,8 +243,7 @@ def insertPercorso():
         tupla=(float(i.split(",")[1]),float(i.split(",")[0]))
         print(tupla)
         arry.append(tupla)
-        futures.append(geojson.Feature(geometry=geojson.Point(tupla)))
-    futures.append(geojson.Feature(geometry=geojson.LineString(arry)))
+        futures.append(geojson.Feature(geometry=geojson.Point(tupla), properties={}))
 
     ids=randint(0,1000000)
     cercaid= percorso.find_one({"ID":ids})
@@ -444,7 +443,15 @@ def getLuoghiPercorso():
     return jsonify({"status": "success", "luoghi": arr})
 
 
-
+#route per ricevere nome e tipo di una stazione dato latitudine e longitudine
+@app.route("/getStazione", methods=['POST'])
+def getStazione():
+    latitudine=request.form.get("latitudine")
+    longitudine=request.form.get("longitudine")
+    print(latitudine, longitudine)
+    stazione = stations.find_one({"Latitudine":float(latitudine),"Longitudine":float(longitudine)}, {"_id": 0})
+    #geo_stazione = stazioni_fermate_geo.find_one({"Nome": stazione["Nome"]}, {"_id": 0})
+    return jsonify({"status": "success", "stazione": stazione})
 
 
 

@@ -122,6 +122,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Point of Interest</h6>
                         <a class="collapse-item" href="inserisciPacchetti.html">Pacchetti</a>
+                        <a class="collapse-item" href="inserisciPacchettiPercorso.html">Pacchetti da tratte</a>
                         <a class="collapse-item" href="inserisciPOI.html">Singoli POI</a>
                     </div>
                 </div>
@@ -291,12 +292,18 @@
                                                 fetch("http://127.0.0.1:5000/getLuoghiPercorso", options)
                                                     .then(response => response.json())
                                                     .then(data => {
-                                                        console.log(data);
                                                         if (data['status'] == "success") {
                                                             console.log("Luoghi trovati");
                                                             jsonPOI = data['luoghi'];
-                                                            data.luoghi.forEach(element => {
-                                                                visualizzaLuoghiSuMappa(element.features[0].geometry.coordinates[1], element.features[0].geometry.coordinates[0], element.nome, element.descrizione, "red");
+                                                            jsonPOI.map(({
+                                                                nome: Nome,
+                                                                descrizione: Descrizione,
+                                                            }) => ({
+                                                                Nome, Descrizione
+                                                            }));
+
+                                                            jsonPOI.forEach(element => {
+                                                                visualizzaLuoghiSuMappa(element.features[0].geometry.coordinates[1], element.features[0].geometry.coordinates[0], element.Nome, element.Descrizione, "red");
                                                             });
 
                                                         } else {
@@ -398,12 +405,12 @@
                                         }
 
                                         for (let i = 0; i < jsonPOI.length; i++) {
-                                            document.getElementById("luogo").innerHTML += "<h6>" + jsonPOI[i].Nome + "</h6><hr>";
+                                            document.getElementById("luogo").innerHTML += "<h6>" + jsonPOI[i].nome + "</h6><hr>";
                                         }
 
                                         for (let i = 0; i < jsonPOI.length; i++) {
                                             console.log(jsonPOI[i].Latitudine)
-                                            visualizzaLuoghiSuMappa(jsonPOI[i].Latitudine, jsonPOI[i].Longitudine, jsonPOI[i].Nome, jsonPOI[i].Descrizione)
+                                            visualizzaLuoghiSuMappa(jsonPOI[i].Latitudine, jsonPOI[i].Longitudine, jsonPOI[i].nome, jsonPOI[i].descrizione)
                                         }
 
                                     </script>

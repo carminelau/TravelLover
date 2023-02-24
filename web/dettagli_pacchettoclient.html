@@ -123,6 +123,7 @@ https://templatemo.com/tm-580-woox-travel
             document.getElementById("descrizione_pacchetto").innerHTML = data.pacchetto.descrizione;
             let html = "";
             data.pacchetto.listaPOI.forEach(element => {
+              
               visualizzaLuoghiSuMappa(element.Latitudine, element.Longitudine, element.Nome, element.Descrizione, "blue")
               var url = randomImage();
               if (element.Descrizione.length < 50) {
