@@ -110,6 +110,34 @@ def getNumPOIOgniComune():
 
     return jsonify({"tipi": tipi_disponibili, "comuni": comuni_geojson.distinct("properties.name")})
 
+@app.route("/getNumPaccchettiOgniTipologia", methods=['POST'])
+def getNumPacchettiOgniTipologia():
+    tipi_disponibili = {}
+
+    for pacchetto in poi_itinerary.find({}):
+        tipo = pacchetto.get("tipologia")
+
+        if tipo in tipi_disponibili:
+            tipi_disponibili[tipo] += 1
+        else:
+            tipi_disponibili[tipo] = 1
+
+    return jsonify({"tipi_pacchetto": tipi_disponibili})
+
+@app.route("/getNumPOIOgniTipologia", methods=['POST'])
+def getNumPOIOgniTipologia():
+    tipi_disponibili = {}
+
+    for luogo in luoghi_di_interesse_geo.find({}):
+        tipo = luogo.get("tipo")
+
+        if tipo in tipi_disponibili:
+            tipi_disponibili[tipo] += 1
+        else:
+            tipi_disponibili[tipo] = 1
+
+    return jsonify({"tipi_luogo": tipi_disponibili})
+
 
 #inserire geojson dei comuni della provincia di salerno
 @app.route("/insertComuni", methods=['POST'])

@@ -142,7 +142,7 @@ function visualizzaVicinoComune(azione, comune, scegli) {
             if (generici.checked == true) selectedValues.push("generici");
             if (caseifici.checked == true) selectedValues.push("caseifici");
             //if (biblioteche.checked == true) selectedValues.push("biblioteche");
-            if (culto.checked == true) selectedValues.push("culto");
+            if (culto.checked == true) selectedValues.push("luoghi-di-culto");
             if (musei.checked == true) selectedValues.push("musei");
             if (teatri.checked == true) selectedValues.push("teatri");
             if (fattorie.checked == true) selectedValues.push("fattorie");
@@ -557,7 +557,7 @@ function mostraStazioniConPacchetto(POIList) {
                 }
             }
 
-            $("#percorsi-suggeriti").append("<hr><h5><a href='visualizzaPercorso.html' class='seleziona'>Valuta percorsi alternativi</a></h5><hr>");
+           // $("#percorsi-suggeriti").append("<hr><h5><a href='visualizzaPercorso.html' class='seleziona'>Valuta percorsi alternativi</a></h5><hr>");
         },
         error: function () {
             alert("ERRORE CHIAMATA ASINCRONA");

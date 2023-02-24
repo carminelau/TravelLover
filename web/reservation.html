@@ -446,7 +446,9 @@ https://templatemo.com/tm-580-woox-travel
                               }
                               return lista_luoghi;
                           }
+
                           function visualizzaLuoghiSuMappa(lat, lon, nome, descrizione, totali, col="red", radius=0) {
+
                               if(lat == null || long == null) {alert("COORDINATE NULLE: scegliere punto di partenza")}
 
                               var redIcon = new L.Icon({
@@ -475,7 +477,6 @@ https://templatemo.com/tm-580-woox-travel
                                   'className' : 'custom',
                               }
                               marker.bindPopup(customPopup,customOptions).addTo(map);
-
                            }
                       </script>
                   </fieldset>

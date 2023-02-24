@@ -186,126 +186,136 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <h2>GESTISCI PACCHETTI, CREA PERCORSI, ANALIZZA PUNTI D'INTERESSE</h2>
-                    <div style="width: 90%; margin: 0 auto; text-align: center;">
-                        <canvas id="distribuzionePOI"></canvas>
+                    <center><h2>GESTISCI PACCHETTI, CREA PERCORSI, ANALIZZA PUNTI D'INTERESSE</h2></center>
+                    <hr>
+                    <div style="width: 95%; margin: 0 auto; text-align: center;">
+                        <div id="torta">
+                            <h3>Conteggio pacchetti per tipologia</h3>
+                            <canvas id="grafico1"></canvas>
+                        </div>
+                        <hr>
+                        <div id="barre">
+                            <h3>Conteggio luoghi d'interesse per tipologia</h3>
+                            <canvas id="grafico2"></canvas>
+                        </div>
                     </div>
+                    <style>
+                        /* Stile per la sezione dei grafici */
+                        #torta, #barre {
+                          display: inline-block;
+                          vertical-align: top;
+                          width: 75%;
+                          margin: 10px;
+                          box-shadow: 0 2px 4px rgba(0,0,0,.2);
+                          border-radius: 10px;
+                          padding-bottom: 10px;
+                        }
+
+                        /* Stile per il titolo delle sezioni dei grafici */
+                        #torta h3, #barre h3 {
+                          text-align: center;
+                          font-size: 1.2rem;
+                          margin: 0;
+                          padding: 10px;
+                          background-color: #f2f2f2;
+                          border-radius: 10px 10px 0 0;
+                        }
+
+                        /* Stile per il canvas dei grafici */
+                        canvas {
+                          width: 100%;
+                          height: auto;
+                          border-radius: 0 0 10px 10px;
+                        }
+                    </style>
                     <script>
                         $.ajax({
-                            url: "http://127.0.0.1:5000/getNumPOIOgniComune",
+                            url: "http://127.0.0.1:5000/getNumPaccchettiOgniTipologia",
                             method: "POST",
                             cache: false,
                             success: function (response) {
-                                var dati = response.tipi;
-                                var comuni = response.comuni;
+                                console.log(response)
 
-                                console.log(dati)
+                                // Ottieni i dati dei pacchetti per ogni tipo di pacchetto
+                                const tipiPacchetto = response.tipi_pacchetto;
 
-                                var ctx = document.getElementById("distribuzionePOI").getContext("2d");
-                                var myChart = new Chart(ctx, {
-                                  type: "bar",
-                                  data: {
-                                    labels: comuni,
-                                    datasets: [
-                                      {
-                                        label: "musei",
-                                        backgroundColor: "#8B0000",
-                                        data: comuni.map(function(d) {
-                                            if(dati[d]["musei"]!=undefined){
-                                               return dati[d]["musei"];
-                                            }
-                                        })
-                                      },
-                                      {
-                                        label: "alberi",
-                                        backgroundColor: "#FFA500",
-                                        data: comuni.map(function(d) {
-                                            if(dati[d]["alberi"]!=undefined){return dati[d]["alberi"];}
-                                        })
-                                      },
-                                      {
-                                        label: "vini",
-                                        backgroundColor: "#FFD700",
-                                        data: comuni.map(function(d) {
-                                            if(dati[d]["vino"]!=undefined){return dati[d]["vino"];}
-                                        })
-                                      },
-                                      {
-                                        label: "agriturismi",
-                                        backgroundColor: "#008000",
-                                        data: comuni.map(function(d) {
-                                            if(dati[d]["agriturismi"]!=undefined){return dati[d]["agriturismi"];}
-                                        })
-                                      },
-                                      {
-                                        label: "fattorie",
-                                        backgroundColor: "#00CED1",
-                                        data: comuni.map(function(d) {
-                                            if(dati[d]["fattorie"]!=undefined){return dati[d]["fattorie"];}
-                                        })
-                                      },
-                                      {
-                                        label: "caseifici",
-                                        backgroundColor: "orange",
-                                        data: comuni.map(function(d) {
-                                            if(dati[d]["caseifici"]!=undefined){return dati[d]["caseifici"];}
-                                        })
-                                      },
-                                      {
-                                        label: "bandiere",
-                                        backgroundColor: "#000080",
-                                        data: comuni.map(function(d) {
-                                            if(dati[d]["bandiere"]!=undefined){return dati[d]["bandiere"];}
-                                        })
-                                      },
-                                      {
-                                        label: "culto",
-                                        backgroundColor: "#800080",
-                                        data: comuni.map(function(d) {
-                                            if(dati[d]["luoghi-di-culto"]!=undefined){return dati[d]["luoghi-di-culto"];}
-                                        })
-                                      },
-                                      {
-                                        label: "teatri",
-                                        backgroundColor: "#FFC0CB",
-                                        data: comuni.map(function(d) {
-                                            if(dati[d]["teatri"]!=undefined){return dati[d]["teatri"];}
-                                        })
-                                      },
-                                      {
-                                        label: "torri",
-                                        backgroundColor: "#FFDAB9",
-                                        data: comuni.map(function(d) {
-                                            if(dati[d]["torri"]!=undefined){return dati[d]["torri"];}
-                                        })
-                                      }
-                                    ]
-                                  },
-                                  options: {
-                                    title: {
-                                      display: true,
-                                      text: "Distribuzione di POI per comune"
+                                // Prepara i dati per il grafico a barre
+                                const labels = Object.keys(tipiPacchetto);
+                                const data = Object.values(tipiPacchetto);
+
+                                // Crea il grafico a barre
+                                const ctx = document.getElementById('grafico1').getContext('2d');
+                                const myChart = new Chart(ctx, {
+                                    type: 'pie',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'tipi',
+                                            data: data,
+                                            backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+                                            borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(153, 102, 255, 1)'],
+                                        }]
                                     },
-                                    scales: {
-                                      xAxes: [{
-                                        stacked: true,
-                                        scaleLabel: {
-                                          display: true,
-                                          labelString: 'Comune'
+
+                                })
+                            },
+                            error: function () {
+                                alert("ERRORE CHIAMATA ASINCRONA");
+                            }
+                        });
+                    </script>
+
+                    <script>
+                        $.ajax({
+                            url: "http://127.0.0.1:5000/getNumPOIOgniTipologia",
+                            method: "POST",
+                            cache: false,
+                            success: function (response) {
+                                console.log(response)
+
+                                // ottieni i tipi di luogo e i loro conteggi
+                                var tipi_luogo = {
+                                    "agriturismi": 132,
+                                    "alberi": 32,
+                                    "bandiere": 47,
+                                    "caseifici": 33,
+                                    "fattorie": 81,
+                                    "altro": 354,
+                                    "luoghi-di-culto": 44,
+                                    "musei": 60,
+                                    "teatri": 5,
+                                    "torri": 192,
+                                    "vino": 124
+                                };
+
+                                // ottieni le etichette e i dati per il grafico
+                                var labels = Object.keys(tipi_luogo);
+                                var data = Object.values(tipi_luogo);
+
+                                // crea il grafico
+                                var ctx = document.getElementById('grafico2').getContext('2d');
+                                var chart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Conteggio luoghi per tipo di luogo',
+                                            data: data,
+                                            backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+                                            borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(54, 162, 235, 1)'],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
+                                            }]
                                         }
-                                      }],
-                                      yAxes: [{
-                                        stacked: true,
-                                        scaleLabel: {
-                                          display: true,
-                                          labelString: 'Numero di POI'
-                                        }
-                                      }]
                                     }
-                                  }
-                                });
-
-
+                                })
                             },
                             error: function () {
                                 alert("ERRORE CHIAMATA ASINCRONA");
