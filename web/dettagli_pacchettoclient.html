@@ -127,11 +127,11 @@ https://templatemo.com/tm-580-woox-travel
               visualizzaLuoghiSuMappa(element.Latitudine, element.Longitudine, element.Nome, element.Descrizione, "blue")
               var url = randomImage();
               if (element.Descrizione.length < 50) {
-                html = html.concat("<div class='col'><div class='card'><img src='" + url + "' class='card-img-top' alt='...' style='width:100%'><div class='card-body'><h5 class='card-title'>" + element.Nome + "</h5><p class='card-text' data-bs-toggle='tooltip' data-bs-placement='top' title='Tooltip on top'>" + element.Descrizione + "</p></div></div></div>")
+                html = html.concat("<div class='col'><div class='card'><img src='" + url + "' class='card-img-top' alt='...' style='width:100%'><div class='card-body'><h5 class='card-title'>" + element.Nome + "</h5><p class='card-text' data-bs-toggle='tooltip' data-bs-placement='top' title='Tooltip on top'>" + element.Descrizione + "</p></div></div></div>");
+              } else {
+                html = html.concat("<div class='col'><div class='card'><img src='" + url + "' class='card-img-top' alt='...' style='width:100%'><div class='card-body'><h5 class='card-title'>" + element.Nome + "</h5><div class='card-text' data-bs-toggle='tooltip' data-bs-placement='top' title='Tooltip on top' style='max-height: 120px; overflow: auto'>" + element.Descrizione + "</div></div></div></div>");
               }
-              else {
-                html = html.concat("<div class='col'><div class='card'><img src='" + url + "' class='card-img-top' alt='...' style='width:100%'><div class='card-body'><h5 class='card-title'>" + element.Nome + "</h5><p class='card-text' data-bs-toggle='tooltip' data-bs-placement='top' title='Tooltip on top'>" + element.Descrizione.substring(0, 50) + "..." + "</p></div></div></div>")
-              }
+
             })
 
             $('#carosello').append(html)

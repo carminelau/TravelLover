@@ -368,6 +368,7 @@ def mostraStazioniConPacchetto():
             if lista_fermate_vicino_poi_corrente[i] not in lista_fermate_vicino_poi:
                 lista_fermate_vicino_poi.append(lista_fermate_vicino_poi_corrente[i])
 
+    print(lista_fermate_vicino_poi)
     return jsonify({"status":"success","lista_stazioni":lista_fermate_vicino_poi})
 
 @app.route("/api/data", methods=['GET'])

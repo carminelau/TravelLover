@@ -228,6 +228,7 @@ https://templatemo.com/tm-580-woox-travel
 
                             var marker = L.marker([position.coords.latitude, position.coords.longitude],{icon:redIcon}).addTo(map);
                             mapMarkers.push(marker);
+
                             var customPopup = "<b>La tua posizione</b>";
                             var customOptions =
                             {
@@ -423,9 +424,7 @@ https://templatemo.com/tm-580-woox-travel
                       <button type="button" onclick="creaPercoso()">Genera percorso</button>
                       <script>
                           function creaPercoso(){
-                            for (var i = 0; i < mapMarkers.length; i++) {
-                                                                map.removeLayer(mapMarkers[i]);
-                                                            }
+                            for (var i = 1; i < mapMarkers.length; i++) {map.removeLayer(mapMarkers[i]);}
                             creaPercorsoClient('percorsoClient', getCheckedListaMezzi(), getCheckedRange(), getCheckedListaLuoghi(), lat, long);
                           }
 
