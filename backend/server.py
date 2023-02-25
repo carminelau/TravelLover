@@ -201,7 +201,14 @@ def creaPercorsoClient():
 
 
     luoghi_percorso=luoghi_di_interesse_geo.find({"$and":[{"features.geometry":{"$near":{"$geometry":{"type":"Point","coordinates": [float(long), float(lat)]},"$minDistance": min,"$maxDistance": max}}},{"tipo": {"$in":tipi}}]},{"_id":0})
-    luoghi2=luoghi_di_interesse_geo.find({"$and":[{"features.geometry":{"$near":{"$geometry":{"type":"Point","coordinates": [float(long), float(lat)]},"$minDistance": min,"$maxDistance": max}}},{"tipo": {"$in":tipi}}]},{"_id":0})
+    luoghi2=list(luoghi_di_interesse_geo.find({"$and":[{"features.geometry":{"$near":{"$geometry":{"type":"Point","coordinates": [float(long), float(lat)]},"$minDistance": min,"$maxDistance": max}}},{"tipo": {"$in":tipi}}]},{"_id":0}))
+    luogoA=[]
+    for luogo in luoghi2:
+        long=luogo["features"][0]["geometry"]["coordinates"][0]
+        lat=luogo["features"][0]["geometry"]["coordinates"][1]
+        stazione_vicina=list(stazioni_fermate_geo.find({"$and":[{"features.geometry":{"$near": {"$geometry": {"type": "Point", "coordinates": [long, lat]}}}},{"Tipo": "Treni"}]},{"_id":0}))[0]
+        luogo["fermata_vicina"]=stazione_vicina
+        luogoA.append(luogo)
 
     lista_stazioni_suggerite=[]
     print(luoghi_percorso)
@@ -212,8 +219,10 @@ def creaPercorsoClient():
             stazione_vicina=stazioni_fermate_geo.find({"$and":[{"features.geometry":{"$near": {"$geometry": {"type": "Point", "coordinates": [long, lat]}}}},{"Tipo": "Treni"}]},{"_id":0})[0]
             if stazione_vicina not in lista_stazioni_suggerite:
                 lista_stazioni_suggerite.append(stazione_vicina)
+    
 
-    return jsonify({"luoghi_pacchetto":list(luoghi2), "percorso_suggerito":lista_stazioni_suggerite, "status":"success"})
+
+    return jsonify({"luoghi_pacchetto":luoghi2, "percorso_suggerito":lista_stazioni_suggerite, "status":"success"})
 
 @app.route("/inserisciNuovoPOI", methods=['POST','GET'])
 def inserisciNuovoPOI():
