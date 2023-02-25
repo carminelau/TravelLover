@@ -231,6 +231,9 @@
                                             let mapMarkers = [];
                                             let percorso = [];
                                             let jsonPOI = [];
+                                            let jsonPOI2=[];
+                                            let percorso2=[];
+
                                             function resetMap() {
                                                 location.reload()
 
@@ -269,6 +272,8 @@
                                                         console.log(data);
                                                         if (data['status'] == "success") {
                                                             console.log("Percorso trovato");
+
+
                                                             percorso[0] = data['percorso'];
                                                             for (var i = 0; i < mapMarkers.length; i++) {
                                                                 map.removeLayer(mapMarkers[i]);
@@ -281,6 +286,9 @@
                                                                 return layer.feature.properties.description;
                                                             }).addTo(map);
                                                             mapMarkers.push(marker);
+
+                                                            console.log(percorso[0]['geojson'])
+
                                                         } else {
                                                             console.log("Percorso non trovato");
                                                         }
@@ -294,6 +302,7 @@
                                                     .then(data => {
                                                         if (data['status'] == "success") {
                                                             console.log("Luoghi trovati");
+
                                                             jsonPOI = data['luoghi'];
                                                             jsonPOI.map(({
                                                                 nome: Nome,
@@ -306,6 +315,13 @@
                                                                 visualizzaLuoghiSuMappa(element.features[0].geometry.coordinates[1], element.features[0].geometry.coordinates[0], element.Nome, element.Descrizione, "red");
                                                             });
 
+
+                                                            jsonPOI.forEach(item => {
+                                                                var poi = {"Nome":item.nome, "Descrizione":item.descrizione, "Tipo":item.tipo, "Latitudine":item.features[0].geometry.coordinates[1], "Longitudine":item.features[0].geometry.coordinates[0]}
+                                                                jsonPOI2.push(poi)
+                                                            });
+
+
                                                         } else {
                                                             console.log("Luoghi non trovati");
                                                         }
@@ -313,6 +329,8 @@
                                                     }
                                                     )
                                                     .catch(err => console.error(err));
+
+
 
                                                 function visualizzaLuoghiSuMappa(lat, lon, nome, descrizione, col = "red") {
                                                     var redIcon = new L.Icon({
@@ -342,6 +360,7 @@
                                                 }
 
                                             }
+
                                         </script>
                                     </div>
                                 </div>
@@ -379,6 +398,8 @@
                                     </select>
                                     <div id="luogo"></div>
                                     <script>
+
+
                                         function visualizzaLuoghiSuMappa(lat, lon, nome, descrizione, col = "red") {
                                             var redIcon = new L.Icon({
                                                 iconUrl: 'img/marker-icon-2x-red.png',
@@ -415,7 +436,7 @@
 
                                     </script>
                                     <button
-                                        onclick="creaPacchetto(document.getElementById('titolo').value,document.getElementById('descrizione').value, jsonPOI, percorso, document.getElementById('tipologia').value)">CREA
+                                        onclick="creaPacchetto(document.getElementById('titolo').value,document.getElementById('descrizione').value, jsonPOI2, percorso[0]['geojson'], document.getElementById('tipologia').value)">CREA
                                         PACCHETTO</button>
                                 </div>
                                 <style>

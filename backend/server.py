@@ -238,22 +238,61 @@ def insertPercorso():
     futures = []
     arrcoo=request.form.get("array")
     arr=literal_eval(arrcoo)
+    nomi_stazioni = request.form.getlist("stazioni[]")
 
-    for i in arr:
-        tupla=(float(i.split(",")[1]),float(i.split(",")[0]))
-        print(tupla)
-        arry.append(tupla)
-        futures.append(geojson.Feature(geometry=geojson.Point(tupla), properties={}))
+    # features = []
+    # for i, coord in enumerate(arr):
+    #     nome_stazione = nomi_stazioni[i]
+    #     lat, lon = map(float, coord.split(","))
+    #     point = geojson.Point((lon, lat))
+    #     feature = geojson.Feature(geometry=point, properties={"nome": nome_stazione, "tipo": "Treni"})
+    #     feature_collection = geojson.FeatureCollection([feature])
+    #     feature["features"] = [feature_collection]
+    #     features.append(feature)
+    #
+    # feature_collection = geojson.FeatureCollection(features)
 
-    ids=randint(0,1000000)
-    cercaid= percorso.find_one({"ID":ids})
+    cordinate_list = []  # lista per due cordinate
+    geo_json_list = []
+    location_json = {}
+    geometry_json = {}
+    for i, coord in enumerate(arr):
+        lat, lon = map(float, coord.split(","))
+
+        cordinate_list.append(lon)
+        cordinate_list.append(lat)
+
+        geo_json = {}  # create a new dictionary object
+
+        geo_json["Nome"] = nomi_stazioni[i]
+        geo_json["Tipo"] = "Treni"
+        geo_json["type"] = "FeatureCollection"
+
+        location_json["type"] = "Feature"
+        location_json["properties"] = {}
+
+        geometry_json["coordinates"] = cordinate_list
+        geometry_json["type"] = "Point"
+
+        location_json["geometry"] = geometry_json
+
+        geo_json["features"] = [location_json]
+        geo_json_list.append(geo_json)
+
+        cordinate_list = []
+        location_json = {}
+        geometry_json = {}
+
+    ids = randint(0, 1000000)
+    cercaid = percorso.find_one({"ID": ids})
     while cercaid is not None:
-        ids = randint(0,1000000)
+        ids = randint(0, 1000000)
 
-    nuovo_percorso={"ID":ids,"nome":nome, "geojson": geojson.FeatureCollection(futures)}
+    nuovo_percorso = {"ID": ids, "nome": nome, "geojson": geo_json_list}
     percorso.insert_one(nuovo_percorso)
 
     return jsonify({"status": "success"})
+
 
 #restituisci la lista di percorsi
 @app.route("/getPercorsiList", methods=['POST'])
@@ -420,26 +459,29 @@ def getLuoghiDisponibili():
 @app.route("/getLuoghiPercorso", methods=['POST'])
 def getLuoghiPercorso():
     ID=request.form.get("ID")
-    
-    #prendo il percorso dal db
+
     per_corso = percorso.find_one({"ID": int(ID)}, {"_id": 0})
-    #prendo i punti del percorso
-    punti_percorso = per_corso["geojson"]["features"]
-    arr=[]
+    # prendo i punti del percorso
+    punti_percorso = []
+    for geojson in per_corso["geojson"]:
+        punti_percorso += geojson["features"]
+    arr = []
     for punto in punti_percorso:
         if punto['geometry']['type'] == "Point":
-            #per ogni punto prendo la latitudine e la longitudine
+            # per ogni punto prendo la latitudine e la longitudine
             latitudine = punto['geometry']['coordinates'][1]
             longitudine = punto['geometry']['coordinates'][0]
-            #per ogni punto prendo i luoghi di interesse vicini
-            luoghi_percorso = luoghi_di_interesse_geo.find({"$and": [{ "features.geometry": {"$near": {"$geometry": {"type": "Point","coordinates": [longitudine,latitudine]},"$minDistance": 0,"$maxDistance": 5000}}}]},{"_id":0})
-            tipi_disponibili= luoghi_percorso.distinct("tipo")
-            #per ogni punto aggiungo i tipi di luoghi di interesse vicini
-            punto["tipi"]=tipi_disponibili
-            #per ogni punto aggiungo i luoghi di interesse vicini
+            # per ogni punto prendo i luoghi di interesse vicini
+            luoghi_percorso = luoghi_di_interesse_geo.find({"$and": [{"features.geometry": {
+                "$near": {"$geometry": {"type": "Point", "coordinates": [longitudine, latitudine]}, "$minDistance": 0,
+                          "$maxDistance": 5000}}}]}, {"_id": 0})
+            tipi_disponibili = luoghi_percorso.distinct("tipo")
+            # per ogni punto aggiungo i tipi di luoghi di interesse vicini
+            punto["tipi"] = tipi_disponibili
+            # per ogni punto aggiungo i luoghi di interesse vicini
             for luogo in luoghi_percorso[0:2]:
                 arr.append(luogo)
-    
+
     return jsonify({"status": "success", "luoghi": arr})
 
 

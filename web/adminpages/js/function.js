@@ -359,8 +359,19 @@ function inserisciPercorso() {
             checked.push(inputs[i].value);
         }
     }
+
     console.log(nome)
     console.log(JSON.stringify(checked))
+
+    const headings = document.querySelectorAll('.mb-0');
+    const stazioni = [];
+    for (let i = 0; i < inputs.length; i++) {
+      if(inputs[i].checked){
+          const nome = headings[i].textContent;
+          stazioni.push(nome);
+      }
+    }
+    console.log(stazioni);
 
     $.ajax({
         url: "http://127.0.0.1:5000/insertPercorso",
@@ -372,6 +383,7 @@ function inserisciPercorso() {
         data: {
             nome : nome,
             array : JSON.stringify(checked),
+            stazioni: stazioni,
         },
         success: function (response) {
             console.log(response)
@@ -547,6 +559,7 @@ function mostraStazioniConPacchetto(POIList) {
                     //     i++;
                     // });
             });
+            console.log(lista_stazioni_suggerite)
             localStorage.setItem("listaPercorso","")
             localStorage.setItem("listaPercorso",JSON.stringify(lista_stazioni_suggerite))
 
