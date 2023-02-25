@@ -171,6 +171,7 @@ https://templatemo.com/tm-580-woox-travel
         <div class="col-lg-12">
           <div id="map">
                <script>
+                let mapMarkers=[];
                   function resetMap() {
                       location.reload()
                   }
@@ -226,6 +227,7 @@ https://templatemo.com/tm-580-woox-travel
                             });
 
                             var marker = L.marker([position.coords.latitude, position.coords.longitude],{icon:redIcon}).addTo(map);
+                            mapMarkers.push(marker);
                             var customPopup = "<b>La tua posizione</b>";
                             var customOptions =
                             {
@@ -267,6 +269,7 @@ https://templatemo.com/tm-580-woox-travel
                           if(locationFlag==true){map.off('click');}
 
                           var marker = L.marker([lat, long],{icon:redIcon}).addTo(map);
+                          mapMarkers.push(marker);
 
                           var customPopup = "<b>Posizione scelta</b>";
                           var customOptions =
@@ -417,8 +420,15 @@ https://templatemo.com/tm-580-woox-travel
              </div>
              <div class="col-lg-12">
                   <fieldset>
-                      <button type="button" onclick="creaPercorsoClient('percorsoClient', getCheckedListaMezzi(), getCheckedRange(), getCheckedListaLuoghi(), lat, long)">Genera percorso</button>
+                      <button type="button" onclick="creaPercoso()">Genera percorso</button>
                       <script>
+                          function creaPercoso(){
+                            for (var i = 0; i < mapMarkers.length; i++) {
+                                                                map.removeLayer(mapMarkers[i]);
+                                                            }
+                            creaPercorsoClient('percorsoClient', getCheckedListaMezzi(), getCheckedRange(), getCheckedListaLuoghi(), lat, long);
+                          }
+
                           function getCheckedRange(){
                               var km = document.getElementsByClassName('km');
                               var range;
@@ -459,9 +469,11 @@ https://templatemo.com/tm-580-woox-travel
                                     shadowSize: [41, 41]
                               });
                               var marker = L.marker([lat, lon], {icon:redIcon});
+                              mapMarkers.push(marker);
 
                               if(col=="blue"){
                                  var marker = L.marker([lat, lon]);
+                                  mapMarkers.push(marker);
                               }
 
                               var customPopup

@@ -194,163 +194,168 @@
                     <hr>
                     <!-- <div style="width: 95%; margin: 0 auto; text-align: center;"> -->
                     <div class="row">
-                    <div class="col-lg-6">
-                        <div id="torta">
-                            <h3>Conteggio pacchetti per tipologia</h3>
-                            <canvas id="grafico1"></canvas>
+
+                        <div class="col-lg-6">
+                            <div class="card mb-4 py-3 border-left-primary">
+                                <div id="torta">
+                                    <h3>Conteggio pacchetti per tipologia</h3>
+                                    <canvas id="grafico1"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col-lg-6">
+                            <div class="card mb-4 py-3 border-left-primary">
+                                <div id="barre">
+                                    <h3>Conteggio luoghi d'interesse per tipologia</h3>
+                                    <canvas id="grafico2"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="col-lg-6">
-                        <div id="barre">
-                            <h3>Conteggio luoghi d'interesse per tipologia</h3>
-                            <canvas id="grafico2"></canvas>
-                        </div>
-                    </div>
-                    </div>
-                <style>
-                    /* Stile per la sezione dei grafici */
-                    #torta,
-                    #barre {
-                        display: inline-block;
-                        vertical-align: top;
-                        width: 75%;
-                        margin: 10px;
-                        box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-                        border-radius: 10px;
-                        padding-bottom: 10px;
-                    }
-
-                    /* Stile per il titolo delle sezioni dei grafici */
-                    #torta h3,
-                    #barre h3 {
-                        text-align: center;
-                        font-size: 1.2rem;
-                        margin: 0;
-                        padding: 10px;
-                        background-color: #f2f2f2;
-                        border-radius: 10px 10px 0 0;
-                    }
-
-                    /* Stile per il canvas dei grafici */
-                    canvas {
-                        width: 100%;
-                        height: auto;
-                        border-radius: 0 0 10px 10px;
-                    }
-                </style>
-                <script>
-                    $.ajax({
-                        url: "http://127.0.0.1:5000/getNumPaccchettiOgniTipologia",
-                        method: "POST",
-                        cache: false,
-                        success: function (response) {
-                            console.log(response)
-
-                            // Ottieni i dati dei pacchetti per ogni tipo di pacchetto
-                            const tipiPacchetto = response.tipi_pacchetto;
-
-                            // Prepara i dati per il grafico a barre
-                            const labels = Object.keys(tipiPacchetto);
-                            const data = Object.values(tipiPacchetto);
-
-                            // Crea il grafico a barre
-                            const ctx = document.getElementById('grafico1').getContext('2d');
-                            const myChart = new Chart(ctx, {
-                                type: 'pie',
-                                data: {
-                                    labels: labels,
-                                    datasets: [{
-                                        label: 'tipi',
-                                        data: data,
-                                        backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-                                        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(153, 102, 255, 1)'],
-                                    }]
-                                },
-
-                            })
-                        },
-                        error: function () {
-                            alert("ERRORE CHIAMATA ASINCRONA");
+                    <style>
+                        /* Stile per la sezione dei grafici */
+                        #torta,
+                        #barre {
+                            display: inline-block;
+                            vertical-align: top;
+                            width: 100%;
+                            padding: 10px;
+                            box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+                            border-radius: 10px;
+                            padding-bottom: 10px;
                         }
-                    });
-                </script>
 
-                <script>
-                    $.ajax({
-                        url: "http://127.0.0.1:5000/getNumPOIOgniTipologia",
-                        method: "POST",
-                        cache: false,
-                        success: function (response) {
-                            console.log(response)
+                        /* Stile per il titolo delle sezioni dei grafici */
+                        #torta h3,
+                        #barre h3 {
+                            text-align: center;
+                            font-size: 1.2rem;
+                            margin: 0;
+                            padding: 10px;
+                            background-color: #f2f2f2;
+                            border-radius: 10px 10px 0 0;
+                        }
 
-                            // ottieni i tipi di luogo e i loro conteggi
-                            var tipi_luogo = {
-                                "agriturismi": 132,
-                                "alberi": 32,
-                                "bandiere": 47,
-                                "caseifici": 33,
-                                "fattorie": 81,
-                                "altro": 354,
-                                "luoghi-di-culto": 44,
-                                "musei": 60,
-                                "teatri": 5,
-                                "torri": 192,
-                                "vino": 124
-                            };
+                        /* Stile per il canvas dei grafici */
+                        canvas {
+                            width: 100%;
+                            height: auto;
+                            border-radius: 0 0 10px 10px;
+                        }
+                    </style>
+                    <script>
+                        $.ajax({
+                            url: "http://127.0.0.1:5000/getNumPaccchettiOgniTipologia",
+                            method: "POST",
+                            cache: false,
+                            success: function (response) {
+                                console.log(response)
 
-                            // ottieni le etichette e i dati per il grafico
-                            var labels = Object.keys(tipi_luogo);
-                            var data = Object.values(tipi_luogo);
+                                // Ottieni i dati dei pacchetti per ogni tipo di pacchetto
+                                const tipiPacchetto = response.tipi_pacchetto;
 
-                            // crea il grafico
-                            var ctx = document.getElementById('grafico2').getContext('2d');
-                            var chart = new Chart(ctx, {
-                                type: 'bar',
-                                data: {
-                                    labels: labels,
-                                    datasets: [{
-                                        label: 'Conteggio luoghi per tipo di luogo',
-                                        data: data,
-                                        backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-                                        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(54, 162, 235, 1)'],
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        yAxes: [{
-                                            ticks: {
-                                                beginAtZero: true
-                                            }
+                                // Prepara i dati per il grafico a barre
+                                const labels = Object.keys(tipiPacchetto);
+                                const data = Object.values(tipiPacchetto);
+
+                                // Crea il grafico a barre
+                                const ctx = document.getElementById('grafico1').getContext('2d');
+                                const myChart = new Chart(ctx, {
+                                    type: 'pie',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'tipi',
+                                            data: data,
+                                            backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(153, 102, 255, 0.2), rgba(255, 159, 64, 0.2)', 'rgba(20, 137, 64, 0.2)'],
+                                            borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(153, 102, 255, 1), rgba(255, 159, 64, 1), rgba(20, 137, 64, 1)'],
                                         }]
+                                    },
+
+                                })
+                            },
+                            error: function () {
+                                alert("ERRORE CHIAMATA ASINCRONA");
+                            }
+                        });
+                    </script>
+
+                    <script>
+                        $.ajax({
+                            url: "http://127.0.0.1:5000/getNumPOIOgniTipologia",
+                            method: "POST",
+                            cache: false,
+                            success: function (response) {
+                                console.log(response)
+
+                                // ottieni i tipi di luogo e i loro conteggi
+                                var tipi_luogo = {
+                                    "agriturismi": 132,
+                                    "alberi": 32,
+                                    "bandiere": 47,
+                                    "caseifici": 33,
+                                    "fattorie": 81,
+                                    "altro": 354,
+                                    "luoghi-di-culto": 44,
+                                    "musei": 60,
+                                    "teatri": 5,
+                                    "torri": 192,
+                                    "vino": 124
+                                };
+
+                                // ottieni le etichette e i dati per il grafico
+                                var labels = Object.keys(tipi_luogo);
+                                var data = Object.values(tipi_luogo);
+
+                                // crea il grafico
+                                var ctx = document.getElementById('grafico2').getContext('2d');
+                                var chart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Conteggio luoghi per tipo di luogo',
+                                            data: data,
+                                            backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 205, 86, 0.2)', 'rgba(153, 102, 255, 0.2), rgba(255, 159, 64, 0.2)', 'rgba(20, 137, 64, 0.2)', 'rgba(25, 99, 132, 0.2)'],
+                                            borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(153, 102, 255, 1), rgba(255, 159, 64, 1), rgba(20, 137, 64, 1), rgba(25, 99, 132, 1)'],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
+                                            }]
+                                        }
                                     }
-                                }
-                            })
-                        },
-                        error: function () {
-                            alert("ERRORE CHIAMATA ASINCRONA");
-                        }
-                    });
-                </script>
+                                })
+                            },
+                            error: function () {
+                                alert("ERRORE CHIAMATA ASINCRONA");
+                            }
+                        });
+                    </script>
+                </div>
+                <!-- /.container-fluid -->
+
             </div>
-            <!-- /.container-fluid -->
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2021</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
 
         </div>
-        <!-- End of Main Content -->
-
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2021</span>
-                </div>
-            </div>
-        </footer>
-        <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
+        <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->

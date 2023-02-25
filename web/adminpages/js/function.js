@@ -395,6 +395,7 @@ function inserisciPercorso() {
     });
 }
 function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, posizioneUtenteLong) {
+    
     $.ajax({
         url: "http://127.0.0.1:5000/creaPercorsoClient",
         method: "POST",
