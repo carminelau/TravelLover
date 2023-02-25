@@ -1,175 +1,523 @@
 {
     "luoghi_pacchetto": [
-        {
-            "descrizione": "Mozzarella di bufala campana DOP (naturale, affumicata, treccia); mozzarella di vaccino; burrata di bufala; ricotta di bufala (naturale e omogeneizzata); scamorza di bufala affumicata; silano di bufala",
-            "features": [
-                {
-                    "geometry": {
-                        "coordinates": [
-                            14.65225,
-                            40.761647
-                        ],
-                        "type": "Point"
-                    },
-                    "properties": null,
-                    "type": "Feature"
-                }
-            ],
-            "nome": "Caseificio Podere Dei Leoni",
-            "tipo": "caseifici",
-            "type": "FeatureCollection"
+      {
+        "descrizione": "pernottamento e ristorazione",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.627836,
+                40.709836
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "fermata_vicina": {
+          "Nome": "Nocera Inferiore",
+          "Tipo": "Treni",
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  14.6360666,
+                  40.7453028
+                ],
+                "type": "Point"
+              },
+              "properties": null,
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
         },
-        {
-            "descrizione": "ristorazione",
-            "features": [
-                {
-                    "geometry": {
-                        "coordinates": [
-                            14.685407,
-                            40.72794
-                        ],
-                        "type": "Point"
-                    },
-                    "properties": null,
-                    "type": "Feature"
-                }
-            ],
-            "nome": "Tenuta Iris",
-            "tipo": "agriturismi",
-            "type": "FeatureCollection"
+        "nome": "Monte di grazia",
+        "tipo": "agriturismi",
+        "type": "FeatureCollection"
+      },
+      {
+        "descrizione": "pernottamento e ristorazione",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.59707,
+                40.740798
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "fermata_vicina": {
+          "Nome": "Pagani",
+          "Tipo": "Treni",
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  14.6168352,
+                  40.7463862
+                ],
+                "type": "Point"
+              },
+              "properties": null,
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
         },
-        {
-            "descrizione": "Mozzarella di bufala campana DOP in varie forme e pezzature: sassolini, bocconcini, treccia, treccione; provola affumicata di bufala; ricotta salata di bufala (fresca e stagionata); provolone di bufala stagionato; scamorza di mucca (bianca e affumicata); caciocavallo fresco di mucca; ricotta delattosata; scamorza delattosata",
-            "features": [
-                {
-                    "geometry": {
-                        "coordinates": [
-                            14.691452,
-                            40.727237
-                        ],
-                        "type": "Point"
-                    },
-                    "properties": null,
-                    "type": "Feature"
-                }
-            ],
-            "nome": "Caseificio La Tramontina",
-            "tipo": "caseifici",
-            "type": "FeatureCollection"
+        "nome": "Corte San Lorenzo",
+        "tipo": "agriturismi",
+        "type": "FeatureCollection"
+      },
+      {
+        "descrizione": "pernottamento",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.606653,
+                40.784449
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "fermata_vicina": {
+          "Nome": "San Valentino Torio",
+          "Tipo": "Treni",
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  14.6005218,
+                  40.7975604
+                ],
+                "type": "Point"
+              },
+              "properties": null,
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
         },
-        {
-            "descrizione": "ristorazione",
-            "features": [
-                {
-                    "geometry": {
-                        "coordinates": [
-                            14.710278,
-                            40.72689
-                        ],
-                        "type": "Point"
-                    },
-                    "properties": null,
-                    "type": "Feature"
-                }
-            ],
-            "nome": "Tenuta antica",
-            "tipo": "agriturismi",
-            "type": "FeatureCollection"
+        "nome": "Villa Rosalia",
+        "tipo": "agriturismi",
+        "type": "FeatureCollection"
+      },
+      {
+        "descrizione": "pernottamento e ristorazione",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.618296,
+                40.699486
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "fermata_vicina": {
+          "Nome": "Pagani",
+          "Tipo": "Treni",
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  14.6168352,
+                  40.7463862
+                ],
+                "type": "Point"
+              },
+              "properties": null,
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
         },
-        {
-            "descrizione": "Linea di bufala campana DOP: mozzarella; bocconcini; ciliegine; treccia; treccina; provola affumicata; nodini; ricotta; ricotta affumicata; burrata; stracciata. Linea bio: mozzarella di bufala campana DOP biologica; mozzarella di bufala campana DOP senza lattosio biologica. Linea di mucca: mozzarella; bocconcini; ciliegine; perline; fior di latte; treccia; ricotta; scamorza bianca e affumicata; provola affumicata; caciocavallo",
-            "features": [
-                {
-                    "geometry": {
-                        "coordinates": [
-                            14.701586,
-                            40.716211
-                        ],
-                        "type": "Point"
-                    },
-                    "properties": null,
-                    "type": "Feature"
-                }
-            ],
-            "nome": "Caseificio Casare' Bisogno",
-            "tipo": "caseifici",
-            "type": "FeatureCollection"
+        "nome": "Il raduno",
+        "tipo": "agriturismi",
+        "type": "FeatureCollection"
+      },
+      {
+        "descrizione": "pernottamento",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.618296,
+                40.699486
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "fermata_vicina": {
+          "Nome": "Pagani",
+          "Tipo": "Treni",
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  14.6168352,
+                  40.7463862
+                ],
+                "type": "Point"
+              },
+              "properties": null,
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
         },
-        {
-            "descrizione": "pernottamento e ristorazione",
-            "features": [
-                {
-                    "geometry": {
-                        "coordinates": [
-                            14.719019,
-                            40.726875
-                        ],
-                        "type": "Point"
-                    },
-                    "properties": null,
-                    "type": "Feature"
-                }
-            ],
-            "nome": "La Selva",
-            "tipo": "agriturismi",
-            "type": "FeatureCollection"
-        }
+        "nome": "Arguto",
+        "tipo": "agriturismi",
+        "type": "FeatureCollection"
+      },
+      {
+        "descrizione": "pernottamento e ristorazione",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.618232,
+                40.699486
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "fermata_vicina": {
+          "Nome": "Pagani",
+          "Tipo": "Treni",
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  14.6168352,
+                  40.7463862
+                ],
+                "type": "Point"
+              },
+              "properties": null,
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
+        },
+        "nome": "Agriturismo costiera amalfitana",
+        "tipo": "agriturismi",
+        "type": "FeatureCollection"
+      },
+      {
+        "descrizione": "ristorazione",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.703905,
+                40.687804
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "fermata_vicina": {
+          "Nome": "Cava de' Tirreni",
+          "Tipo": "Treni",
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  14.7084963,
+                  40.7035861
+                ],
+                "type": "Point"
+              },
+              "properties": null,
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
+        },
+        "nome": "Tenuta na.ri.s.r.l.",
+        "tipo": "agriturismi",
+        "type": "FeatureCollection"
+      },
+      {
+        "descrizione": "Mozzarella di bufala campana DOP; ricotta di bufala; scamorze e formaggi freschi di bufala",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.759652,
+                40.781051
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "fermata_vicina": {
+          "Nome": "Mercato San Severino",
+          "Tipo": "Treni",
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  14.7596289,
+                  40.7831236
+                ],
+                "type": "Point"
+              },
+              "properties": null,
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
+        },
+        "nome": "Caseificio Vallebianca S.R.L",
+        "tipo": "caseifici",
+        "type": "FeatureCollection"
+      },
+      {
+        "descrizione": "Mozzarella e mozzarellona di bufala campana DOP; ciliegine di bufala DOP; bocconcini di bufala; caciocavallo affumicato; caciocavallo bianco; provola e provolette affumicate di bufala; ricotta di bufala; scamorza affumicata di latte di bufala; scamorza di bufala; treccia e treccine di mozzarella di bufala DOP",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.7617093,
+                40.7812652
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "fermata_vicina": {
+          "Nome": "Mercato San Severino",
+          "Tipo": "Treni",
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  14.7596289,
+                  40.7831236
+                ],
+                "type": "Point"
+              },
+              "properties": null,
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
+        },
+        "nome": "Caseificio Roberta srl",
+        "tipo": "caseifici",
+        "type": "FeatureCollection"
+      },
+      {
+        "descrizione": "Mozzarella di bufala campana DOP (naturale e affumicata); treccia di bufala campana (naturale e affumicata); scamorza (bianca e affumicata); ricotta di bufala; primo sale;  ciliegine e nodini di mozzarella di bufala; filone di mozzarella; caciocavallo (bianco e affumicato)",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.767459,
+                40.780446
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "fermata_vicina": {
+          "Nome": "Mercato San Severino",
+          "Tipo": "Treni",
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  14.7596289,
+                  40.7831236
+                ],
+                "type": "Point"
+              },
+              "properties": null,
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
+        },
+        "nome": "Caseificio Stella",
+        "tipo": "caseifici",
+        "type": "FeatureCollection"
+      },
+      {
+        "descrizione": "Mozzarella di bufala campana DOP; provole; scamorze; ricotta; caciocavalli; varianti affumicate e specialit\u00e0 farcite",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.783374,
+                40.755262
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "fermata_vicina": {
+          "Nome": "Fisciano",
+          "Tipo": "Treni",
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  14.7756577,
+                  40.7610843
+                ],
+                "type": "Point"
+              },
+              "properties": null,
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
+        },
+        "nome": "Caseificio il Casaro di Paestum",
+        "tipo": "caseifici",
+        "type": "FeatureCollection"
+      }
     ],
     "percorso_suggerito": [
-        {
-            "Nome": "Codola",
-            "Tipo": "Treni",
-            "features": [
-                {
-                    "geometry": {
-                        "coordinates": [
-                            14.6657847,
-                            40.76758
-                        ],
-                        "type": "Point"
-                    },
-                    "properties": null,
-                    "type": "Feature"
-                }
-            ],
-            "type": "FeatureCollection"
-        },
-        {
-            "Nome": "Nocera Superiore",
-            "Tipo": "Treni",
-            "features": [
-                {
-                    "geometry": {
-                        "coordinates": [
-                            14.6724347,
-                            40.7426946
-                        ],
-                        "type": "Point"
-                    },
-                    "properties": null,
-                    "type": "Feature"
-                }
-            ],
-            "type": "FeatureCollection"
-        },
-        {
-            "Nome": "Cava de' Tirreni",
-            "Tipo": "Treni",
-            "features": [
-                {
-                    "geometry": {
-                        "coordinates": [
-                            14.7084963,
-                            40.7035861
-                        ],
-                        "type": "Point"
-                    },
-                    "properties": null,
-                    "type": "Feature"
-                }
-            ],
-            "type": "FeatureCollection"
-        }
+      {
+        "Nome": "Nocera Inferiore",
+        "Tipo": "Treni",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.6360666,
+                40.7453028
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "type": "FeatureCollection"
+      },
+      {
+        "Nome": "Pagani",
+        "Tipo": "Treni",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.6168352,
+                40.7463862
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "type": "FeatureCollection"
+      },
+      {
+        "Nome": "San Valentino Torio",
+        "Tipo": "Treni",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.6005218,
+                40.7975604
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "type": "FeatureCollection"
+      },
+      {
+        "Nome": "Cava de' Tirreni",
+        "Tipo": "Treni",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.7084963,
+                40.7035861
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "type": "FeatureCollection"
+      },
+      {
+        "Nome": "Mercato San Severino",
+        "Tipo": "Treni",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.7596289,
+                40.7831236
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "type": "FeatureCollection"
+      },
+      {
+        "Nome": "Fisciano",
+        "Tipo": "Treni",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                14.7756577,
+                40.7610843
+              ],
+              "type": "Point"
+            },
+            "properties": null,
+            "type": "Feature"
+          }
+        ],
+        "type": "FeatureCollection"
+      }
     ],
     "status": "success"
-}
+  }
+  

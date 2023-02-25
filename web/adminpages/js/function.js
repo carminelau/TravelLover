@@ -414,22 +414,27 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
 
             var totalecordinate=[]
             $("#percorso-client-result").empty();
+            var cont = 0;
 
             response.luoghi_pacchetto.forEach(function (item) {
+                
                 var nome=item.nome;
                 var descrizione=item.descrizione;
                 var latitudine = item.features[0].geometry.coordinates[1];
                 var longitudine = item.features[0].geometry.coordinates[0];
                 totalecordinate.push([latitudine,longitudine])
                 visualizzaLuoghiSuMappa(latitudine, longitudine, nome, descrizione, totalecordinate)
-
-                $("#percorso-client-result").append("<br><h6>Nome luogo d'interesse: </h6>"+nome+"<br><h6>Descrizione: </h6>"+descrizione+"<br>");
-
+                var nome_stazione_suggerita = item.fermata_vicina.Nome;
+                               
+                $("#percorso-client-result").append("<div class='col-lg-4'><div class='card border-info mb-3'><div class='card-header'>" + nome + "</div><div class='card-body text-info'><h5 class='card-title'>Descrizione</h5><p class='card-text' >" + descrizione +"</p><h5 class='card-title'>Stazione più vicina</h5><p class='card-text' >" + nome_stazione_suggerita +"</p></div></div></div>");
+                
+                cont++;
             });
 
-            $("#percorso-client-result").append("<hr><h5>STAZIONI CONSIGLIATE</h5><br>");
+
+            // $("#percorso-client-result").append("<hr><h5>STAZIONI CONSIGLIATE</h5><br>");
             response.percorso_suggerito.forEach(function (item) {
-                var nome=item.Nome;
+                // var nome=item.Nome;
                 var latitudine = item.features[0].geometry.coordinates[1];
                 var longitudine = item.features[0].geometry.coordinates[0];
 
@@ -439,7 +444,7 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
                 if(range=='15-20'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 10000);}
                 if(range=='+20'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 30000);}
 
-                $("#percorso-client-result").append("<h6>"+nome+"</h6><br>");
+                // $("#percorso-client-result").append("<h6>"+nome+"</h6><br>");
 
             });
 
