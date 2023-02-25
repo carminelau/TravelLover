@@ -560,8 +560,8 @@ function mostraStazioniConPacchetto(POIList) {
                     //     i++;
                     // });
             });
-            console.log(lista_stazioni_suggerite)
-            localStorage.setItem("listaPercorso","")
+
+            localStorage.removeItem("listaPercorso")
             localStorage.setItem("listaPercorso",JSON.stringify(lista_stazioni_suggerite))
 
             $("#percorsi-suggeriti").append("<hr><h4>PERCORSO CONSIGLIATO:</h4>");
