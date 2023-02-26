@@ -68,6 +68,9 @@ function visualizzaTipoCheck(tipo, azione, scegli) {
                 var links = document.getElementsByClassName("card-link ag");
                 var linksElimina = document.getElementsByClassName("card-link el");
 
+                console.log(links)
+                console.log(linksElimina)
+
                 for (let i = 0; i < links.length; i++) {
                   links[i].addEventListener("click", function() {
                     if (scegli==null){window.location.replace("inserisciPacchetti.html");}
@@ -84,7 +87,7 @@ function visualizzaTipoCheck(tipo, azione, scegli) {
                 for (let i = 0; i < linksElimina.length; i++) {
                   linksElimina[i].addEventListener("click", function() {
                     if (scegli==null){window.location.replace("inserisciPacchetti.html");}
-                    else{this.style.color = "black";this.textContent="Rimosso da pacchetto";links[i].textContent="Aggiungi a pacchetto"; links[i].style.color="#4e73df";}
+                    else {this.style.color = "black";this.textContent="Rimosso da pacchetto";links[i].textContent="Aggiungi a pacchetto"; links[i].style.color="#4e73df";}
                   });
                   linksElimina[i].addEventListener("mouseover", function() {
                     this.style.textDecoration = "underline";
@@ -182,16 +185,18 @@ function visualizzaVicinoComune(azione, comune, scegli) {
                 var poi = JSON.stringify(poi).replace(/'/g, " ")
                 console.log(selectedValues);
                 if(selectedValues.includes(item.tipo) || selectedValues.length==0){
-                    $(".risultato1-1").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px'> <div class='card-body'> <h5 class='card-title'>" + item.nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.descrizione + "</p>  <a href='javascript:rimuoviPOIdaLista("+poi+");' class='card-link el'>Rimuovi</a> <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link a'>Aggiungi a pacchetto </div> </div>");
+                    $(".risultato1-1").append("<div class='card' style='width: 80%; margin: 0 auto; margin-bottom: 10px'> <div class='card-body'> <h5 class='card-title'>" + item.nome + "</h5> <h6 class='card-subtitle mb-2 text-muted'></h6> <p class='card-text'>" + item.descrizione + "</p>  <a href='javascript:rimuoviPOIdaLista("+poi+");' class='card-link el'>Rimuovi</a> <a href='javascript:aggiungiPOIaLista("+poi+");' class='card-link ag'>Aggiungi a pacchetto </div> </div>");
                 }
 
-                var links = document.getElementsByClassName("card-link a");
-                var linksElimina = document.getElementsByClassName("card-link el");
+                var links = document.getElementsByClassName("ag");
+                var linksElimina = document.getElementsByClassName("el");
+
+
 
                 for (let i = 0; i < links.length; i++) {
                   links[i].addEventListener("click", function() {
                     if (scegli==null){window.location.replace("inserisciPacchetti.html");}
-                    else{this.style.color = "black";this.textContent="Aggiunto a pacchetto"; linksElimina[i].textContent="Elimina"; linksElimina[i].style.color="#4e73df";}
+                    else{this.style.color = "black";links[i].textContent="Aggiunto a pacchetto"; linksElimina[i/2].textContent="Elimina"; linksElimina[i/2].style.color="#4e73df";}
                   });
                   links[i].addEventListener("mouseover", function() {
                     this.style.textDecoration = "underline";
@@ -204,7 +209,7 @@ function visualizzaVicinoComune(azione, comune, scegli) {
                 for (let i = 0; i < linksElimina.length; i++) {
                   linksElimina[i].addEventListener("click", function() {
                     if (scegli==null){window.location.replace("inserisciPacchetti.html");}
-                    else{this.style.color = "black";this.textContent="Rimosso da pacchetto";links[i].textContent="Aggiungi a pacchetto"; links[i].style.color="#4e73df";}
+                    else{this.style.color = "black";linksElimina[i].textContent="Rimosso da pacchetto";links[i*2].textContent="Aggiungi a pacchetto"; links[i*2].style.color="#4e73df";}
                   });
                   linksElimina[i].addEventListener("mouseover", function() {
                     this.style.textDecoration = "underline";
@@ -426,11 +431,12 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
                 visualizzaLuoghiSuMappa(latitudine, longitudine, nome, descrizione, totalecordinate)
                 var nome_stazione_suggerita = item.fermata_vicina.Nome;
                                
-                $("#percorso-client-result").append("<div class='col-lg-4'><div class='card border-info mb-3'><div class='card-header'>" + nome + "</div><div class='card-body text-info'><h5 class='card-title'>Descrizione</h5><p class='card-text' >" + descrizione +"</p><h5 class='card-title'>Stazione più vicina</h5><p class='card-text' >" + nome_stazione_suggerita +"</p></div></div></div>");
-                
+                $("#percorso-client-result").append("<div class='col-lg-4'><div class='card border-info mb-3' style='height: 300px'><div class='card-header'><b>" + nome + "</b></div><div class='card-body text-info' style='height: 350px; overflow: auto'><h5 class='card-title'>Descrizione</h5><p class='card-text' >" + descrizione +"</p><hr><h5 class='card-title'>Stazione più vicina</h5><p class='card-text' >" + nome_stazione_suggerita +"</p></div></div></div>");
+
                 cont++;
             });
 
+            console.log(response)
 
             // $("#percorso-client-result").append("<hr><h5>STAZIONI CONSIGLIATE</h5><br>");
             response.percorso_suggerito.forEach(function (item) {
@@ -438,11 +444,11 @@ function creaPercorsoClient(azione, mezzi, range, luoghi, posizioneUtenteLat, po
                 var latitudine = item.features[0].geometry.coordinates[1];
                 var longitudine = item.features[0].geometry.coordinates[0];
 
-                if(range=='0-5'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 2500);}
-                if(range=='5-10'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 5000);}
-                if(range=='10-15'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 8000);}
-                if(range=='15-20'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 10000);}
-                if(range=='+20'){visualizzaLuoghiSuMappa(latitudine, longitudine, nome, "Stazione", totalecordinate, "blue", 30000);}
+                if(range=='0-5'){visualizzaLuoghiSuMappa(latitudine, longitudine, item.Nome, "Stazione", totalecordinate, "blue", 2500);}
+                if(range=='5-10'){visualizzaLuoghiSuMappa(latitudine, longitudine, item.Nome, "Stazione", totalecordinate, "blue", 5000);}
+                if(range=='10-15'){visualizzaLuoghiSuMappa(latitudine, longitudine, item.Nome, "Stazione", totalecordinate, "blue", 8000);}
+                if(range=='15-20'){visualizzaLuoghiSuMappa(latitudine, longitudine, item.Nome, "Stazione", totalecordinate, "blue", 10000);}
+                if(range=='+20'){visualizzaLuoghiSuMappa(latitudine, longitudine, item.Nome, "Stazione", totalecordinate, "blue", 30000);}
 
                 // $("#percorso-client-result").append("<h6>"+nome+"</h6><br>");
 

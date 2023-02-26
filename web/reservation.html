@@ -318,12 +318,11 @@ https://templatemo.com/tm-580-woox-travel
 
                                 if(!response.includes("agriturismi")){
                                     $("#agriturismi").css("display","none");
-                                    $("#agritursmilabel").css("display","none");
+                                    $("#agriturismilabel").css("display","none");
                                 }else if(response.includes("agriturismi")){
                                     $("#agriturismi").css("display","inline");
                                     $("#agriturismilabel").css("display","inline");
                                 }
-
                                 if(!response.includes("alberi")){
                                     $("#alberi").css("display","none");
                                     $("#alberilabel").css("display","none");
@@ -331,7 +330,6 @@ https://templatemo.com/tm-580-woox-travel
                                     $("#alberi").css("display","inline");
                                     $("#alberilabel").css("display","inline");
                                 }
-
                                 if(!response.includes("vino")){
                                     $("#vini").css("display","none");
                                     $("#vinilabel").css("display","none");
@@ -424,9 +422,7 @@ https://templatemo.com/tm-580-woox-travel
                       <button type="button" onclick="creaPercorso()">Genera percorso</button>
                       <script>
                           function creaPercorso(){
-                            for (var i = 0; i < mapMarkers.length; i++) {
-                                                                map.removeLayer(mapMarkers[i]);
-                                                            }
+                            for (var i = 0; i < mapMarkers.length; i++) {map.removeLayer(mapMarkers[i]); }
                             creaPercorsoClient('percorsoClient', getCheckedListaMezzi(), getCheckedRange(), getCheckedListaLuoghi(), lat, long);
                           }
 
@@ -474,7 +470,7 @@ https://templatemo.com/tm-580-woox-travel
 
                               if(col=="blue"){
                                  var marker = L.marker([lat, lon]);
-                                  mapMarkers.push(marker);
+                                 mapMarkers.push(marker);
                               }
 
                               var customPopup
@@ -495,7 +491,7 @@ https://templatemo.com/tm-580-woox-travel
                   </fieldset>
              </div>
               <hr>
-              <div class="row row-cols-1 row-cols-md-2"id="percorso-client-result">
+              <div class="row row-cols-1 row-cols-md-2" id="percorso-client-result">
               
               </div>
               
