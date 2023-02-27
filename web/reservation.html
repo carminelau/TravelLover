@@ -253,6 +253,8 @@ https://templatemo.com/tm-580-woox-travel
                         }
                     }
                     if(modalita=="altraposizione"){
+                      for (var i = 0; i < posizioneCorrente.length; i++) {map.removeLayer(posizioneCorrente[i]); }
+                          for (var i = 0; i < posizioneScelta.length; i++) {map.removeLayer(posizioneScelta[i]); }
                         console.log("altraposizione")
                         map.on('click', function(e) {
                           var latlng = e.latlng;
@@ -274,7 +276,7 @@ https://templatemo.com/tm-580-woox-travel
                           locationFlag=true;
                           if(locationFlag==true){map.off('click');}
 
-                          for (var i = 0; i < posizioneCorrente.length; i++) {map.removeLayer(posizioneCorrente[i]); }
+                          
                           var marker = L.marker([lat, long],{icon:redIcon}).addTo(map);
                           posizioneScelta.push(marker);
 

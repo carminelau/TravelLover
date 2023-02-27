@@ -233,11 +233,12 @@ def inserisciNuovoPOI():
     longitudine=request.form.get("longitudine")
 
     nuovo_POI={"nome":nome, "descrizione":descrizione, "tipo": tipo, "type":"FeatureCollection","features":[{"type":"Feature", "properties":{},"geometry":{"coordinates":[float(longitudine),float(latitudine)],"type":"Point"}}]}
-
+    nuovo_POI_normale={"Nome":nome, "Descrizione":descrizione, "Tipo": tipo, "Latitudine":latitudine, "Longitudine":longitudine}
     #inserire POI nel db, ma non funziona
-    #luoghi_di_interesse_geo.insert_one(nuovo_POI)
+    luoghi_di_interesse_geo.insert_one(nuovo_POI)
+    poi_places.insert_one(nuovo_POI_normale)
 
-    return nuovo_POI
+    return redirect('http://127.0.0.1:5500/web/adminpages/singoliPOI.html')
 
 #inserire percorso come geojson nella collection percorso
 @app.route("/insertPercorso", methods=['POST'])
