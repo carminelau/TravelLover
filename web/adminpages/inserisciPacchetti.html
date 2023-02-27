@@ -107,6 +107,7 @@
 
     window.addEventListener("beforeunload", function (e) {
         localStorage.removeItem("POIPacchetto");
+        console.log(localStorage.getItem("listaPercorso"));
     });
 
 </script>
@@ -361,12 +362,10 @@
                                             visualizzaLuoghiSuMappa(jsonPOI[i].Latitudine, jsonPOI[i].Longitudine, jsonPOI[i].Nome, jsonPOI[i].Descrizione)
                                         }
 
-                                        var percorso = localStorage.getItem("listaPercorso")
-                                        console.log(percorso)
 
                                     </script>
                                     <button
-                                        onclick="creaPacchetto(document.getElementById('titolo').value,document.getElementById('descrizione').value, jsonPOI, JSON.parse(percorso), document.getElementById('tipologia').value)">CREA
+                                        onclick="creaPacchetto(document.getElementById('titolo').value,document.getElementById('descrizione').value, jsonPOI, JSON.parse(localStorage.getItem('listaPercorso')), document.getElementById('tipologia').value)">CREA
                                         PACCHETTO</button>
                                 </div>
                                 <style>

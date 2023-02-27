@@ -501,7 +501,7 @@ function creaPacchetto(titolo, descrizione, POIList, percorso, tipologia) {
         success: function (response) {
 
 
-            console.log(POIList)
+            console.log(percorso)
             console.log(response)
 
             $(".creato").empty()

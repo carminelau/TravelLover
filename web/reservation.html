@@ -172,6 +172,8 @@ https://templatemo.com/tm-580-woox-travel
           <div id="map">
                <script>
                 let mapMarkers=[];
+                let posizioneCorrente=[];
+                let posizioneScelta=[];
                   function resetMap() {
                       location.reload()
                   }
@@ -226,8 +228,11 @@ https://templatemo.com/tm-580-woox-travel
                                 shadowSize: [41, 41]
                             });
 
+                            for (var i = 0; i < posizioneScelta.length; i++) {map.removeLayer(posizioneScelta[i]); }
+
                             var marker = L.marker([position.coords.latitude, position.coords.longitude],{icon:redIcon}).addTo(map);
-                            mapMarkers.push(marker);
+                            posizioneCorrente.push(marker);
+
 
                             var customPopup = "<b>La tua posizione</b>";
                             var customOptions =
@@ -269,8 +274,10 @@ https://templatemo.com/tm-580-woox-travel
                           locationFlag=true;
                           if(locationFlag==true){map.off('click');}
 
+                          for (var i = 0; i < posizioneCorrente.length; i++) {map.removeLayer(posizioneCorrente[i]); }
                           var marker = L.marker([lat, long],{icon:redIcon}).addTo(map);
-                          mapMarkers.push(marker);
+                          posizioneScelta.push(marker);
+
 
                           var customPopup = "<b>Posizione scelta</b>";
                           var customOptions =
